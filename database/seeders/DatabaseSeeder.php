@@ -20,5 +20,10 @@ class DatabaseSeeder extends Seeder
         User::factory()->staff()->count(3)->create();
 
         User::factory()->resident()->count(20)->create();
+
+        $this->call([
+            FloodZoneSeeder::class,
+            SensorSeeder::class,
+        ]);
     }
 }

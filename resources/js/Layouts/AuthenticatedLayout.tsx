@@ -153,6 +153,20 @@ function getNavigation(role: string) {
             active: route().current('dashboard'),
             roles: ['admin', 'staff', 'resident'],
         },
+        {
+            name: 'Flood Zones',
+            href: route('admin.flood-zones.index'),
+            icon: Map,
+            active: route().current('admin.flood-zones.*'),
+            roles: ['admin'],
+        },
+        {
+            name: 'Sensors',
+            href: route('admin.sensors.index'),
+            icon: Activity,
+            active: route().current('admin.sensors.*'),
+            roles: ['admin'],
+        },
     ];
 
     return items.filter((item) => item.roles.includes(role));

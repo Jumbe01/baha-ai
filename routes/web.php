@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\FloodZoneController;
+use App\Http\Controllers\Admin\SensorController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +24,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('flood-zones', FloodZoneController::class)->except('show');
+    Route::resource('sensors', SensorController::class)->except('show');
 });
 
 require __DIR__.'/auth.php';
