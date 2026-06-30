@@ -185,6 +185,27 @@ function getNavigation(role: string) {
             roles: ['admin', 'staff', 'resident'],
         },
         {
+            name: 'Predictions',
+            href: route('predictions.index'),
+            icon: Zap,
+            active: route().current('predictions.*'),
+            roles: ['admin', 'staff', 'resident'],
+        },
+        {
+            name: 'Weather',
+            href: route('weather.index'),
+            icon: CloudRain,
+            active: route().current('weather.*'),
+            roles: ['admin', 'staff', 'resident'],
+        },
+        {
+            name: 'Flood Map',
+            href: route('map.index'),
+            icon: Map,
+            active: route().current('map.*'),
+            roles: ['admin', 'staff', 'resident'],
+        },
+        {
             name: 'Flood Zones',
             href: route('admin.flood-zones.index'),
             icon: Map,

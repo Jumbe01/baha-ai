@@ -4,9 +4,12 @@ use App\Http\Controllers\Admin\FloodZoneController;
 use App\Http\Controllers\Admin\SensorController;
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MapController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PredictionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WaterLevelController;
+use App\Http\Controllers\WeatherController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -36,6 +39,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::patch('/notifications/{notification}/read', [NotificationController::class, 'markRead'])->name('notifications.read');
     Route::patch('/notifications/read-all', [NotificationController::class, 'markAllRead'])->name('notifications.read-all');
+
+    Route::get('/predictions', [PredictionController::class, 'index'])->name('predictions.index');
+    Route::post('/predictions/generate', [PredictionController::class, 'generate'])->name('predictions.generate')->middleware('staff');
+
+    Route::get('/weather', [WeatherController::class, 'index'])->name('weather.index');
+    Route::get('/map', [MapController::class, 'index'])->name('map.index');
 });
 
 Route::middleware('auth')->group(function () {
