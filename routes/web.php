@@ -1,9 +1,13 @@
 <?php
 
+use App\Http\Controllers\ActuatorController;
 use App\Http\Controllers\Admin\FloodZoneController;
 use App\Http\Controllers\Admin\SensorController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AlertController;
+use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GpsAlertController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PredictionController;
@@ -45,6 +49,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/weather', [WeatherController::class, 'index'])->name('weather.index');
     Route::get('/map', [MapController::class, 'index'])->name('map.index');
+
+    Route::get('/gps-alerts', [GpsAlertController::class, 'index'])->name('gps-alerts.index');
+
+    Route::middleware('staff')->group(function () {
+        Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
+        Route::get('/analytics/export', [AnalyticsController::class, 'export'])->name('analytics.export');
+
+        Route::get('/actuation', [ActuatorController::class, 'index'])->name('actuation.index');
+        Route::patch('/actuation/{device}/toggle', [ActuatorController::class, 'toggle'])->name('actuation.toggle');
+        Route::patch('/actuation/{device}/mode', [ActuatorController::class, 'switchMode'])->name('actuation.mode');
+    });
 });
 
 Route::middleware('auth')->group(function () {
@@ -56,6 +71,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('flood-zones', FloodZoneController::class)->except('show');
     Route::resource('sensors', SensorController::class)->except('show');
+    Route::resource('users', UserController::class)->only(['index', 'create', 'store', 'destroy']);
 });
 
 require __DIR__.'/auth.php';

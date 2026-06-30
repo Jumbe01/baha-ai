@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             FloodZoneSeeder::class,
             SensorSeeder::class,
+            FloodIncidentSeeder::class,
+            ActuatorSeeder::class,
         ]);
     }
 }
