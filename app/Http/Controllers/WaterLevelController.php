@@ -23,10 +23,10 @@ class WaterLevelController extends Controller
                 'type' => $sensor->type,
                 'flood_zone' => $sensor->floodZone->name,
                 'barangay' => $sensor->floodZone->barangay,
-                'water_level' => $sensor->latestReading?->water_level ?? 0,
-                'rainfall' => $sensor->latestReading?->rainfall ?? 0,
-                'temperature' => $sensor->latestReading?->temperature,
-                'humidity' => $sensor->latestReading?->humidity,
+                'water_level' => (float) ($sensor->latestReading?->water_level ?? 0),
+                'rainfall' => (float) ($sensor->latestReading?->rainfall ?? 0),
+                'temperature' => $sensor->latestReading?->temperature !== null ? (float) $sensor->latestReading->temperature : null,
+                'humidity' => $sensor->latestReading?->humidity !== null ? (float) $sensor->latestReading->humidity : null,
                 'last_reading_at' => $sensor->latestReading?->recorded_at,
                 'risk' => $riskService->assess($sensor),
                 'thresholds' => [
@@ -69,7 +69,7 @@ class WaterLevelController extends Controller
                 'longitude' => $sensor->longitude,
                 'flood_zone' => $sensor->floodZone->name,
                 'barangay' => $sensor->floodZone->barangay,
-                'water_level' => $sensor->latestReading?->water_level ?? 0,
+                'water_level' => (float) ($sensor->latestReading?->water_level ?? 0),
                 'risk' => $riskService->assess($sensor),
                 'thresholds' => [
                     'safe' => (float) $sensor->floodZone->safe_threshold,

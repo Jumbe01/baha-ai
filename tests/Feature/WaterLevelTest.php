@@ -52,6 +52,33 @@ class WaterLevelTest extends TestCase
         );
     }
 
+    public function test_index_water_level_is_numeric_not_string(): void
+    {
+        // Regression: decimal casts return strings, which crash the React
+        // gauge's value.toFixed(). water_level must be serialized as a number.
+        $sensor = Sensor::factory()->for($this->zone)->create(['status' => 'active']);
+        SensorReading::factory()->for($sensor)->create(['water_level' => 1.25, 'recorded_at' => now()]);
+
+        $response = $this->actingAs($this->user)->get(route('water-levels.index'));
+
+        $response->assertInertia(fn ($page) => $page
+            ->where('sensors.0.water_level', 1.25)
+            ->where('sensors.0.rainfall', fn ($v) => is_float($v) || is_int($v))
+        );
+    }
+
+    public function test_show_water_level_is_numeric_not_string(): void
+    {
+        $sensor = Sensor::factory()->for($this->zone)->create(['status' => 'active']);
+        SensorReading::factory()->for($sensor)->create(['water_level' => 2.5, 'recorded_at' => now()]);
+
+        $response = $this->actingAs($this->user)->get(route('water-levels.show', $sensor));
+
+        $response->assertInertia(fn ($page) => $page
+            ->where('sensor.water_level', 2.5)
+        );
+    }
+
     public function test_show_displays_sensor_detail(): void
     {
         $sensor = Sensor::factory()->for($this->zone)->create();

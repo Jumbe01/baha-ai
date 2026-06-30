@@ -7,13 +7,14 @@ interface WaterLevelGaugeProps {
 }
 
 export default function WaterLevelGauge({ value, thresholds, size = 'md' }: WaterLevelGaugeProps) {
+    const level = Number(value);
     const maxLevel = thresholds.critical * 1.5;
-    const percentage = Math.min((value / maxLevel) * 100, 100);
+    const percentage = Math.min((level / maxLevel) * 100, 100);
 
     const riskColor =
-        value >= thresholds.critical
+        level >= thresholds.critical
             ? 'bg-red-500'
-            : value >= thresholds.warning
+            : level >= thresholds.warning
               ? 'bg-yellow-500'
               : 'bg-green-500';
 
@@ -42,7 +43,7 @@ export default function WaterLevelGauge({ value, thresholds, size = 'md' }: Wate
                     style={{ bottom: `${warnPercent}%` }}
                 />
             </div>
-            <span className="text-sm font-semibold">{value.toFixed(2)}m</span>
+            <span className="text-sm font-semibold">{level.toFixed(2)}m</span>
         </div>
     );
 }
