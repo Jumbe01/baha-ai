@@ -51,4 +51,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(OtpCode::class);
     }
+
+    public function alertRecipients(): HasMany
+    {
+        return $this->hasMany(AlertRecipient::class);
+    }
+
+    public function notificationLogs(): HasMany
+    {
+        return $this->hasMany(NotificationLog::class);
+    }
 }

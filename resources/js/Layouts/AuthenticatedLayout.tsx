@@ -7,6 +7,7 @@ import {
     Activity,
     AlertTriangle,
     BarChart3,
+    Bell,
     CloudRain,
     Gauge,
     LayoutDashboard,
@@ -23,8 +24,12 @@ export default function AuthenticatedLayout({
     header,
     children,
 }: PropsWithChildren<{ header?: ReactNode }>) {
-    const { auth } = usePage().props as { auth: { user: { name: string; email: string; role: string } } };
+    const { auth, unreadNotifications } = usePage().props as {
+        auth: { user: { name: string; email: string; role: string } };
+        unreadNotifications?: number;
+    };
     const user = auth.user;
+    const unread = unreadNotifications ?? 0;
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -115,6 +120,18 @@ export default function AuthenticatedLayout({
                     {!header && <div className="flex-1" />}
 
                     <div className="flex items-center gap-3">
+                        <Link
+                            href={route('notifications.index')}
+                            className="relative p-2 text-gray-400 hover:text-gray-600"
+                            aria-label="Notifications"
+                        >
+                            <Bell className="h-5 w-5" />
+                            {unread > 0 && (
+                                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+                                    {unread > 99 ? '99+' : unread}
+                                </span>
+                            )}
+                        </Link>
                         <Dropdown>
                             <Dropdown.Trigger>
                                 <button className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900">
@@ -158,6 +175,13 @@ function getNavigation(role: string) {
             href: route('water-levels.index'),
             icon: Gauge,
             active: route().current('water-levels.*'),
+            roles: ['admin', 'staff', 'resident'],
+        },
+        {
+            name: 'Alerts',
+            href: route('alerts.index'),
+            icon: AlertTriangle,
+            active: route().current('alerts.*'),
             roles: ['admin', 'staff', 'resident'],
         },
         {
