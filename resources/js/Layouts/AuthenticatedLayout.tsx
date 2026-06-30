@@ -154,6 +154,13 @@ function getNavigation(role: string) {
             roles: ['admin', 'staff', 'resident'],
         },
         {
+            name: 'Water Levels',
+            href: route('water-levels.index'),
+            icon: Gauge,
+            active: route().current('water-levels.*'),
+            roles: ['admin', 'staff', 'resident'],
+        },
+        {
             name: 'Flood Zones',
             href: route('admin.flood-zones.index'),
             icon: Map,
