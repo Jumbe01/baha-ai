@@ -35,31 +35,85 @@ A web-based flood early-warning platform for the **Municipality of Consolacion, 
 | PDF export | barryvdh/laravel-dompdf |
 | Testing | PHPUnit (160 tests) |
 
-## Quick Start with Docker (recommended)
+## Run It on Your Own Computer (recommended — for students)
 
-The easiest way to run BahaAI — **the only thing you need installed is [Docker Desktop](https://www.docker.com/products/docker-desktop/)**. No PHP, Node, Composer, or PostgreSQL required.
+BahaAI runs **100% locally on your laptop** using Docker. The whole system — the app, the PostgreSQL database, and the compiled website — runs inside containers on *your* machine. Nothing runs on a server. After the first setup, it even works without internet.
+
+**The only thing you need to install is [Docker Desktop](https://www.docker.com/products/docker-desktop/)** (free). No PHP, Node, Composer, or PostgreSQL required.
+
+### Step 1 — Install Docker Desktop
+
+- **Windows:** download and install Docker Desktop, then **restart your computer**. (If prompted, allow it to enable WSL 2.)
+- **macOS:** download the version for your chip (Apple Silicon or Intel), then drag it to Applications.
+- Open Docker Desktop once and wait until it says **"Engine running"** in the bottom-left corner.
+
+### Step 2 — Get the project
+
+Either **download the ZIP** (easiest, no git needed):
+
+1. Go to <https://github.com/Jumbe01/baha-ai>
+2. Click the green **Code** button → **Download ZIP**
+3. Extract it somewhere (e.g. your Desktop)
+
+…or, if you have git: `git clone https://github.com/Jumbe01/baha-ai.git`
+
+### Step 3 — Start it
+
+Open a terminal **inside the project folder** (the one containing `docker-compose.yml`):
+
+- **Windows:** open the folder in File Explorer, type `cmd` in the address bar, and press Enter.
+- **macOS:** right-click the folder → *New Terminal at Folder*.
+
+Then run:
 
 ```bash
-git clone https://github.com/Jumbe01/baha-ai.git
-cd baha-ai
 docker compose up --build
 ```
 
-Then open **http://localhost:8000**.
+The first run takes a few minutes (it downloads and builds everything). Wait until you see:
+
+```
+BahaAI is running  ->  http://localhost:8000
+```
+
+### Step 4 — Open the app
+
+Open your browser to **http://localhost:8000**
 
 - **Login:** `admin@bahaai.test` &nbsp;·&nbsp; **Password:** `password`
-- The containers automatically compile the frontend, wait for PostgreSQL, run migrations, and seed 30 days of demo data on first boot.
-- Data persists between runs in a Docker volume. To start completely fresh: `docker compose down -v` then `docker compose up --build` again.
-- To stop: press `Ctrl+C`, or run `docker compose down`.
+
+### Everyday commands
+
+| I want to… | Command |
+|-----------|---------|
+| Start the app | `docker compose up` |
+| Stop the app | Press `Ctrl+C`, or run `docker compose down` |
+| Rebuild after code changes | `docker compose up --build` |
+| Reset everything (wipe the database) | `docker compose down -v` then `docker compose up --build` |
+
+Your data (accounts, readings, alerts) is saved between runs, so you can stop and start anytime without losing progress.
 
 <details>
-<summary>Optional: enable live weather</summary>
+<summary>Optional: enable live weather instead of simulated</summary>
 
 Run with an OpenWeatherMap key (otherwise the app uses realistic simulated weather):
 
 ```bash
+# macOS / Linux
 OPENWEATHERMAP_API_KEY=your_key_here docker compose up --build
+
+# Windows PowerShell
+$env:OPENWEATHERMAP_API_KEY="your_key_here"; docker compose up --build
 ```
+</details>
+
+<details>
+<summary>Troubleshooting</summary>
+
+- **"port is already allocated" / port 8000 in use** — something else is using port 8000. Edit `docker-compose.yml`, change `"8000:8000"` to `"8080:8000"`, and open <http://localhost:8080> instead.
+- **"Cannot connect to the Docker daemon"** — Docker Desktop isn't running. Open it and wait for "Engine running", then try again.
+- **The build seems stuck on the first run** — that's normal; the first build downloads several hundred MB. Give it a few minutes.
+- **Made changes but don't see them** — rebuild with `docker compose up --build`.
 </details>
 
 ---
