@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BahaAI — User Guide &amp; System Manual</title>
+<style>
+    :root {
+        --blue: #2563eb;
+        --blue-dark: #1e40af;
+        --blue-light: #dbeafe;
+        --green: #16a34a;
+        --yellow: #ca8a04;
+        --red: #dc2626;
+        --slate-50: #f8fafc;
+        --slate-100: #f1f5f9;
+        --slate-200: #e2e8f0;
+        --slate-400: #94a3b8;
+        --slate-500: #64748b;
+        --slate-600: #475569;
+        --slate-700: #334155;
+        --slate-800: #1e293b;
+        --slate-900: #0f172a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: var(--slate-700);
+        line-height: 1.65;
+        background: var(--slate-100);
+    }
+
+    .layout { display: flex; max-width: 1200px; margin: 0 auto; background: #fff; min-height: 100vh; }
+
+    /* Sidebar TOC */
+    .sidebar {
+        width: 270px;
+        flex-shrink: 0;
+        background: var(--slate-900);
+        color: var(--slate-200);
+        padding: 28px 20px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+    }
+    .sidebar .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .sidebar .brand .logo {
+        width: 34px; height: 34px; border-radius: 9px; background: var(--blue);
+        display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700;
+    }
+    .sidebar .brand h1 { font-size: 20px; color: #fff; font-weight: 700; }
+    .sidebar .tag { font-size: 11px; color: var(--slate-400); margin-bottom: 24px; padding-left: 2px; }
+    .sidebar nav a {
+        display: block; color: var(--slate-400); text-decoration: none; font-size: 13.5px;
+        padding: 6px 10px; border-radius: 7px; margin-bottom: 2px; transition: all .15s;
+    }
+    .sidebar nav a:hover { background: rgba(255,255,255,.07); color: #fff; }
+    .sidebar nav a.section-head { color: var(--slate-200); font-weight: 600; margin-top: 16px; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+    .sidebar nav a.sub { padding-left: 22px; font-size: 12.5px; }
+
+    /* Content */
+    .content { flex: 1; padding: 48px 56px; max-width: 860px; }
+    .hero {
+        background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+        color: #fff; border-radius: 16px; padding: 36px 40px; margin-bottom: 40px;
+    }
+    .hero h1 { font-size: 30px; margin-bottom: 8px; }
+    .hero p { font-size: 15px; opacity: .92; max-width: 580px; }
+    .hero .meta { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .hero .chip { background: rgba(255,255,255,.16); padding: 4px 12px; border-radius: 20px; font-size: 12px; }
+
+    h2 {
+        font-size: 23px; color: var(--slate-900); margin: 48px 0 14px;
+        padding-bottom: 10px; border-bottom: 2px solid var(--slate-200);
+    }
+    h2:first-of-type { margin-top: 0; }
+    h3 { font-size: 17px; color: var(--slate-800); margin: 28px 0 10px; }
+    h4 { font-size: 14px; color: var(--slate-700); margin: 18px 0 6px; text-transform: uppercase; letter-spacing: .03em; }
+    p { margin-bottom: 12px; }
+    ul, ol { margin: 0 0 14px 22px; }
+    li { margin-bottom: 6px; }
+    code {
+        background: var(--slate-100); border: 1px solid var(--slate-200);
+        padding: 1px 6px; border-radius: 5px; font-family: "SF Mono", Consolas, Monaco, monospace;
+        font-size: 13px; color: var(--blue-dark);
+    }
+    strong { color: var(--slate-900); }
+    a { color: var(--blue); }
+
+    .lead { font-size: 16px; color: var(--slate-600); }
+
+    /* Cards & callouts */
+    .card {
+        background: var(--slate-50); border: 1px solid var(--slate-200);
+        border-radius: 12px; padding: 20px 24px; margin: 18px 0;
+    }
+    .callout {
+        border-left: 4px solid var(--blue); background: var(--blue-light);
+        padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 18px 0; font-size: 14px;
+    }
+    .callout.note { border-color: var(--blue); background: #eff6ff; }
+    .callout.warn { border-color: var(--yellow); background: #fefce8; }
+    .callout.tip  { border-color: var(--green); background: #f0fdf4; }
+    .callout strong { display: block; margin-bottom: 3px; }
+
+    /* Role banner */
+    .role-banner {
+        display: flex; align-items: center; gap: 16px; border-radius: 12px;
+        padding: 20px 24px; margin: 10px 0 20px; color: #fff;
+    }
+    .role-banner .ico { font-size: 30px; }
+    .role-banner h2 { border: none; margin: 0; padding: 0; color: #fff; font-size: 22px; }
+    .role-banner p { margin: 0; opacity: .92; font-size: 13.5px; }
+    .role-admin { background: linear-gradient(135deg, #dc2626, #991b1b); }
+    .role-staff { background: linear-gradient(135deg, #ca8a04, #a16207); }
+    .role-resident { background: linear-gradient(135deg, #2563eb, #1e40af); }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13.5px; }
+    th { background: var(--slate-800); color: #fff; text-align: left; padding: 10px 14px; font-weight: 600; }
+    th:first-child { border-radius: 8px 0 0 0; }
+    th:last-child { border-radius: 0 8px 0 0; }
+    td { padding: 10px 14px; border-bottom: 1px solid var(--slate-200); vertical-align: top; }
+    tr:nth-child(even) td { background: var(--slate-50); }
+
+    /* Risk badges */
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #fff; }
+    .b-safe { background: var(--green); }
+    .b-warn { background: var(--yellow); }
+    .b-crit { background: var(--red); }
+    .b-grey { background: var(--slate-400); }
+
+    /* Flow diagram */
+    .flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: 0; margin: 22px 0; }
+    .flow .step {
+        flex: 1; min-width: 130px; background: #fff; border: 2px solid var(--blue);
+        border-radius: 10px; padding: 14px; text-align: center; position: relative;
+    }
+    .flow .step .n {
+        position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+        background: var(--blue); color: #fff; width: 22px; height: 22px; border-radius: 50%;
+        font-size: 12px; line-height: 22px; font-weight: 700;
+    }
+    .flow .step h5 { font-size: 13px; color: var(--slate-900); margin: 6px 0 4px; }
+    .flow .step p { font-size: 11.5px; color: var(--slate-500); margin: 0; }
+    .flow .arrow { display: flex; align-items: center; color: var(--blue); font-size: 22px; padding: 0 6px; }
+
+    .formula {
+        background: var(--slate-900); color: #e2e8f0; border-radius: 10px;
+        padding: 16px 20px; font-family: "SF Mono", Consolas, Monaco, monospace;
+        font-size: 13.5px; margin: 14px 0; overflow-x: auto; line-height: 1.8;
+    }
+    .formula .cm { color: var(--slate-400); }
+    .formula .hl { color: #7dd3fc; }
+
+    footer { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--slate-200); font-size: 12.5px; color: var(--slate-400); }
+
+    @media print {
+        .sidebar { display: none; }
+        .content { padding: 0; max-width: 100%; }
+        body { background: #fff; }
+        .hero { background: var(--blue) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        h2 { page-break-after: avoid; }
+        .card, .callout, table, .flow { page-break-inside: avoid; }
+    }
+    @media (max-width: 880px) {
+        .sidebar { display: none; }
+        .content { padding: 24px; }
+    }
+</style>
+</head>
+<body>
+<div class="layout">
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo">B</div>
+            <h1>BahaAI</h1>
+        </div>
+        <div class="tag">IoT-Based Flood Alert System · Consolacion, Cebu</div>
+        <nav>
+            <a href="#overview" class="section-head">Getting Started</a>
+            <a href="#overview" class="sub">System Overview</a>
+            <a href="#roles" class="sub">The Three Roles</a>
+            <a href="#login" class="sub">Logging In</a>
+
+            <a href="#data" class="section-head">How It Works</a>
+            <a href="#data" class="sub">Where Data Comes From</a>
+            <a href="#risk" class="sub">Risk Levels &amp; Thresholds</a>
+            <a href="#predictions" class="sub">How Predictions Work</a>
+            <a href="#alerts" class="sub">Alert &amp; Notification Flow</a>
+            <a href="#weather" class="sub">Weather Data</a>
+            <a href="#map" class="sub">The Flood Map</a>
+
+            <a href="#admin" class="section-head">Role Guides</a>
+            <a href="#admin" class="sub">Administrator</a>
+            <a href="#staff" class="sub">DRRMO / Staff</a>
+            <a href="#resident" class="sub">Community Resident</a>
+
+            <a href="#glossary" class="section-head">Reference</a>
+            <a href="#glossary" class="sub">Glossary</a>
+            <a href="#faq" class="sub">FAQ</a>
+        </nav>
+    </aside>
+
+    <!-- ============ CONTENT ============ -->
+    <main class="content">
+
+        <div class="hero">
+            <h1>BahaAI User Guide &amp; System Manual</h1>
+            <p>A complete guide to the BahaAI flood-monitoring platform — what each user can do, where the data comes from, and how the system turns sensor readings into predictions and alerts.</p>
+            <div class="meta">
+                <span class="chip">Municipality of Consolacion, Cebu</span>
+                <span class="chip">Web Platform</span>
+                <span class="chip">Capstone / Thesis Edition</span>
+            </div>
+        </div>
+
+        <!-- ===== OVERVIEW ===== -->
+        <h2 id="overview">1. System Overview</h2>
+        <p class="lead">BahaAI is a web-based flood early-warning system. It continuously monitors water levels across flood-prone barangays, predicts when a location may reach a dangerous level, and automatically alerts the right people in time to act.</p>
+
+        <p>The platform is organized around four ideas:</p>
+        <ul>
+            <li><strong>Flood Zones</strong> — defined areas (river basins, creeks, lowlands) in Consolacion, each with its own safe / warning / critical water-level thresholds.</li>
+            <li><strong>Sensors</strong> — devices placed inside flood zones that report water level, rainfall, temperature, and humidity.</li>
+            <li><strong>Readings</strong> — the time-stamped measurements those sensors produce.</li>
+            <li><strong>Alerts &amp; Predictions</strong> — what the system generates when readings cross a threshold or trend toward one.</li>
+        </ul>
+
+        <div class="callout note">
+            <strong>Important — about the hardware</strong>
+            This is the <em>web platform</em> portion of the thesis. The physical IoT hardware (ultrasonic sensors, rain gauges, pumps, sirens) is <strong>simulated in software</strong> so the system can be demonstrated end-to-end without deploying real devices. Everything you see — water levels, alerts, predictions — runs on the same logic that real sensor data would flow through. See <a href="#data">Where Data Comes From</a> for the details.
+        </div>
+
+        <!-- ===== ROLES ===== -->
+        <h2 id="roles">2. The Three User Roles</h2>
+        <p>Every account has one role. The role decides which menu items and actions are available.</p>
+
+        <table>
+            <thead>
+                <tr><th>Role</th><th>Who it's for</th><th>Can do</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="badge b-crit">Administrator</span></td>
+                    <td>System managers / IT</td>
+                    <td>Everything — manage sensors, flood zones, and user accounts, plus all monitoring features.</td>
+                </tr>
+                <tr>
+                    <td><span class="badge b-warn">DRRMO / Staff</span></td>
+                    <td>Disaster-response officers, barangay staff</td>
+                    <td>Monitor everything, issue and resolve alerts, generate predictions, control actuators, and view analytics.</td>
+                </tr>
+                <tr>
+                    <td><span class="badge" style="background:var(--blue)">Resident</span></td>
+                    <td>Community members</td>
+                    <td>View dashboards, water levels, predictions, weather, and the flood map; receive alert notifications.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ===== LOGIN ===== -->
+        <h2 id="login">3. Logging In &amp; Account Verification</h2>
+        <p>New residents register themselves; staff and admin accounts are created by an administrator.</p>
+        <ol>
+            <li>Go to the registration page and enter your name, email, mobile number, and barangay.</li>
+            <li>The system emails you a <strong>6-digit one-time password (OTP)</strong> that is valid for 10 minutes.</li>
+            <li>Enter the code on the verification screen to activate your account.</li>
+            <li>After verifying, you are taken to your dashboard.</li>
+        </ol>
+        <div class="callout tip">
+            <strong>Tip</strong>
+            Admin-created accounts (staff or other admins) are pre-verified — they can log in immediately without the OTP step.
+        </div>
+
+        <!-- ===== DATA SOURCES ===== -->
+        <h2 id="data">4. Where Does the Data Come From?</h2>
+        <p>This is the most common question, so here is the full picture. Water-level data enters the system through <strong>three paths</strong>, all of which end up as <em>sensor readings</em> in the database:</p>
+
+        <h3>① Historical seed data (30 days)</h3>
+        <p>When the system is first set up, each sensor is given <strong>30 days of back-history</strong> at 15-minute intervals. These values are generated mathematically to look like real river behavior:</p>
+        <div class="formula">
+<span class="cm">// water level = base + daily tide + seasonal trend + noise + occasional storm</span>
+water_level = base
+            + <span class="hl">0.30 · sin(2π · hour / 24)</span>      <span class="cm">// tidal day/night cycle</span>
+            + <span class="hl">0.50 · sin(2π · (day−150) / 365)</span> <span class="cm">// wet/dry season</span>
+            + random noise
+            + storm surge          <span class="cm">// ~3% of readings spike sharply</span>
+        </div>
+        <p>This gives realistic-looking graphs with natural rises and falls, plus the occasional storm spike — exactly what you would see from a real river gauge.</p>
+
+        <h3>② Live simulation command</h3>
+        <p>For demonstrations, staff can run a command that injects a fresh reading into every active sensor right now:</p>
+        <ul>
+            <li><code>sensors:simulate</code> — generates normal (safe) readings.</li>
+            <li><code>sensors:simulate --storm</code> — generates elevated readings to trigger warnings and critical alerts, so you can watch the whole alert pipeline fire live.</li>
+        </ul>
+
+        <h3>③ The sensor data API</h3>
+        <p>Each reading can also be posted directly to an API endpoint:</p>
+        <div class="formula">POST /api/sensors/{sensor}/readings
+{ "water_level": 2.4, "rainfall": 12.5, "temperature": 28, "humidity": 80 }</div>
+        <p>This is the path a <strong>real IoT device</strong> would use. Because the simulation and the real hardware both arrive here, the rest of the system — alerts, predictions, the map — behaves identically whether the data is simulated or real. Swapping in physical sensors later requires <em>no changes</em> to the web platform.</p>
+
+        <div class="card">
+            <h4 style="margin-top:0">What each reading contains</h4>
+            <table style="margin:0">
+                <tr><td><strong>water_level</strong></td><td>Height of water in metres — the primary value.</td></tr>
+                <tr><td><strong>rainfall</strong></td><td>Rainfall in millimetres.</td></tr>
+                <tr><td><strong>temperature</strong></td><td>Air temperature in °C.</td></tr>
+                <tr><td><strong>humidity</strong></td><td>Relative humidity (%).</td></tr>
+                <tr><td><strong>recorded_at</strong></td><td>Timestamp of the measurement.</td></tr>
+            </table>
+        </div>
+
+        <!-- ===== RISK ===== -->
+        <h2 id="risk">5. Risk Levels &amp; Thresholds</h2>
+        <p>Every flood zone defines three water-level thresholds. The current water level is compared against them to produce a risk level:</p>
+
+        <table>
+            <thead><tr><th>Risk</th><th>Condition</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td><span class="badge b-safe">Safe</span></td><td>level &lt; warning threshold</td><td>Normal conditions. Routine monitoring.</td></tr>
+                <tr><td><span class="badge b-warn">Warning</span></td><td>warning ≤ level &lt; critical</td><td>Water is rising. Prepare and watch closely.</td></tr>
+                <tr><td><span class="badge b-crit">Critical</span></td><td>level ≥ critical threshold</td><td>Dangerous. Evacuation may be required.</td></tr>
+            </tbody>
+        </table>
+
+        <p>Typical thresholds for a zone are <strong>0 m (safe)</strong>, <strong>1.5 m (warning)</strong>, and <strong>3.0 m (critical)</strong>, but each zone can be tuned individually by an administrator because every river and creek floods at a different height.</p>
+
+        <div class="callout note">
+            <strong>Color convention</strong>
+            Across the whole platform, <span class="badge b-safe">green</span> = safe, <span class="badge b-warn">yellow</span> = warning, and <span class="badge b-crit">red</span> = critical. The dashboard, water-level gauges, map, and alerts all use these same colors.
+        </div>
+
+        <!-- ===== PREDICTIONS ===== -->
+        <h2 id="predictions">6. How Predictions Are Created</h2>
+        <p class="lead">This is the "AI" part of BahaAI. Instead of only reacting when water is <em>already</em> dangerous, the system forecasts <strong>how soon</strong> a sensor will reach the critical level, giving responders a head start.</p>
+
+        <h3>The method: linear regression</h3>
+        <p>For each sensor, the prediction engine looks at the <strong>last 2 hours (120 minutes)</strong> of readings and fits a straight line through them — a classic <strong>linear regression</strong>. The line tells us two things: how fast the water is rising, and how well that trend fits the data.</p>
+
+        <div class="flow">
+            <div class="step"><span class="n">1</span><h5>Collect readings</h5><p>Last 120 minutes for one sensor (needs ≥ 3 points)</p></div>
+            <div class="arrow">→</div>
+            <div class="step"><span class="n">2</span><h5>Fit a line</h5><p>Regression gives the rate of rise (slope) &amp; fit quality (R²)</p></div>
+            <div class="arrow">→</div>
+            <div class="step"><span class="n">3</span><h5>Project forward</h5><p>Extend the line to estimate time-to-critical</p></div>
+            <div class="arrow">→</div>
+            <div class="step"><span class="n">4</span><h5>Recommend</h5><p>Risk level, confidence &amp; advice</p></div>
+        </div>
+
+        <h3>The calculations</h3>
+        <div class="formula">
+<span class="cm">// 1. Rate of rise — the slope of the fitted line (metres per minute)</span>
+rate_of_rise = slope from linear regression of (time, water_level)
+
+<span class="cm">// 2. Time until the water reaches the critical threshold</span>
+minutes_to_critical = <span class="hl">(critical_threshold − current_level) / rate_of_rise</span>
+
+<span class="cm">// 3. Confidence — how well the straight line fits the real readings (R²)</span>
+confidence (%) = <span class="hl">R² × 100</span>
+
+<span class="cm">// 4. Predicted level one hour from now</span>
+predicted_level = intercept + slope × (now + 60 min)
+        </div>
+
+        <h4>What each output means</h4>
+        <table>
+            <thead><tr><th>Output</th><th>Plain-English meaning</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Rate of rise</strong></td><td>How quickly water is climbing. A larger number means faster rising and less time to react.</td></tr>
+                <tr><td><strong>Time to critical</strong></td><td>Estimated minutes until the zone hits its critical threshold. Shows <em>"Stable"</em> when the water is flat or falling.</td></tr>
+                <tr><td><strong>Confidence</strong></td><td>0–100%. High confidence means the recent readings form a clean, steady trend, so the forecast is trustworthy. Low confidence means the data is noisy/erratic — treat the estimate with caution.</td></tr>
+                <tr><td><strong>Recommendation</strong></td><td>An automatic action message, e.g. <em>"Immediate evacuation advised — critical level projected in ~25 minutes."</em></td></tr>
+            </tbody>
+        </table>
+
+        <h3>How a prediction is classified</h3>
+        <ul>
+            <li><span class="badge b-crit">Critical</span> — water is already at critical, <em>or</em> it is projected to reach critical within 60 minutes.</li>
+            <li><span class="badge b-warn">Warning</span> — current or predicted level is at or above the warning threshold.</li>
+            <li><span class="badge b-safe">Safe</span> — stable conditions.</li>
+        </ul>
+
+        <h3>When predictions run</h3>
+        <p>Predictions are regenerated <strong>automatically every 15 minutes</strong> by a scheduled task. Staff can also press <strong>"Generate Predictions"</strong> on the Predictions page to refresh them on demand. The page then shows a forecast chart for each sensor, with a dashed projection line and a red line marking the critical threshold.</p>
+
+        <div class="callout warn">
+            <strong>Why a prediction might say "No prediction yet"</strong>
+            A sensor needs at least <strong>3 readings in the last 2 hours</strong> to fit a line. A brand-new sensor, or one whose recent data is older than 2 hours, will be skipped until enough fresh readings arrive.
+        </div>
+
+        <!-- ===== ALERTS ===== -->
+        <h2 id="alerts">7. Alert &amp; Notification Flow</h2>
+        <p>Alerts are how BahaAI turns a dangerous reading into action. Here is exactly what happens when a reading arrives:</p>
+
+        <div class="flow">
+            <div class="step"><span class="n">1</span><h5>Reading arrives</h5><p>From simulation or a real sensor</p></div>
+            <div class="arrow">→</div>
+            <div class="step"><span class="n">2</span><h5>Check threshold</h5><p>Is it warning or critical?</p></div>
+            <div class="arrow">→</div>
+            <div class="step"><span class="n">3</span><h5>Create alert</h5><p>If no matching active alert exists yet</p></div>
+            <div class="arrow">→</div>
+            <div class="step"><span class="n">4</span><h5>Notify people</h5><p>Affected residents + all staff</p></div>
+        </div>
+
+        <h3>Who gets notified</h3>
+        <p>When an alert fires, the system sends it to:</p>
+        <ul>
+            <li><strong>Residents in the affected barangay</strong> — only people in the flooding area are bothered, so alerts stay relevant.</li>
+            <li><strong>All staff and administrators</strong> — responders always see every alert, regardless of location.</li>
+        </ul>
+
+        <h3>How notifications are delivered</h3>
+        <p>Each recipient is notified through the channels they enabled in their profile — <strong>SMS, email, and/or push</strong>. In this web edition, SMS/email/push delivery is <strong>simulated and recorded in a notification log</strong> (you can open any alert and see exactly who was contacted, on which channel, and when). Connecting a real SMS gateway later only means replacing that one logging step.</p>
+
+        <div class="callout note">
+            <strong>No duplicate spam</strong>
+            The system will not create a second alert of the same severity for the same sensor while one is still active. You get <em>one</em> warning alert and, if the water keeps rising, <em>one</em> critical alert — not a flood of repeats.
+        </div>
+
+        <h3>Resolving alerts</h3>
+        <p>Staff and admins can mark an alert as <strong>Resolved</strong> once the situation is handled. Residents see alerts but cannot resolve them. Staff can also raise a <strong>manual alert</strong> (e.g. based on a phone report from the field) that dispatches notifications the same way an automatic one does.</p>
+
+        <!-- ===== WEATHER ===== -->
+        <h2 id="weather">8. Weather Data</h2>
+        <p>The Weather page shows current conditions and a forecast for Consolacion. Data comes from the <strong>OpenWeatherMap</strong> service (free tier).</p>
+        <ul>
+            <li>If an OpenWeatherMap API key is configured, live weather is fetched and <strong>cached for 30 minutes</strong> to stay within the free quota.</li>
+            <li>If no key is set, the system falls back to <strong>realistic simulated weather</strong> so the page always works for a demo. A "Simulated Data" badge is shown in that case.</li>
+        </ul>
+        <p>Weather is refreshed automatically every hour by a scheduled task.</p>
+
+        <!-- ===== MAP ===== -->
+        <h2 id="map">9. The Flood Map</h2>
+        <p>The map gives a geographic, at-a-glance view of the whole municipality. It is built with <strong>MapLibre</strong> over OpenStreetMap base tiles and shows:</p>
+        <ul>
+            <li><strong>Flood-zone polygons</strong> — each area shaded green / yellow / red by its current risk level.</li>
+            <li><strong>Sensor markers</strong> — click any sensor to see a popup with its name, zone, current water level, and risk badge.</li>
+        </ul>
+        <p>The separate <strong>GPS Alerts</strong> page focuses on emergencies: it highlights only the zones that are currently flooding and draws an <strong>evacuation route</strong> from each one to the designated evacuation center.</p>
+
+        <!-- ===================================================== -->
+        <!-- ROLE GUIDES                                           -->
+        <!-- ===================================================== -->
+        <h2 id="admin" style="border:none; margin-bottom:0;">10. Role Guide: Administrator</h2>
+        <div class="role-banner role-admin">
+            <div class="ico">🛡️</div>
+            <div>
+                <h2>Administrator</h2>
+                <p>Full control of the system's configuration and accounts.</p>
+            </div>
+        </div>
+
+        <p>As an administrator you can do everything staff and residents can do, <strong>plus</strong> the setup and management tasks below.</p>
+
+        <h3>Your menu</h3>
+        <p>Dashboard · Water Levels · Alerts · Predictions · Weather · Flood Map · GPS Alerts · Analytics · Actuation · <strong>Flood Zones</strong> · <strong>Sensors</strong> · <strong>Users</strong></p>
+
+        <h3>Managing Flood Zones</h3>
+        <ul>
+            <li>Create and edit zones, set their <strong>safe / warning / critical thresholds</strong>, and assign a barangay.</li>
+            <li>Thresholds you set here directly drive every risk badge, alert, and prediction for that zone.</li>
+        </ul>
+
+        <h3>Managing Sensors</h3>
+        <ul>
+            <li>Add sensors to a flood zone, set their type (ultrasonic, rain gauge, pressure) and GPS location.</li>
+            <li>Set a sensor's status to <em>active</em>, <em>inactive</em>, or <em>maintenance</em>. Only active sensors are monitored and shown on the map.</li>
+        </ul>
+
+        <h3>Managing Users</h3>
+        <ul>
+            <li>View, search, and filter all accounts by role.</li>
+            <li>Create new staff or admin accounts (these are auto-verified — no OTP needed).</li>
+            <li>Delete accounts. <em>The system prevents you from deleting your own account.</em></li>
+        </ul>
+
+        <div class="callout tip">
+            <strong>Recommended first-time setup</strong>
+            1) Create your flood zones with correct thresholds → 2) Add sensors to each zone → 3) Let readings accumulate (or run the simulation) → 4) Create staff accounts for your DRRMO team.
+        </div>
+
+        <!-- STAFF -->
+        <h2 id="staff" style="border:none; margin-bottom:0;">11. Role Guide: DRRMO / Staff</h2>
+        <div class="role-banner role-staff">
+            <div class="ico">📋</div>
+            <div>
+                <h2>DRRMO / Barangay Staff</h2>
+                <p>The operational responders who monitor conditions and act on alerts.</p>
+            </div>
+        </div>
+
+        <h3>Your menu</h3>
+        <p>Dashboard · Water Levels · Alerts · Predictions · Weather · Flood Map · GPS Alerts · <strong>Analytics</strong> · <strong>Actuation</strong></p>
+
+        <h3>Day-to-day monitoring</h3>
+        <ul>
+            <li><strong>Dashboard</strong> — your control center: active sensor count, current risk summary, the highest water level right now, and a 24-hour trend chart.</li>
+            <li><strong>Water Levels</strong> — a card per sensor with a live gauge; click one for its full history and charts.</li>
+            <li><strong>Predictions</strong> — see which sensors are trending toward critical and how soon; press <em>Generate</em> to refresh.</li>
+        </ul>
+
+        <h3>Handling alerts</h3>
+        <ul>
+            <li>Review incoming alerts, filter them by status / severity / zone, and open one to see its full recipient and delivery log.</li>
+            <li><strong>Resolve</strong> an alert when the situation is over.</li>
+            <li><strong>Create a manual alert</strong> when you have field information the sensors haven't captured — it notifies residents and staff just like an automatic alert.</li>
+        </ul>
+
+        <h3>Smart Actuation</h3>
+        <p>The Actuation page is a control panel for flood-mitigation devices (pumps, sirens, floodgates, valves). For each device you can:</p>
+        <ul>
+            <li>Switch between <strong>Auto</strong> and <strong>Manual</strong> mode.</li>
+            <li>In manual mode, turn the device <strong>on or off</strong>. Every action is written to the activity log with your name and a timestamp.</li>
+        </ul>
+
+        <h3>Analytics &amp; reports</h3>
+        <ul>
+            <li>Filter historical data by date range and review daily water-level trends and incidents-by-zone charts.</li>
+            <li>Export the flood-incident history as <strong>CSV</strong> (for spreadsheets) or <strong>PDF</strong> (for formal reports).</li>
+        </ul>
+
+        <!-- RESIDENT -->
+        <h2 id="resident" style="border:none; margin-bottom:0;">12. Role Guide: Community Resident</h2>
+        <div class="role-banner role-resident">
+            <div class="ico">🏠</div>
+            <div>
+                <h2>Community Resident</h2>
+                <p>Stay informed and receive timely warnings for your barangay.</p>
+            </div>
+        </div>
+
+        <h3>Your menu</h3>
+        <p>Dashboard · Water Levels · Alerts · Predictions · Weather · Flood Map · GPS Alerts · Notifications · Profile</p>
+
+        <h3>What you can do</h3>
+        <ul>
+            <li><strong>Monitor</strong> water levels, risk status, predictions, and weather for your area.</li>
+            <li><strong>Receive alerts</strong> automatically when your barangay is at risk. A red badge on the bell icon shows how many notifications are unread.</li>
+            <li><strong>Open the flood map</strong> and the GPS Alerts page to see flooded areas and the evacuation route to the nearest center.</li>
+            <li><strong>View alerts</strong> issued for your area (you cannot create or resolve them — that's the responders' job).</li>
+        </ul>
+
+        <h3>Keep your profile up to date</h3>
+        <div class="callout warn">
+            <strong>This matters for your safety</strong>
+            Alerts are sent to residents <em>by barangay</em>. Make sure your <strong>barangay</strong> is set correctly in your profile, and enter your <strong>mobile number</strong> and notification preferences (SMS / email / push) so warnings reach you on the channels you actually check.
+        </div>
+
+        <h3>Notifications</h3>
+        <p>The Notifications page lists every alert you've received, newest first. Click one to open the full alert; unread items are highlighted, and you can mark them all read at once.</p>
+
+        <!-- ===== GLOSSARY ===== -->
+        <h2 id="glossary">13. Glossary</h2>
+        <table>
+            <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Flood Zone</strong></td><td>A defined geographic area with its own flood thresholds (e.g. "Tayud River Basin").</td></tr>
+                <tr><td><strong>Sensor</strong></td><td>A monitoring device inside a flood zone that reports water level and weather data.</td></tr>
+                <tr><td><strong>Reading</strong></td><td>A single timestamped measurement from a sensor.</td></tr>
+                <tr><td><strong>Threshold</strong></td><td>The water-level boundary (safe / warning / critical) that defines risk for a zone.</td></tr>
+                <tr><td><strong>Rate of rise</strong></td><td>How fast water is climbing, in metres per minute, from the prediction model.</td></tr>
+                <tr><td><strong>Time to critical</strong></td><td>Estimated minutes until a zone reaches its critical threshold.</td></tr>
+                <tr><td><strong>Confidence (R²)</strong></td><td>How well the prediction's trend line fits recent data, as a percentage (0–100%).</td></tr>
+                <tr><td><strong>Actuator</strong></td><td>A flood-control device (pump, siren, floodgate, valve) that staff can operate.</td></tr>
+                <tr><td><strong>OTP</strong></td><td>One-Time Password — the 6-digit code used to verify a new account.</td></tr>
+                <tr><td><strong>DRRMO</strong></td><td>Disaster Risk Reduction and Management Office — the responders who use the staff role.</td></tr>
+            </tbody>
+        </table>
+
+        <!-- ===== FAQ ===== -->
+        <h2 id="faq">14. Frequently Asked Questions</h2>
+
+        <h4>Is the sensor data real?</h4>
+        <p>In this thesis edition it is simulated, but it flows through the exact same logic real data would. Real sensors can be connected later via the API with no changes to the platform.</p>
+
+        <h4>How accurate are the predictions?</h4>
+        <p>Each prediction comes with a <strong>confidence score</strong>. When water rises in a steady trend, confidence is high and the time-to-critical estimate is reliable. When readings are erratic, confidence drops — a built-in honesty signal telling responders how much to trust the forecast.</p>
+
+        <h4>Why didn't I get an alert?</h4>
+        <p>Alerts go to residents <em>in the affected barangay</em>. Check that your barangay is correct in your profile, that your notification channels are enabled, and that the event actually crossed the warning/critical threshold for your zone.</p>
+
+        <h4>Can I see who an alert was sent to?</h4>
+        <p>Yes — staff and admins can open any alert to view the complete list of recipients and a delivery log showing each channel (SMS / email / push) and timestamp.</p>
+
+        <h4>What happens when water keeps rising after a warning?</h4>
+        <p>If it crosses the critical threshold, a separate <em>critical</em> alert is created and dispatched. You won't get repeated copies of the same warning, only the escalation.</p>
+
+        <footer>
+            <strong>BahaAI</strong> — IoT-Based Flood Alert System · Municipality of Consolacion, Cebu<br>
+            Web platform user guide. Generated for the project's capstone documentation.
+        </footer>
+
+    </main>
+</div>
+</body>
+</html>
