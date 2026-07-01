@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BahaAI — Student Hands-On Testing Guide</title>
+<style>
+    :root{
+        --blue:#2563eb;--blue-dark:#1e40af;--blue-light:#dbeafe;
+        --green:#16a34a;--yellow:#ca8a04;--red:#dc2626;
+        --slate-50:#f8fafc;--slate-100:#f1f5f9;--slate-200:#e2e8f0;--slate-300:#cbd5e1;
+        --slate-400:#94a3b8;--slate-500:#64748b;--slate-600:#475569;--slate-700:#334155;
+        --slate-800:#1e293b;--slate-900:#0f172a;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--slate-700);line-height:1.65;background:var(--slate-100)}
+    .layout{display:flex;max-width:1200px;margin:0 auto;background:#fff;min-height:100vh}
+    .sidebar{width:280px;flex-shrink:0;background:var(--slate-900);color:var(--slate-200);padding:28px 20px;position:sticky;top:0;height:100vh;overflow-y:auto}
+    .sidebar .brand{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+    .sidebar .brand .logo{width:34px;height:34px;border-radius:9px;background:var(--blue);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+    .sidebar .brand h1{font-size:20px;color:#fff;font-weight:700}
+    .sidebar .tag{font-size:11px;color:var(--slate-400);margin-bottom:24px;padding-left:2px}
+    .sidebar nav a{display:block;color:var(--slate-400);text-decoration:none;font-size:13.5px;padding:6px 10px;border-radius:7px;margin-bottom:2px;transition:all .15s}
+    .sidebar nav a:hover{background:rgba(255,255,255,.07);color:#fff}
+    .sidebar nav a.section-head{color:var(--slate-200);font-weight:600;margin-top:16px;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+    .sidebar nav a.sub{padding-left:22px;font-size:12.5px}
+    .content{flex:1;padding:48px 56px;max-width:880px}
+    .hero{background:linear-gradient(135deg,var(--blue) 0%,var(--blue-dark) 100%);color:#fff;border-radius:16px;padding:36px 40px;margin-bottom:40px}
+    .hero h1{font-size:30px;margin-bottom:8px}
+    .hero p{font-size:15px;opacity:.92;max-width:600px}
+    .hero .meta{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+    .hero .chip{background:rgba(255,255,255,.16);padding:4px 12px;border-radius:20px;font-size:12px}
+    h2{font-size:23px;color:var(--slate-900);margin:48px 0 14px;padding-bottom:10px;border-bottom:2px solid var(--slate-200)}
+    h2:first-of-type{margin-top:0}
+    h3{font-size:17px;color:var(--slate-800);margin:28px 0 10px}
+    h4{font-size:14px;color:var(--slate-700);margin:18px 0 6px;text-transform:uppercase;letter-spacing:.03em}
+    p{margin-bottom:12px}
+    ul,ol{margin:0 0 14px 22px}
+    li{margin-bottom:6px}
+    code{background:var(--slate-100);border:1px solid var(--slate-200);padding:1px 6px;border-radius:5px;font-family:"SF Mono",Consolas,Monaco,monospace;font-size:13px;color:var(--blue-dark)}
+    strong{color:var(--slate-900)}
+    a{color:var(--blue)}
+    .lead{font-size:16px;color:var(--slate-600)}
+    .card{background:var(--slate-50);border:1px solid var(--slate-200);border-radius:12px;padding:20px 24px;margin:18px 0}
+    .callout{border-left:4px solid var(--blue);background:var(--blue-light);padding:14px 18px;border-radius:0 8px 8px 0;margin:18px 0;font-size:14px}
+    .callout.warn{border-color:var(--yellow);background:#fefce8}
+    .callout.tip{border-color:var(--green);background:#f0fdf4}
+    .callout.danger{border-color:var(--red);background:#fef2f2}
+    .callout strong{display:block;margin-bottom:3px}
+    table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px}
+    th{background:var(--slate-800);color:#fff;text-align:left;padding:10px 14px;font-weight:600}
+    th:first-child{border-radius:8px 0 0 0}
+    th:last-child{border-radius:0 8px 0 0}
+    td{padding:10px 14px;border-bottom:1px solid var(--slate-200);vertical-align:top}
+    tr:nth-child(even) td{background:var(--slate-50)}
+    .badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:600;color:#fff}
+    .b-safe{background:var(--green)}.b-warn{background:var(--yellow)}.b-crit{background:var(--red)}.b-grey{background:var(--slate-400)}.b-blue{background:var(--blue)}
+    pre{background:var(--slate-900);color:#e2e8f0;border-radius:10px;padding:16px 20px;font-family:"SF Mono",Consolas,Monaco,monospace;font-size:13px;margin:12px 0;overflow-x:auto;line-height:1.7}
+    pre .cm{color:var(--slate-400)}
+    .step-list{counter-reset:step;list-style:none;margin-left:0}
+    .step-list>li{position:relative;padding:4px 0 14px 44px;margin-bottom:4px}
+    .step-list>li::before{counter-increment:step;content:counter(step);position:absolute;left:0;top:2px;width:30px;height:30px;background:var(--blue);color:#fff;border-radius:50%;text-align:center;line-height:30px;font-weight:700;font-size:14px}
+    kbd{background:#fff;border:1px solid var(--slate-300);border-bottom-width:2px;border-radius:5px;padding:1px 7px;font-size:12px;font-family:monospace}
+    footer{margin-top:56px;padding-top:24px;border-top:1px solid var(--slate-200);font-size:12.5px;color:var(--slate-400)}
+    @media print{.sidebar{display:none}.content{padding:0;max-width:100%}body{background:#fff}.hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}h2{page-break-after:avoid}.card,.callout,table,pre{page-break-inside:avoid}}
+    @media (max-width:880px){.sidebar{display:none}.content{padding:24px}}
+</style>
+</head>
+<body>
+<div class="layout">
+    <aside class="sidebar">
+        <div class="brand"><div class="logo">B</div><h1>BahaAI</h1></div>
+        <div class="tag">Student Hands-On Testing Guide</div>
+        <nav>
+            <a href="#start" class="section-head">Get It Running</a>
+            <a href="#start" class="sub">1. Start the App (Docker)</a>
+            <a href="#login" class="sub">2. Log In</a>
+            <a href="#commands" class="sub">3. Command Cheat Sheet</a>
+            <a href="#test" class="section-head">Try It Out</a>
+            <a href="#test" class="sub">4. Make a Flood Happen</a>
+            <a href="#roles" class="sub">5. Test Each Role</a>
+            <a href="#features" class="section-head">Feature &amp; Field Reference</a>
+            <a href="#f-floodzones" class="sub">Flood Zones</a>
+            <a href="#f-sensors" class="sub">Sensors</a>
+            <a href="#f-alerts" class="sub">Alerts</a>
+            <a href="#f-predictions" class="sub">Predictions</a>
+            <a href="#f-actuation" class="sub">Actuation</a>
+            <a href="#f-analytics" class="sub">Analytics</a>
+            <a href="#f-users" class="sub">Users</a>
+            <a href="#f-register" class="sub">Register &amp; Profile</a>
+            <a href="#sms" class="section-head">Good to Know</a>
+            <a href="#sms" class="sub">Does SMS / Email Work?</a>
+            <a href="#reset" class="sub">Reset &amp; Troubleshoot</a>
+        </nav>
+    </aside>
+
+    <main class="content">
+        <div class="hero">
+            <h1>Student Hands-On Testing Guide</h1>
+            <p>Everything you need to run BahaAI on your own laptop, click through every feature, and understand what each button and input field does. No coding required.</p>
+            <div class="meta">
+                <span class="chip">Runs 100% on your computer</span>
+                <span class="chip">Docker</span>
+                <span class="chip">~10 minutes to first flood alert</span>
+            </div>
+        </div>
+
+        <div class="callout">
+            <strong>What is BahaAI?</strong>
+            A flood early-warning system for Consolacion, Cebu. It watches water levels from sensors, warns people before a flood gets dangerous, and predicts how soon an area will flood. The sensor hardware is <em>simulated in software</em> — you'll trigger "floods" yourself with a command and watch the whole system react.
+        </div>
+
+        <!-- ============ 1. START ============ -->
+        <h2 id="start">1. Start the App (Docker)</h2>
+        <p class="lead">You only need <strong>Docker Desktop</strong> installed — nothing else (no PHP, no database).</p>
+
+        <ol class="step-list">
+            <li><strong>Install Docker Desktop</strong> from <a href="https://www.docker.com/products/docker-desktop/">docker.com</a>. On Windows, restart your computer after installing. Open Docker Desktop and wait until it says <strong>"Engine running"</strong>.</li>
+            <li><strong>Get the project.</strong> Go to <a href="https://github.com/Jumbe01/baha-ai">github.com/Jumbe01/baha-ai</a>, click the green <strong>Code</strong> button → <strong>Download ZIP</strong>, and extract it (e.g. to your Desktop).</li>
+            <li><strong>Open a terminal in that folder</strong> (the folder that has <code>docker-compose.yml</code>).
+                <ul>
+                    <li><strong>Windows:</strong> open the folder in File Explorer, click the address bar, type <code>cmd</code>, press <kbd>Enter</kbd>.</li>
+                    <li><strong>macOS:</strong> right-click the folder → <em>New Terminal at Folder</em>.</li>
+                </ul>
+            </li>
+            <li><strong>Run:</strong><pre>docker compose up --build</pre> The first time takes a few minutes. Wait until you see:<pre>BahaAI is running  ->  http://localhost:8000</pre></li>
+            <li><strong>Open your browser</strong> to <a href="http://localhost:8000">http://localhost:8000</a>.</li>
+        </ol>
+
+        <div class="callout tip">
+            <strong>Keep this terminal open</strong> while you use the app — it's running the server. To stop the app later, press <kbd>Ctrl</kbd>+<kbd>C</kbd> in this terminal.
+        </div>
+
+        <!-- ============ 2. LOGIN ============ -->
+        <h2 id="login">2. Log In</h2>
+        <p>The app comes pre-loaded with a ready-to-use administrator account. <strong>Start here</strong> — it can see and do everything.</p>
+
+        <table>
+            <thead><tr><th>Field</th><th>Type this</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Email</strong></td><td><code>admin@bahaai.test</code></td></tr>
+                <tr><td><strong>Password</strong></td><td><code>password</code></td></tr>
+            </tbody>
+        </table>
+
+        <div class="callout warn">
+            <strong>About registering a brand-new account</strong>
+            You <em>can</em> click "Register", but new accounts need a 6-digit code sent by email — and in this demo, email is not actually delivered (see <a href="#sms">Does SMS/Email Work?</a>). The easy path is to just use the admin account above, and create any extra test accounts from inside the app (Users page) — those skip the email step. See <a href="#roles">Test Each Role</a>.
+        </div>
+
+        <!-- ============ 3. COMMANDS ============ -->
+        <h2 id="commands">3. Command Cheat Sheet (Docker)</h2>
+        <p class="lead">These commands make the system "do things" — like simulating a storm. Run them in a <strong>second terminal</strong>, opened in the same project folder, while the app is running.</p>
+
+        <div class="callout danger">
+            <strong>Important: run commands INSIDE Docker</strong>
+            The app's database lives inside Docker. If you run <code>php artisan ...</code> directly in VS Code, it talks to a <em>different</em> database and nothing will change on the website. Always prefix commands with <code>docker compose exec app</code> so they hit the same database the website uses.
+        </div>
+
+        <table>
+            <thead><tr><th>What it does</th><th>Command</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><strong>Trigger a storm</strong> — pushes water levels up and creates warning/critical alerts</td>
+                    <td><code>docker compose exec app php artisan sensors:simulate --storm</code></td>
+                </tr>
+                <tr>
+                    <td>Add normal (calm) sensor readings</td>
+                    <td><code>docker compose exec app php artisan sensors:simulate</code></td>
+                </tr>
+                <tr>
+                    <td>Generate flood predictions for all sensors</td>
+                    <td><code>docker compose exec app php artisan predictions:generate</code></td>
+                </tr>
+                <tr>
+                    <td>Refresh weather now</td>
+                    <td><code>docker compose exec app php artisan weather:fetch</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Reset all demo data</strong> to a fresh state</td>
+                    <td><code>docker compose exec app php artisan migrate:fresh --seed</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>After running any command, go back to your browser and <strong>refresh the page</strong> to see the effect.</p>
+
+        <!-- ============ 4. GUIDED TEST ============ -->
+        <h2 id="test">4. Try It Out — "Make a Flood Happen"</h2>
+        <p class="lead">This 5-minute walkthrough takes you through the core of the whole system. Do it logged in as the admin.</p>
+
+        <ol class="step-list">
+            <li><strong>Look at the calm state.</strong> Open <strong>Dashboard</strong>. Note the "Risk Status" (probably <span class="badge b-safe">Clear</span> or a few warnings) and the 24-hour water-level chart.</li>
+            <li><strong>Cause a storm.</strong> In your second terminal, run:
+                <pre>docker compose exec app php artisan sensors:simulate --storm</pre>
+                You'll see a list of sensors turning <span class="badge b-warn">WARNING</span> and <span class="badge b-crit">CRITICAL</span>.</li>
+            <li><strong>See the alerts.</strong> In the browser, open <strong>Alerts</strong> (refresh if needed). New alerts appear, color-coded by severity. Click one to see its details and the <strong>list of who was notified</strong>.</li>
+            <li><strong>Check the dashboard again.</strong> The Risk Status now shows red/yellow counts, and flood zones on the right show their status.</li>
+            <li><strong>Generate predictions.</strong> Run:
+                <pre>docker compose exec app php artisan predictions:generate</pre>
+                Then open <strong>Predictions</strong>. Each sensor now shows a forecast: how fast water is rising, how many minutes until critical, and a confidence score.</li>
+            <li><strong>Open the Flood Map.</strong> Zones are shaded green/yellow/red by risk. Click a sensor dot to see its reading.</li>
+            <li><strong>Resolve an alert.</strong> Back on <strong>Alerts</strong>, open a critical one and click <strong>Resolve</strong> — it moves from active to resolved.</li>
+            <li><strong>Reset when done.</strong> To go back to a clean slate:
+                <pre>docker compose exec app php artisan migrate:fresh --seed</pre></li>
+        </ol>
+
+        <div class="callout tip">
+            <strong>That's the whole loop!</strong> Sensor reading → risk check → alert → notification → prediction → map. Everything else in the app supports or configures this loop.
+        </div>
+
+        <!-- ============ 5. ROLES ============ -->
+        <h2 id="roles">5. Test Each Role</h2>
+        <p>There are three kinds of users. To try the Staff and Resident views, <strong>create accounts from the admin panel</strong> (these are ready to use immediately — no email code needed):</p>
+
+        <ol class="step-list">
+            <li>Logged in as admin, open <strong>Users</strong> → <strong>Add User</strong>.</li>
+            <li>Fill in a name, an email (e.g. <code>staff@test.com</code>), pick a <strong>Role</strong>, and set a password. Save.</li>
+            <li>Log out (top-right menu) and log back in with that new account to see what that role can do.</li>
+        </ol>
+
+        <table>
+            <thead><tr><th>Role</th><th>What they can do</th></tr></thead>
+            <tbody>
+                <tr><td><span class="badge b-crit">Administrator</span></td><td>Everything, plus manage flood zones, sensors, and user accounts.</td></tr>
+                <tr><td><span class="badge b-warn">DRRMO / Staff</span></td><td>Monitor, create &amp; resolve alerts, generate predictions, control actuators, view analytics.</td></tr>
+                <tr><td><span class="badge b-blue">Resident</span></td><td>View dashboards, water levels, predictions, weather, and the map; receive alerts.</td></tr>
+            </tbody>
+        </table>
+
+        <!-- ============ FEATURE REFERENCE ============ -->
+        <h2 id="features">Feature &amp; Input-Field Reference</h2>
+        <p class="lead">What each screen does, and exactly what to type in every input field. (Admin/Staff only screens are marked.)</p>
+
+        <!-- FLOOD ZONES -->
+        <h3 id="f-floodzones">Flood Zones <span class="badge b-crit" style="font-size:10px">Admin</span></h3>
+        <p><strong>What it does:</strong> defines the flood-prone areas and the water heights that count as safe, warning, or dangerous. These numbers control every alert and prediction.</p>
+        <table>
+            <thead><tr><th>Field</th><th>What to enter</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Zone Name</strong></td><td>Any name, e.g. <em>Tayud River Basin</em>. Required.</td></tr>
+                <tr><td><strong>Description</strong></td><td>Optional notes about the area.</td></tr>
+                <tr><td><strong>Barangay</strong></td><td>Pick from the dropdown. This decides which residents get alerts for this zone.</td></tr>
+                <tr><td><strong>Safe (m)</strong></td><td>Water height that is normal, usually <code>0</code>.</td></tr>
+                <tr><td><strong>Warning (m)</strong></td><td>Height where you start warning people, e.g. <code>1.5</code>. Must be higher than Safe.</td></tr>
+                <tr><td><strong>Critical (m)</strong></td><td>Dangerous height, e.g. <code>3.0</code>. Must be higher than Warning.</td></tr>
+            </tbody>
+        </table>
+        <div class="callout warn"><strong>Rule:</strong> the three numbers must increase — Safe &lt; Warning &lt; Critical — or the form won't save.</div>
+
+        <!-- SENSORS -->
+        <h3 id="f-sensors">Sensors <span class="badge b-crit" style="font-size:10px">Admin</span></h3>
+        <p><strong>What it does:</strong> registers a monitoring device inside a flood zone. Only <em>active</em> sensors are shown on the dashboard and map.</p>
+        <table>
+            <thead><tr><th>Field</th><th>What to enter</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Sensor Name</strong></td><td>Any label, e.g. <em>Sensor-015</em>. Required.</td></tr>
+                <tr><td><strong>Flood Zone</strong></td><td>Pick which zone this sensor belongs to.</td></tr>
+                <tr><td><strong>Sensor Type</strong></td><td><em>Ultrasonic</em> (water level), <em>Rain Gauge</em>, or <em>Pressure</em>.</td></tr>
+                <tr><td><strong>Latitude / Longitude</strong></td><td>Map position. Defaults are near Consolacion (~<code>10.3667</code>, <code>123.9567</code>) — you can leave them.</td></tr>
+                <tr><td><strong>Status</strong> <span style="color:var(--slate-400)">(edit only)</span></td><td><em>Active</em>, <em>Inactive</em>, or <em>Maintenance</em>.</td></tr>
+            </tbody>
+        </table>
+
+        <!-- ALERTS -->
+        <h3 id="f-alerts">Alerts</h3>
+        <p><strong>What it does:</strong> shows every flood warning. Most alerts are created automatically when water crosses a threshold. Staff can also raise one by hand.</p>
+        <p><strong>Viewing:</strong> use the filters at the top (status, severity, zone, or search) to narrow the list. Click any row to open the full detail, including the recipient and notification log.</p>
+        <p><strong>Creating a manual alert</strong> <span class="badge b-warn" style="font-size:10px">Staff/Admin</span> — the <em>Create Alert</em> form:</p>
+        <table>
+            <thead><tr><th>Field</th><th>What to enter</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Flood Zone</strong></td><td>Which area the alert is for. Residents of its barangay get notified.</td></tr>
+                <tr><td><strong>Severity</strong></td><td><em>Warning</em> or <em>Critical</em>.</td></tr>
+                <tr><td><strong>Title</strong></td><td>Short headline, e.g. <em>Flash flood reported near market</em>.</td></tr>
+                <tr><td><strong>Message</strong></td><td>The details residents will see.</td></tr>
+            </tbody>
+        </table>
+        <p>Clicking <strong>Create &amp; Dispatch</strong> immediately sends (simulated) notifications. Open the new alert to see the delivery log.</p>
+
+        <!-- PREDICTIONS -->
+        <h3 id="f-predictions">Predictions</h3>
+        <p><strong>What it does:</strong> forecasts how soon each sensor will reach a dangerous level, using the trend of recent readings. No input fields — just press <strong>Generate Predictions</strong> (Staff/Admin) to refresh.</p>
+        <table>
+            <thead><tr><th>What you see</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Current / Predicted level</strong></td><td>Water now vs. estimated in 1 hour.</td></tr>
+                <tr><td><strong>Time to critical</strong></td><td>Minutes until the danger level, or "Stable" if not rising.</td></tr>
+                <tr><td><strong>Confidence</strong></td><td>How trustworthy the forecast is (higher = steadier trend).</td></tr>
+                <tr><td><strong>Recommendation</strong></td><td>Suggested action based on the risk.</td></tr>
+            </tbody>
+        </table>
+        <div class="callout tip"><strong>Tip:</strong> if predictions look empty, run a storm first, then <code>predictions:generate</code> — a sensor needs a few recent readings to forecast.</div>
+
+        <!-- ACTUATION -->
+        <h3 id="f-actuation">Actuation <span class="badge b-warn" style="font-size:10px">Staff/Admin</span></h3>
+        <p><strong>What it does:</strong> a control panel for flood devices (pumps, sirens, floodgates). Simulated — clicking a control just records the action.</p>
+        <ul>
+            <li><strong>Auto / Manual</strong> buttons — switch a device's control mode.</li>
+            <li><strong>Turn On / Turn Off</strong> — only available in <em>Manual</em> mode. Every action is written to the activity log below.</li>
+        </ul>
+
+        <!-- ANALYTICS -->
+        <h3 id="f-analytics">Analytics <span class="badge b-warn" style="font-size:10px">Staff/Admin</span></h3>
+        <p><strong>What it does:</strong> historical charts and a flood-incident table, with export.</p>
+        <table>
+            <thead><tr><th>Field / Button</th><th>What to do</th></tr></thead>
+            <tbody>
+                <tr><td><strong>From / To</strong> dates</td><td>Pick a date range, then click <strong>Apply</strong> to filter the charts and table.</td></tr>
+                <tr><td><strong>CSV</strong> button</td><td>Download the incident list as a spreadsheet file.</td></tr>
+                <tr><td><strong>PDF</strong> button</td><td>Download a formatted report.</td></tr>
+            </tbody>
+        </table>
+
+        <!-- USERS -->
+        <h3 id="f-users">Users <span class="badge b-crit" style="font-size:10px">Admin</span></h3>
+        <p><strong>What it does:</strong> manage accounts. Accounts created here are ready to log in immediately (no email verification needed).</p>
+        <table>
+            <thead><tr><th>Field</th><th>What to enter</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Full Name</strong></td><td>The person's name.</td></tr>
+                <tr><td><strong>Email</strong></td><td>Login email — must be unique.</td></tr>
+                <tr><td><strong>Role</strong></td><td><em>Resident</em>, <em>Staff</em>, or <em>Admin</em>.</td></tr>
+                <tr><td><strong>Mobile</strong></td><td>Optional phone number.</td></tr>
+                <tr><td><strong>Barangay</strong></td><td>Optional — for residents, controls which alerts they receive.</td></tr>
+                <tr><td><strong>Password / Confirm</strong></td><td>Set a login password (type it the same twice).</td></tr>
+            </tbody>
+        </table>
+        <p>You can search, filter by role, and delete users (you cannot delete your own account).</p>
+
+        <!-- REGISTER & PROFILE -->
+        <h3 id="f-register">Register &amp; Profile</h3>
+        <p><strong>Register</strong> (public sign-up, creates a Resident):</p>
+        <table>
+            <thead><tr><th>Field</th><th>What to enter</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Name</strong></td><td>Your name. Required.</td></tr>
+                <tr><td><strong>Email</strong></td><td>Your email. Required, must be unique.</td></tr>
+                <tr><td><strong>Mobile</strong></td><td>Optional phone number.</td></tr>
+                <tr><td><strong>Barangay</strong></td><td>Optional — pick yours so you get local alerts.</td></tr>
+                <tr><td><strong>Password / Confirm</strong></td><td>At least 8 characters, typed twice.</td></tr>
+            </tbody>
+        </table>
+        <p><strong>Profile</strong> (top-right menu → Profile): update your name, email, mobile, address, barangay, and your <strong>notification preferences</strong> (SMS / Email / Push checkboxes) — these control which channels an alert would use for you.</p>
+
+        <!-- ============ SMS / EMAIL ============ -->
+        <h2 id="sms">Does SMS and Email Actually Work?</h2>
+        <p class="lead">Short answer: <strong>No real text messages or emails are sent</strong> — and that's intentional for this project.</p>
+
+        <div class="card">
+            <h4 style="margin-top:0">Alert notifications (SMS / Email / Push)</h4>
+            <p style="margin-bottom:8px">When an alert fires, BahaAI figures out who should be notified and <strong>records a notification for each person and channel</strong> — but it does <em>not</em> connect to a real phone network or email server. This is a safe, self-contained simulation so the system can be demonstrated without sending real messages or needing paid services.</p>
+            <p style="margin-bottom:0"><strong>Where to see it:</strong> open any alert (Alerts → click a row) and scroll to the <strong>Notification Log</strong>. You'll see each recipient, the channel (SMS/email/push), the phone/email it "went to", and the time. That proves the notification logic works end-to-end.</p>
+        </div>
+
+        <div class="card">
+            <h4 style="margin-top:0">The sign-up verification email (OTP)</h4>
+            <p style="margin-bottom:8px">Registration generates a 6-digit code and "emails" it — but the demo is set to write emails to a log file instead of delivering them, so <strong>you won't receive it in an inbox</strong>.</p>
+            <p style="margin-bottom:0">Because of this, the simplest way to explore every role is to use the built-in <code>admin@bahaai.test</code> account and create other accounts from the <a href="#f-users">Users</a> page (those need no code). If you really want to finish a self-registration, you can look up the latest code with:</p>
+            <pre>docker compose exec app php artisan tinker --execute="echo App\Models\OtpCode::latest('id')->first()->code;"</pre>
+        </div>
+
+        <div class="callout tip">
+            <strong>Could it send real messages?</strong> Yes — the system was built so that a real SMS gateway (e.g. Twilio or Semaphore) and a real email service can be plugged in later by changing one settings area, without rewriting the app. For classroom testing, the simulation shows exactly the same behavior.
+        </div>
+
+        <!-- ============ RESET / TROUBLESHOOT ============ -->
+        <h2 id="reset">Reset &amp; Troubleshoot</h2>
+
+        <h4>Start over with fresh data</h4>
+        <pre>docker compose exec app php artisan migrate:fresh --seed</pre>
+        <p>This wipes everything and reloads the original demo data (zones, sensors, 30 days of readings, sample incidents). The admin login stays <code>admin@bahaai.test</code> / <code>password</code>.</p>
+
+        <h4>Completely reset the containers</h4>
+        <pre><span class="cm"># stops everything and deletes the database volume</span>
+docker compose down -v
+docker compose up --build</pre>
+
+        <table>
+            <thead><tr><th>Problem</th><th>Fix</th></tr></thead>
+            <tbody>
+                <tr><td>Browser says the page can't be reached</td><td>Make sure the <code>docker compose up</code> terminal is still running and shows "BahaAI is running".</td></tr>
+                <tr><td><code>port is already allocated</code> / 8000 in use</td><td>Another app uses port 8000. Copy <code>.env.docker.example</code> to <code>.env</code>, set <code>APP_PORT=8080</code>, then open <a href="http://localhost:8080">localhost:8080</a>.</td></tr>
+                <tr><td><code>Cannot connect to the Docker daemon</code></td><td>Docker Desktop isn't running. Open it, wait for "Engine running", try again.</td></tr>
+                <tr><td>A command "did nothing" on the website</td><td>You probably ran it without <code>docker compose exec app</code> in front. Re-run it with that prefix.</td></tr>
+                <tr><td>The first build seems stuck</td><td>Normal — it downloads several hundred MB the first time. Give it a few minutes.</td></tr>
+            </tbody>
+        </table>
+
+        <footer>
+            <strong>BahaAI</strong> — IoT-Based Flood Alert System · Municipality of Consolacion, Cebu<br>
+            Student hands-on testing guide. For a deeper explanation of how predictions and alerts work internally, see <code>docs/user-guide.html</code>.
+        </footer>
+    </main>
+</div>
+</body>
+</html>

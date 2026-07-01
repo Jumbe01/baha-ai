@@ -256,7 +256,10 @@ The suite covers auth/OTP, role middleware, sensor/zone CRUD, the ingestion API,
 
 ## Documentation
 
-A full end-user manual (all three roles, plus how predictions/alerts/data work) is in [`docs/user-guide.html`](docs/user-guide.html) — open it in a browser or print to PDF.
+- **[`docs/student-guide.html`](docs/student-guide.html)** — hands-on testing guide for students: how to start it with Docker, a command cheat sheet, a guided "make a flood happen" walkthrough, and a field-by-field reference for every screen. Start here.
+- **[`docs/user-guide.html`](docs/user-guide.html)** — deeper end-user manual explaining all three roles and how predictions/alerts/data work internally.
+
+Open either in a browser or print to PDF.
 
 ## Project Structure
 
