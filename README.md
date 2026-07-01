@@ -35,14 +35,47 @@ A web-based flood early-warning platform for the **Municipality of Consolacion, 
 | PDF export | barryvdh/laravel-dompdf |
 | Testing | PHPUnit (160 tests) |
 
-## Requirements
+## Quick Start with Docker (recommended)
+
+The easiest way to run BahaAI — **the only thing you need installed is [Docker Desktop](https://www.docker.com/products/docker-desktop/)**. No PHP, Node, Composer, or PostgreSQL required.
+
+```bash
+git clone https://github.com/Jumbe01/baha-ai.git
+cd baha-ai
+docker compose up --build
+```
+
+Then open **http://localhost:8000**.
+
+- **Login:** `admin@bahaai.test` &nbsp;·&nbsp; **Password:** `password`
+- The containers automatically compile the frontend, wait for PostgreSQL, run migrations, and seed 30 days of demo data on first boot.
+- Data persists between runs in a Docker volume. To start completely fresh: `docker compose down -v` then `docker compose up --build` again.
+- To stop: press `Ctrl+C`, or run `docker compose down`.
+
+<details>
+<summary>Optional: enable live weather</summary>
+
+Run with an OpenWeatherMap key (otherwise the app uses realistic simulated weather):
+
+```bash
+OPENWEATHERMAP_API_KEY=your_key_here docker compose up --build
+```
+</details>
+
+---
+
+## Manual Installation (without Docker)
+
+For local development you can run it directly. This path requires PHP, Node, and PostgreSQL installed on your machine.
+
+### Requirements
 
 - PHP **8.4+**
 - Composer
 - Node.js 18+ and npm
 - PostgreSQL
 
-## Installation
+### Steps
 
 ```bash
 # 1. Clone

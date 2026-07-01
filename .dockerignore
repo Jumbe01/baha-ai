@@ -1,0 +1,30 @@
+# Dependencies & build artifacts (regenerated inside the image)
+/vendor
+/node_modules
+/public/build
+/public/hot
+
+# Local environment & secrets (the container generates its own .env)
+.env
+.env.*
+!.env.example
+
+# Version control & IDE
+.git
+.gitignore
+.idea
+.vscode
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Logs & local storage caches
+/storage/logs/*.log
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*.php
+
+# Docs / test output not needed in the runtime image
+/.phpunit.cache
+/tests/coverage
