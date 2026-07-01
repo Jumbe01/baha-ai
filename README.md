@@ -93,10 +93,30 @@ Open your browser to **http://localhost:8000**
 
 Your data (accounts, readings, alerts) is saved between runs, so you can stop and start anytime without losing progress.
 
-<details>
-<summary>Optional: enable live weather instead of simulated</summary>
+### Configuration / environment variables (optional)
 
-Run with an OpenWeatherMap key (otherwise the app uses realistic simulated weather):
+It works out of the box, but if you want to change something (add a weather key, change the port, etc.), copy the example config to `.env` and edit it:
+
+```bash
+cp .env.docker.example .env      # macOS/Linux
+copy .env.docker.example .env    # Windows
+```
+
+Docker Compose reads that `.env` automatically. The settings you can change:
+
+| Variable | Default | What it does |
+|----------|---------|--------------|
+| `APP_PORT` | `8000` | Port on your computer (change if 8000 is taken, e.g. `8080`) |
+| `APP_URL` | `http://localhost:8000` | The app's base URL (match it to `APP_PORT`) |
+| `OPENWEATHERMAP_API_KEY` | *(blank)* | Add a [free key](https://openweathermap.org/api) for **live** weather; blank = simulated |
+| `DB_DATABASE` / `DB_USERNAME` / `DB_PASSWORD` | `baha_ai` / `baha` / `secret` | Database credentials (app + DB stay in sync automatically) |
+
+> **Note:** the database host/port/driver are fixed to the Docker network on purpose, so they aren't listed here. This Docker `.env` is separate from Laravel's own `.env` — the container generates its own internal one at startup.
+
+<details>
+<summary>One-off override without a file</summary>
+
+You can also set a variable for a single run:
 
 ```bash
 # macOS / Linux

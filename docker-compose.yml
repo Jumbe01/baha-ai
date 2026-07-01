@@ -8,6 +8,19 @@
 #
 # Everything (PHP, PostgreSQL, compiled frontend, migrations, demo data)
 # is handled automatically inside the containers.
+#
+# ---------------------------------------------------------------------------
+# CONFIGURATION (optional)
+# ---------------------------------------------------------------------------
+# All settings below have sensible defaults, so it works with zero setup.
+# To change any of them (e.g. add a weather API key or change the port),
+# copy `.env.docker.example` to `.env` and edit it:
+#
+#       cp .env.docker.example .env       (macOS/Linux)
+#       copy .env.docker.example .env     (Windows)
+#
+# Docker Compose automatically reads that `.env` file.
+# ---------------------------------------------------------------------------
 
 services:
   # ---------- Laravel application ----------
@@ -16,19 +29,21 @@ services:
       context: .
     image: baha-ai:latest
     ports:
-      - "8000:8000"
+      # Host port (left) can be changed via APP_PORT; container port is fixed.
+      - "${APP_PORT:-8000}:8000"
     environment:
-      APP_NAME: BahaAI
-      APP_ENV: local
-      APP_DEBUG: "true"
-      APP_URL: http://localhost:8000
+      APP_NAME: "${APP_NAME:-BahaAI}"
+      APP_ENV: "${APP_ENV:-local}"
+      APP_DEBUG: "${APP_DEBUG:-true}"
+      APP_URL: "${APP_URL:-http://localhost:8000}"
 
+      # Database — HOST/PORT/driver are fixed to the internal Docker network.
       DB_CONNECTION: pgsql
       DB_HOST: db
       DB_PORT: 5432
-      DB_DATABASE: baha_ai
-      DB_USERNAME: baha
-      DB_PASSWORD: secret
+      DB_DATABASE: "${DB_DATABASE:-baha_ai}"
+      DB_USERNAME: "${DB_USERNAME:-baha}"
+      DB_PASSWORD: "${DB_PASSWORD:-secret}"
 
       # Optional: paste an OpenWeatherMap key to get live weather.
       # Leave blank to use realistic simulated weather.
@@ -42,13 +57,14 @@ services:
   db:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: baha_ai
-      POSTGRES_USER: baha
-      POSTGRES_PASSWORD: secret
+      # Kept in sync with the app service via the same variables.
+      POSTGRES_DB: "${DB_DATABASE:-baha_ai}"
+      POSTGRES_USER: "${DB_USERNAME:-baha}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD:-secret}"
     volumes:
       - baha_dbdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U baha -d baha_ai"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-baha} -d ${DB_DATABASE:-baha_ai}"]
       interval: 5s
       timeout: 5s
       retries: 12
