@@ -1,58 +1,182 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# BahaAI — IoT-Based Flood Alert System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A web-based flood early-warning platform for the **Municipality of Consolacion, Cebu**. BahaAI continuously monitors water levels across flood-prone barangays, forecasts when a location may reach a dangerous level using linear-regression predictions, and automatically alerts the right people in time to act.
 
-## About Laravel
+> **Capstone / thesis edition.** This repository is the **web platform**. The physical IoT hardware (ultrasonic sensors, rain gauges, pumps, sirens) is **simulated in software** so the system can be demonstrated end-to-end. Simulated readings and real device data both flow through the same ingestion API, so connecting real hardware later requires no changes to the platform.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Role-based access** — Administrator, DRRMO/Staff, and Community Resident, each with a tailored dashboard and permissions.
+- **OTP authentication** — email one-time-password verification on registration.
+- **Sensor & flood-zone management** — CRUD for zones (with per-zone safe/warning/critical thresholds) and sensors.
+- **Real-time monitoring** — live dashboard, per-sensor water-level gauges, and time-series charts.
+- **AI flood predictions** — linear regression over recent readings estimates rate of rise, time-to-critical, and an R²-based confidence score.
+- **Automated alerts & notifications** — threshold breaches create alerts and dispatch (simulated) SMS/email/push to affected-barangay residents and all staff, with a full delivery log.
+- **Weather** — OpenWeatherMap integration with caching and a realistic simulated fallback when no API key is set.
+- **GIS flood map** — MapLibre map with risk-colored flood-zone polygons and interactive sensor markers, plus a GPS evacuation-route view.
+- **Smart actuation** — control panel for pumps/sirens/floodgates with auto/manual modes and activity logging (simulated).
+- **Historical analytics** — date-range analytics with CSV and PDF export.
+- **Admin user management** — create, filter, and remove accounts.
 
-## Learning Laravel
+## Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| Layer | Technology |
+|-------|-----------|
+| Backend | Laravel 13, PHP 8.4+ |
+| Frontend | Inertia.js v2, React 18, TypeScript |
+| Styling | Tailwind CSS v3 |
+| Auth | Laravel Breeze (React/TS) + custom OTP |
+| Database | PostgreSQL |
+| Charts | Recharts |
+| Maps | MapLibre GL + OpenStreetMap tiles |
+| Weather | OpenWeatherMap API (free tier) |
+| PDF export | barryvdh/laravel-dompdf |
+| Testing | PHPUnit (160 tests) |
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Requirements
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- PHP **8.4+**
+- Composer
+- Node.js 18+ and npm
+- PostgreSQL
 
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Installation
 
 ```bash
-composer require laravel/boost --dev
+# 1. Clone
+git clone https://github.com/Jumbe01/baha-ai.git
+cd baha-ai
 
-php artisan boost:install
+# 2. Install dependencies
+composer install
+npm install --legacy-peer-deps        # --legacy-peer-deps required (Vite 8 peer conflict)
+
+# 3. Environment
+cp .env.example .env
+php artisan key:generate
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Configure the database in `.env`:
 
-## Contributing
+```dotenv
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=baha_ai
+DB_USERNAME=postgres
+DB_PASSWORD=your_password
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Create the database, then run migrations and seeders:
 
-## Code of Conduct
+```bash
+php artisan migrate --seed
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Seeding creates: 1 admin, 3 staff, 20 residents, 7 flood zones, ~14 sensors with 30 days of readings, historical flood incidents, and actuator devices.
 
-## Security Vulnerabilities
+**Default admin login:** `admin@bahaai.test`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### (Optional) Live weather
+
+Add an [OpenWeatherMap](https://openweathermap.org/api) key to `.env`. Without it, the app uses realistic simulated weather.
+
+```dotenv
+OPENWEATHERMAP_API_KEY=your_key_here
+```
+
+## Running
+
+```bash
+# Backend + Vite together
+composer run dev
+
+# — or separately —
+php artisan serve
+npm run dev
+```
+
+> **Build note:** for a production build, use `npx vite build`. `recharts` requires `react-is` (installed by default here); if you reinstall node modules, keep it.
+
+## Demo & Simulation
+
+Because IoT hardware is simulated, use these commands to generate live activity:
+
+```bash
+# Inject a fresh reading into every active sensor
+php artisan sensors:simulate
+
+# Generate elevated readings to trigger warning/critical alerts (watch the pipeline fire)
+php artisan sensors:simulate --storm
+
+# Generate flood predictions for all active sensors
+php artisan predictions:generate
+
+# Fetch/refresh weather (bypasses the 30-min cache)
+php artisan weather:fetch
+```
+
+Scheduled tasks (via `php artisan schedule:work`): `weather:fetch` hourly, `predictions:generate` every 15 minutes.
+
+## How It Works
+
+### Data flow
+Sensor readings enter through three paths — 30-day seeded history, the `sensors:simulate` command, and `POST /api/sensors/{sensor}/readings` (the path a real device uses). All three land as `sensor_readings` and drive the rest of the system identically.
+
+### Predictions
+For each sensor, a linear regression is fit over the last **120 minutes** of readings (≥3 points required):
+
+```
+rate_of_rise         = slope of the fitted line (m/min)
+minutes_to_critical  = (critical_threshold − current_level) / rate_of_rise
+confidence (%)       = R² × 100
+```
+
+A prediction is **critical** if the level is already critical or projected to reach critical within 60 minutes, **warning** if at/above the warning threshold, otherwise **safe**.
+
+### Alerts
+When a reading crosses a zone's warning/critical threshold, an alert is created (deduplicated per sensor+severity) and notifications are dispatched to residents in the affected barangay plus all staff/admins. SMS/email/push delivery is simulated via a notification log.
+
+## Testing
+
+```bash
+php artisan test --compact
+```
+
+The suite covers auth/OTP, role middleware, sensor/zone CRUD, the ingestion API, the risk service, the dashboard, the alert pipeline, notifications, predictions, weather, the GeoJSON map endpoints, analytics/export, actuation, and user management.
+
+## Documentation
+
+A full end-user manual (all three roles, plus how predictions/alerts/data work) is in [`docs/user-guide.html`](docs/user-guide.html) — open it in a browser or print to PDF.
+
+## Project Structure
+
+```
+app/
+  Console/Commands/     # sensors:simulate, predictions:generate, weather:fetch
+  Http/Controllers/     # dashboard, water-levels, alerts, predictions, weather, map,
+                        #   analytics, actuation, admin (zones/sensors/users), api
+  Models/               # FloodZone, Sensor, SensorReading, Alert, Prediction, etc.
+  Services/             # RiskLevelService, AlertService, PredictionService,
+                        #   WeatherService, NotificationDispatcher, ReportExportService
+database/
+  migrations/  factories/  seeders/
+resources/js/
+  Pages/                # Inertia React pages by feature
+  Components/           # UI kit, charts, MapLibre map components
+docs/user-guide.html    # end-user manual
+```
+
+## User Roles
+
+| Role | Capabilities |
+|------|-------------|
+| **Administrator** | Everything, plus manage flood zones, sensors, and user accounts. |
+| **DRRMO / Staff** | Monitor, issue/resolve alerts, generate predictions, control actuators, view analytics & export. |
+| **Resident** | View dashboards, water levels, predictions, weather, and the map; receive alert notifications. |
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Academic capstone project. Not licensed for production/commercial use.
