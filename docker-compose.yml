@@ -5,6 +5,7 @@
 #       docker compose up --build
 #
 #   ...and open http://localhost:8000  (login: admin@bahaai.test / password)
+#   Email inbox (Mailpit): http://localhost:8025
 #
 # Everything (PHP, PostgreSQL, compiled frontend, migrations, demo data)
 # is handled automatically inside the containers.
@@ -48,9 +49,19 @@ services:
       # Optional: paste an OpenWeatherMap key to get live weather.
       # Leave blank to use realistic simulated weather.
       OPENWEATHERMAP_API_KEY: "${OPENWEATHERMAP_API_KEY:-}"
+
+      # Mail — captured by the bundled Mailpit container (no real emails sent).
+      # View every email the app sends at http://localhost:8025
+      MAIL_MAILER: smtp
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+      MAIL_FROM_ADDRESS: "${MAIL_FROM_ADDRESS:-alerts@bahaai.test}"
+      MAIL_FROM_NAME: "${APP_NAME:-BahaAI}"
     depends_on:
       db:
         condition: service_healthy
+      mailpit:
+        condition: service_started
     restart: unless-stopped
 
   # ---------- PostgreSQL database ----------
@@ -68,6 +79,16 @@ services:
       interval: 5s
       timeout: 5s
       retries: 12
+    restart: unless-stopped
+
+  # ---------- Mailpit (email capture) ----------
+  # Catches all outgoing email. Nothing is sent to real inboxes.
+  # Web inbox:  http://localhost:8025
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "${MAILPIT_UI_PORT:-8025}:8025"   # Web UI
+      - "${MAILPIT_SMTP_PORT:-1025}:1025" # SMTP
     restart: unless-stopped
 
 volumes:

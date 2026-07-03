@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Mail\AlertNotificationMail;
 use App\Models\Alert;
 use App\Models\FloodZone;
 use App\Models\Sensor;
@@ -9,6 +10,7 @@ use App\Models\SensorReading;
 use App\Models\User;
 use App\Services\AlertService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class AlertPipelineTest extends TestCase
@@ -96,6 +98,27 @@ class AlertPipelineTest extends TestCase
 
         // Tayud resident + staff = 2 recipients (Casili resident excluded)
         $this->assertEquals(2, $alert->recipients()->count());
+    }
+
+    public function test_alert_dispatch_sends_branded_email_to_recipients(): void
+    {
+        Mail::fake();
+
+        $resident = User::factory()->resident()->create([
+            'barangay' => 'Tayud',
+            'notification_preference' => ['sms' => false, 'email' => true, 'push' => false],
+        ]);
+
+        $alert = $this->service->evaluateReading($this->sensor, $this->reading(3.5));
+
+        Mail::assertSent(AlertNotificationMail::class, fn ($mail) => $mail->hasTo($resident->email));
+
+        $this->assertDatabaseHas('notification_logs', [
+            'alert_id' => $alert->id,
+            'user_id' => $resident->id,
+            'channel' => 'email',
+            'status' => 'sent',
+        ]);
     }
 
     public function test_resolve_marks_alert_resolved(): void
