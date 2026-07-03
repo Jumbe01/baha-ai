@@ -52,6 +52,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/gps-alerts', [GpsAlertController::class, 'index'])->name('gps-alerts.index');
 
+    // Informational / secondary pages (full parity with reference nav).
+    Route::get('/evacuation-centers', fn () => Inertia::render('EvacuationCenters/Index'))->name('evacuation.index');
+    Route::get('/historical-data', fn () => Inertia::render('Historical/Index'))->name('historical.index');
+    Route::get('/help', fn () => Inertia::render('Help/Index'))->name('help.index');
+    Route::get('/about', fn () => Inertia::render('About/Index'))->name('about.index');
+
     Route::middleware('staff')->group(function () {
         Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
         Route::get('/analytics/export', [AnalyticsController::class, 'export'])->name('analytics.export');
