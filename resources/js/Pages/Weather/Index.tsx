@@ -1,14 +1,16 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Badge } from '@/Components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
+import InfoBanner from '@/Components/InfoBanner';
+import PageHeader from '@/Components/PageHeader';
+import SectionCard from '@/Components/SectionCard';
+import StatCard from '@/Components/StatCard';
 import { Head } from '@inertiajs/react';
-import { Cloud, CloudRain, Droplets, Thermometer, Wind } from 'lucide-react';
+import { CloudRain, Droplets, Gauge, RefreshCw, Thermometer, Wind } from 'lucide-react';
 import {
+    Area,
     Bar,
-    BarChart,
     CartesianGrid,
-    Line,
     ComposedChart,
+    Line,
     ResponsiveContainer,
     Tooltip,
     XAxis,
@@ -42,119 +44,118 @@ interface Props {
     usingSimulatedData: boolean;
 }
 
-export default function Index({ weather, usingSimulatedData }: Props) {
+export default function WeatherIndex({ weather, usingSimulatedData }: Props) {
     const forecastData = (weather.forecast ?? []).map((f) => ({
         time: f.time ? new Date(f.time).toLocaleTimeString([], { hour: '2-digit' }) : '',
         temperature: f.temperature,
         rainfall: f.rainfall,
     }));
 
+    const rainWord = weather.rainfall >= 30 ? 'Heavy' : weather.rainfall >= 7.5 ? 'Moderate' : weather.rainfall > 0 ? 'Light' : 'None';
+    const humidWord = (weather.humidity ?? 0) >= 80 ? 'High' : (weather.humidity ?? 0) >= 40 ? 'Normal' : 'Low';
+
     return (
-        <AuthenticatedLayout header="Weather">
-            <Head title="Weather" />
+        <AuthenticatedLayout>
+            <Head title="Rainfall & Weather" />
 
-            <div className="mb-6 flex items-center justify-between">
-                <p className="text-sm text-gray-500">
-                    Current conditions and forecast for {weather.location}, Cebu
-                </p>
-                {usingSimulatedData && (
-                    <Badge variant="warning">Simulated Data</Badge>
-                )}
+            <PageHeader
+                title="Rainfall & Weather Monitoring"
+                subtitle="Monitor real-time rainfall and weather conditions in your area."
+                actions={
+                    <span className="flex items-center gap-2 text-xs text-slate-400">
+                        <RefreshCw className="h-4 w-4" />
+                        Updated {new Date(weather.fetched_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                }
+            />
+
+            {usingSimulatedData && (
+                <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">
+                    Simulated Data
+                </div>
+            )}
+
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+                <StatCard label="Current Rainfall" value={weather.rainfall} unit="mm" icon={CloudRain} tone="info" status={rainWord} />
+                <StatCard label="Temperature" value={weather.temperature ?? '--'} unit="°C" icon={Thermometer} tone="moderate" status={weather.feels_like != null ? `Feels ${weather.feels_like}°` : undefined} />
+                <StatCard label="Humidity" value={weather.humidity ?? '--'} unit="%" icon={Droplets} tone={humidWord === 'High' ? 'warning' : 'info'} status={humidWord} />
+                <StatCard label="Wind Speed" value={weather.wind_speed ?? '--'} unit="m/s" icon={Wind} tone="neutral" />
+                <StatCard label="Condition" value={weather.condition ?? '--'} icon={CloudRain} tone="info" />
+                <StatCard label="Feels Like" value={weather.feels_like ?? '--'} unit="°C" icon={Gauge} tone="neutral" />
             </div>
 
-            <div className="grid gap-4 md:grid-cols-4">
-                <Card className="md:col-span-2">
-                    <CardContent className="flex items-center gap-6 p-6">
-                        <div className="flex flex-col items-center">
-                            <Cloud className="h-16 w-16 text-blue-400" />
-                            <span className="mt-1 text-sm capitalize text-gray-500">{weather.description}</span>
-                        </div>
-                        <div>
-                            <div className="text-5xl font-bold">{weather.temperature ?? '--'}°C</div>
-                            <p className="text-sm text-gray-500">
-                                Feels like {weather.feels_like ?? '--'}°C
-                            </p>
-                        </div>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardContent className="flex items-center gap-3 p-4">
-                        <Droplets className="h-8 w-8 text-cyan-400" />
-                        <div>
-                            <p className="text-xs text-gray-400">Humidity</p>
-                            <p className="text-xl font-bold">{weather.humidity ?? '--'}%</p>
-                        </div>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardContent className="flex items-center gap-3 p-4">
-                        <CloudRain className="h-8 w-8 text-blue-500" />
-                        <div>
-                            <p className="text-xs text-gray-400">Rainfall</p>
-                            <p className="text-xl font-bold">{weather.rainfall}mm</p>
-                        </div>
-                    </CardContent>
-                </Card>
-            </div>
-
-            <div className="mt-4 grid gap-4 md:grid-cols-2">
-                <Card>
-                    <CardContent className="flex items-center gap-3 p-4">
-                        <Wind className="h-8 w-8 text-gray-400" />
-                        <div>
-                            <p className="text-xs text-gray-400">Wind Speed</p>
-                            <p className="text-xl font-bold">{weather.wind_speed ?? '--'} m/s</p>
-                        </div>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardContent className="flex items-center gap-3 p-4">
-                        <Thermometer className="h-8 w-8 text-orange-400" />
-                        <div>
-                            <p className="text-xs text-gray-400">Condition</p>
-                            <p className="text-xl font-bold">{weather.condition ?? '--'}</p>
-                        </div>
-                    </CardContent>
-                </Card>
-            </div>
-
-            <Card className="mt-6">
-                <CardHeader>
-                    <CardTitle className="text-base">24-Hour Forecast</CardTitle>
-                </CardHeader>
-                <CardContent>
+            <div className="mt-6 grid gap-6 lg:grid-cols-3">
+                <SectionCard title="Rainfall & Temperature Forecast" className="lg:col-span-2">
                     {forecastData.length > 0 ? (
-                        <ResponsiveContainer width="100%" height={300}>
-                            <ComposedChart data={forecastData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="time" fontSize={12} />
-                                <YAxis yAxisId="left" fontSize={12} unit="°C" />
-                                <YAxis yAxisId="right" orientation="right" fontSize={12} unit="mm" />
+                        <ResponsiveContainer width="100%" height={320}>
+                            <ComposedChart data={forecastData} margin={{ top: 10, right: 12, bottom: 0, left: 0 }}>
+                                <defs>
+                                    <linearGradient id="rain" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stopColor="#38bdf8" stopOpacity={0.4} />
+                                        <stop offset="100%" stopColor="#38bdf8" stopOpacity={0} />
+                                    </linearGradient>
+                                </defs>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#eef2f7" />
+                                <XAxis dataKey="time" fontSize={11} stroke="#94a3b8" />
+                                <YAxis yAxisId="left" fontSize={11} unit="°" width={34} stroke="#94a3b8" />
+                                <YAxis yAxisId="right" orientation="right" fontSize={11} unit="mm" width={40} stroke="#94a3b8" />
                                 <Tooltip />
-                                <Bar yAxisId="right" dataKey="rainfall" fill="#93c5fd" name="Rainfall (mm)" />
-                                <Line
-                                    yAxisId="left"
-                                    type="monotone"
-                                    dataKey="temperature"
-                                    stroke="#f97316"
-                                    strokeWidth={2}
-                                    name="Temp (°C)"
-                                />
+                                <Bar yAxisId="right" dataKey="rainfall" fill="#2563eb" name="Rainfall (mm)" radius={[3, 3, 0, 0]} barSize={14} />
+                                <Area yAxisId="left" type="monotone" dataKey="temperature" stroke="#f97316" strokeWidth={2} fill="url(#rain)" name="Temp (°C)" />
                             </ComposedChart>
                         </ResponsiveContainer>
                     ) : (
-                        <div className="flex h-[300px] items-center justify-center text-sm text-gray-400">
-                            No forecast data available
-                        </div>
+                        <div className="flex h-[320px] items-center justify-center text-sm text-slate-400">No forecast data available</div>
                     )}
-                </CardContent>
-            </Card>
+                </SectionCard>
 
-            <p className="mt-3 text-center text-xs text-gray-400">
-                Last updated: {new Date(weather.fetched_at).toLocaleString()}
-            </p>
+                <div className="space-y-6">
+                    <SectionCard title="Current Conditions">
+                        <div className="flex items-center gap-4">
+                            <CloudRain className="h-14 w-14 text-brand-400" />
+                            <div>
+                                <p className="font-display text-4xl font-bold text-navy-900">{weather.temperature ?? '--'}°</p>
+                                <p className="text-sm capitalize text-slate-500">{weather.description ?? weather.condition ?? '—'}</p>
+                            </div>
+                        </div>
+                        <dl className="mt-4 space-y-2 text-sm">
+                            <Row label="Feels like" value={weather.feels_like != null ? `${weather.feels_like}°C` : '--'} />
+                            <Row label="Humidity" value={weather.humidity != null ? `${weather.humidity}%` : '--'} />
+                            <Row label="Wind" value={weather.wind_speed != null ? `${weather.wind_speed} m/s` : '--'} />
+                            <Row label="Rainfall" value={`${weather.rainfall} mm`} />
+                        </dl>
+                    </SectionCard>
+
+                    <SectionCard title="Rainfall Forecast">
+                        <div className="space-y-1">
+                            {(weather.forecast ?? []).slice(0, 6).map((f, i) => (
+                                <div key={i} className="flex items-center justify-between border-b border-slate-50 py-2 text-sm last:border-0">
+                                    <span className="flex items-center gap-2 text-slate-500">
+                                        <CloudRain className="h-4 w-4 text-brand-400" />
+                                        {f.time ? new Date(f.time).toLocaleTimeString([], { hour: '2-digit' }) : '--'}
+                                    </span>
+                                    <span className="capitalize text-slate-600">{f.condition ?? '—'}</span>
+                                    <span className="font-semibold text-navy-900">{f.rainfall} mm</span>
+                                </div>
+                            ))}
+                            {(weather.forecast ?? []).length === 0 && <p className="text-sm text-slate-400">No forecast available.</p>}
+                        </div>
+                    </SectionCard>
+                </div>
+            </div>
+
+            <InfoBanner trailing={`Location: ${weather.location}`}>
+                Rainfall data is collected from IoT rain gauges and weather sources, updated automatically.
+            </InfoBanner>
         </AuthenticatedLayout>
+    );
+}
+
+function Row({ label, value }: { label: string; value: string }) {
+    return (
+        <div className="flex items-center justify-between">
+            <dt className="text-slate-500">{label}</dt>
+            <dd className="font-semibold text-navy-900">{value}</dd>
+        </div>
     );
 }
