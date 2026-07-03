@@ -8,6 +8,7 @@ use App\Http\Controllers\AlertController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GpsAlertController;
+use App\Http\Controllers\HistoricalController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\NotificationController;
@@ -55,7 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Informational / secondary pages (full parity with reference nav).
     Route::get('/evacuation-centers', fn () => Inertia::render('EvacuationCenters/Index'))->name('evacuation.index');
-    Route::get('/historical-data', fn () => Inertia::render('Historical/Index'))->name('historical.index');
+    Route::get('/historical-data', [HistoricalController::class, 'index'])->name('historical.index');
     Route::get('/help', fn () => Inertia::render('Help/Index'))->name('help.index');
     Route::get('/about', fn () => Inertia::render('About/Index'))->name('about.index');
 
