@@ -132,21 +132,26 @@ function PredictionDetail({
 }) {
     const p = row.prediction!;
     const tone = riskToStatus(p.risk_level);
-    const crit = row.sensor.critical_threshold;
+    const crit = Number(row.sensor.critical_threshold);
+    // Laravel decimal casts serialize as strings over JSON — coerce before numeric ops.
+    const currentLevel = Number(p.current_level);
+    const predictedLevel = Number(p.predicted_level);
+    const rateOfRise = Number(p.rate_of_rise);
 
     const chartData = useMemo(
-        () => p.forecast_points.map((f) => ({ label: f.minute === 0 ? 'Now' : `+${f.minute}m`, level: f.level })),
+        () => (p.forecast_points ?? []).map((f) => ({ label: f.minute === 0 ? 'Now' : `+${f.minute}m`, level: Number(f.level) })),
         [p.forecast_points],
     );
-    const peak = Math.max(...p.forecast_points.map((f) => f.level), p.predicted_level);
-    const confidence = p.confidence > 1 ? Math.round(p.confidence) : Math.round(p.confidence * 100);
+    const peak = Math.max(...chartData.map((f) => f.level), predictedLevel);
+    const confRaw = Number(p.confidence);
+    const confidence = confRaw > 1 ? Math.round(confRaw) : Math.round(confRaw * 100);
 
     return (
         <>
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
-                <StatCard label="Current Water Level" value={p.current_level.toFixed(2)} unit="m" icon={Droplets} tone="info" meta={row.sensor.name} />
+                <StatCard label="Current Water Level" value={currentLevel.toFixed(2)} unit="m" icon={Droplets} tone="info" meta={row.sensor.name} />
                 <StatCard label="Predicted Risk Level" value={risklabel(p.risk_level)} icon={AlertTriangle} tone={tone} status="in 1 hour" />
-                <StatCard label="Predicted Water Level" value={p.predicted_level.toFixed(2)} unit="m" icon={TrendingUp} tone={tone} status="in 1 hour" />
+                <StatCard label="Predicted Water Level" value={predictedLevel.toFixed(2)} unit="m" icon={TrendingUp} tone={tone} status="in 1 hour" />
                 <StatCard label="AI Confidence" value={confidence} unit="%" icon={ShieldCheck} tone="info" status={confidence >= 75 ? 'High' : confidence >= 50 ? 'Moderate' : 'Low'} />
                 <StatCard
                     label="Time to Critical"
@@ -177,7 +182,7 @@ function PredictionDetail({
                     </ResponsiveContainer>
                     <div className="mt-3 rounded-xl bg-brand-50 p-3 text-sm text-slate-600">
                         <span className="font-semibold text-brand-700">AI Analysis:</span>{' '}
-                        Rate of rise {p.rate_of_rise.toFixed(2)} m/h · generated {new Date(p.generated_at).toLocaleString()}.
+                        Rate of rise {rateOfRise.toFixed(2)} m/h · generated {new Date(p.generated_at).toLocaleString()}.
                     </div>
                 </SectionCard>
 
@@ -206,7 +211,7 @@ function PredictionDetail({
                                             <span className="text-sm font-medium text-navy-900">{o.sensor.name}</span>
                                         </div>
                                         <div className="flex items-center gap-3">
-                                            <span className="text-sm font-semibold text-slate-700">{o.prediction!.predicted_level.toFixed(2)}m</span>
+                                            <span className="text-sm font-semibold text-slate-700">{Number(o.prediction!.predicted_level).toFixed(2)}m</span>
                                             <StatusBadge level={t} label={risklabel(o.prediction!.risk_level)} />
                                         </div>
                                     </button>
