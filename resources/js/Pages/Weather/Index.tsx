@@ -4,7 +4,7 @@ import PageHeader from '@/Components/PageHeader';
 import SectionCard from '@/Components/SectionCard';
 import StatCard from '@/Components/StatCard';
 import { Head } from '@inertiajs/react';
-import { CloudRain, Droplets, Gauge, RefreshCw, Thermometer, Wind } from 'lucide-react';
+import { CloudRain, Droplets, Gauge, MapPin, RefreshCw, Thermometer, Wind } from 'lucide-react';
 import {
     Area,
     Bar,
@@ -62,16 +62,23 @@ export default function WeatherIndex({ weather, usingSimulatedData }: Props) {
                 title="Rainfall & Weather Monitoring"
                 subtitle="Monitor real-time rainfall and weather conditions in your area."
                 actions={
-                    <span className="flex items-center gap-2 text-xs text-slate-400">
-                        <RefreshCw className="h-4 w-4" />
-                        Updated {new Date(weather.fetched_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </span>
+                    <div className="flex flex-wrap items-center gap-3">
+                        <span className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-navy-900">
+                            <MapPin className="h-4 w-4 text-brand-600" />
+                            {weather.location}
+                        </span>
+                        <span className="flex items-center gap-2 text-xs text-slate-400">
+                            <RefreshCw className="h-4 w-4" />
+                            Updated {new Date(weather.fetched_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                    </div>
                 }
             />
 
             {usingSimulatedData && (
                 <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">
-                    Simulated Data
+                    <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+                    Simulated weather data (no live API key configured)
                 </div>
             )}
 
@@ -111,6 +118,10 @@ export default function WeatherIndex({ weather, usingSimulatedData }: Props) {
 
                 <div className="space-y-6">
                     <SectionCard title="Current Conditions">
+                        <p className="mb-3 flex items-center gap-1.5 text-sm font-medium text-slate-500">
+                            <MapPin className="h-4 w-4 text-brand-500" />
+                            {weather.location}
+                        </p>
                         <div className="flex items-center gap-4">
                             <CloudRain className="h-14 w-14 text-brand-400" />
                             <div>
