@@ -1,9 +1,10 @@
-import GuestLayout from '@/Layouts/GuestLayout';
-import { Button } from '@/Components/ui/button';
-import { Input } from '@/Components/ui/input';
-import { Label } from '@/Components/ui/label';
+import AuthSplitLayout from '@/Layouts/AuthSplitLayout';
+import IconInput from '@/Components/IconInput';
+import InputError from '@/Components/InputError';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { LogIn, Lock, Mail } from 'lucide-react';
 import { FormEventHandler } from 'react';
+import { GoogleIcon, FacebookIcon } from '@/Components/Auth/SocialIcons';
 
 export default function Login({
     status,
@@ -26,76 +27,115 @@ export default function Login({
     };
 
     return (
-        <GuestLayout>
+        <AuthSplitLayout>
             <Head title="Log in" />
 
+            <div className="text-center">
+                <h1 className="font-display text-3xl font-bold text-navy-900">Welcome Back!</h1>
+                <p className="mt-2 text-slate-500">Please login to your account</p>
+            </div>
+
             {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">{status}</div>
+                <div className="mt-6 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
+                    {status}
+                </div>
             )}
 
-            <form onSubmit={submit}>
+            <form onSubmit={submit} className="mt-8 space-y-5">
                 <div>
-                    <Label htmlFor="email">Email</Label>
-                    <Input
+                    <label htmlFor="email" className="mb-1.5 block text-sm font-semibold text-slate-700">
+                        Email Address
+                    </label>
+                    <IconInput
                         id="email"
+                        icon={Mail}
                         type="email"
+                        placeholder="Enter your email"
                         value={data.email}
                         onChange={(e) => setData('email', e.target.value)}
-                        className="mt-1"
                         autoComplete="username"
                         autoFocus
                         required
                     />
-                    {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+                    <InputError message={errors.email} className="mt-1.5" />
                 </div>
 
-                <div className="mt-4">
-                    <Label htmlFor="password">Password</Label>
-                    <Input
+                <div>
+                    <label htmlFor="password" className="mb-1.5 block text-sm font-semibold text-slate-700">
+                        Password
+                    </label>
+                    <IconInput
                         id="password"
-                        type="password"
+                        icon={Lock}
+                        passwordToggle
+                        placeholder="Enter your password"
                         value={data.password}
                         onChange={(e) => setData('password', e.target.value)}
-                        className="mt-1"
                         autoComplete="current-password"
                         required
                     />
-                    {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
+                    <InputError message={errors.password} className="mt-1.5" />
                 </div>
 
-                <div className="mt-4 flex items-center">
-                    <label className="flex items-center">
+                <div className="flex items-center justify-between">
+                    <label className="flex items-center gap-2 text-sm text-slate-600">
                         <input
                             type="checkbox"
                             checked={data.remember}
                             onChange={(e) => setData('remember', e.target.checked)}
-                            className="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500"
+                            className="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
                         />
-                        <span className="ms-2 text-sm text-gray-600">Remember me</span>
+                        Remember me
                     </label>
-                </div>
-
-                <div className="mt-6 flex items-center justify-between">
                     {canResetPassword && (
                         <Link
                             href={route('password.request')}
-                            className="text-sm text-gray-600 underline hover:text-gray-900"
+                            className="text-sm font-medium text-brand-600 hover:text-brand-700"
                         >
-                            Forgot your password?
+                            Forgot Password?
                         </Link>
                     )}
-                    <Button type="submit" disabled={processing}>
-                        Log in
-                    </Button>
                 </div>
 
-                <div className="mt-4 text-center text-sm text-gray-600">
-                    Don't have an account?{' '}
-                    <Link href={route('register')} className="text-blue-600 underline hover:text-blue-800">
-                        Register
-                    </Link>
+                <button
+                    type="submit"
+                    disabled={processing}
+                    className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-brand-600 font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
+                >
+                    <LogIn className="h-5 w-5" />
+                    Login
+                </button>
+
+                <div className="flex items-center gap-3 py-1">
+                    <div className="h-px flex-1 bg-slate-200" />
+                    <span className="text-sm text-slate-400">or continue with</span>
+                    <div className="h-px flex-1 bg-slate-200" />
                 </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                    <a
+                        href={route('oauth.redirect', 'google')}
+                        className="flex h-12 items-center justify-center gap-2 rounded-xl border border-slate-300 font-medium text-slate-700 transition-colors hover:bg-slate-50"
+                    >
+                        <GoogleIcon className="h-5 w-5" />
+                        Google
+                    </a>
+                    <a
+                        href={route('oauth.redirect', 'facebook')}
+                        className="flex h-12 items-center justify-center gap-2 rounded-xl border border-slate-300 font-medium text-slate-700 transition-colors hover:bg-slate-50"
+                    >
+                        <FacebookIcon className="h-5 w-5" />
+                        Facebook
+                    </a>
+                </div>
+
+                <p className="text-center text-sm text-slate-600">
+                    Don't have an account?{' '}
+                    <Link href={route('register')} className="font-semibold text-brand-600 hover:text-brand-700">
+                        Register here
+                    </Link>
+                </p>
             </form>
-        </GuestLayout>
+        </AuthSplitLayout>
     );
 }

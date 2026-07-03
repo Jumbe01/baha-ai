@@ -42,6 +42,11 @@ class OtpVerificationController extends Controller
         $otpCode->update(['verified_at' => now()]);
         $user->forceFill(['email_verified_at' => now()])->save();
 
+        // First-time users pick their location before landing on the dashboard.
+        if (blank($user->latitude) || blank($user->longitude)) {
+            return redirect()->route('location.select');
+        }
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

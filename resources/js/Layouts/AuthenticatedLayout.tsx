@@ -133,7 +133,7 @@ export default function AuthenticatedLayout({
                         <div className="min-w-0 flex-1">
                             <p className="truncate text-xs text-slate-300">{location}</p>
                             <Link
-                                href={route('profile.edit')}
+                                href={route('location.select')}
                                 className="text-xs font-medium text-accent-500 hover:text-accent-400"
                             >
                                 Change Location
