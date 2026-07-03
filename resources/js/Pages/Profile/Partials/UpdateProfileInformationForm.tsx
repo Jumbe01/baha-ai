@@ -1,8 +1,10 @@
-import { Button } from '@/Components/ui/button';
-import { Input } from '@/Components/ui/input';
-import { Label } from '@/Components/ui/label';
+import IconInput from '@/Components/IconInput';
+import InputError from '@/Components/InputError';
+import SectionCard from '@/Components/SectionCard';
+import { cn } from '@/lib/utils';
 import { Transition } from '@headlessui/react';
 import { useForm, usePage } from '@inertiajs/react';
+import { Bell, Mail, MapPin, MessageSquare, Phone, Smartphone, User } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
 const BARANGAYS = [
@@ -12,13 +14,13 @@ const BARANGAYS = [
     'Tayud', 'Tilhaong', 'Tolotolo', 'Tugbongan',
 ];
 
-export default function UpdateProfileInformationForm({
-    status,
-    className = '',
-}: {
-    status?: string;
-    className?: string;
-}) {
+const CHANNELS: { key: 'email' | 'sms' | 'push'; label: string; icon: typeof Mail }[] = [
+    { key: 'sms', label: 'SMS Alerts', icon: MessageSquare },
+    { key: 'push', label: 'Push Notifications', icon: Smartphone },
+    { key: 'email', label: 'Email Notifications', icon: Mail },
+];
+
+export default function UpdateProfileInformationForm({ status, className }: { status?: string; className?: string }) {
     const user = usePage().props.auth.user as {
         name: string;
         email: string;
@@ -43,118 +45,94 @@ export default function UpdateProfileInformationForm({
     };
 
     return (
-        <section className={className}>
-            <header>
-                <h2 className="text-lg font-medium text-gray-900">Profile Information</h2>
-                <p className="mt-1 text-sm text-gray-600">
-                    Update your account profile information, contact details, and notification preferences.
-                </p>
-            </header>
+        <SectionCard title="Profile Information" icon={<User className="h-5 w-5 text-brand-600" />} className={className}>
+            <p className="-mt-1 mb-4 text-sm text-slate-500">Update your account, contact details, and notification preferences.</p>
 
             {status && (
-                <div className="mt-2 text-sm font-medium text-green-600">{status}</div>
+                <div className="mb-4 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">{status}</div>
             )}
 
-            <form onSubmit={submit} className="mt-6 space-y-4">
-                <div>
-                    <Label htmlFor="name">Name</Label>
-                    <Input
-                        id="name"
-                        value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
-                        className="mt-1"
-                        required
-                    />
-                    {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+            <form onSubmit={submit} className="space-y-4">
+                <div className="grid gap-4 sm:grid-cols-2">
+                    <Field label="Full Name" error={errors.name}>
+                        <IconInput icon={User} value={data.name} onChange={(e) => setData('name', e.target.value)} required />
+                    </Field>
+                    <Field label="Email Address" error={errors.email}>
+                        <IconInput icon={Mail} type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} required />
+                    </Field>
+                    <Field label="Mobile Number" error={errors.mobile}>
+                        <IconInput icon={Phone} value={data.mobile} onChange={(e) => setData('mobile', e.target.value)} placeholder="09xxxxxxxxx" />
+                    </Field>
+                    <Field label="Address" error={errors.address}>
+                        <IconInput icon={MapPin} value={data.address} onChange={(e) => setData('address', e.target.value)} />
+                    </Field>
                 </div>
 
-                <div>
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                        id="email"
-                        type="email"
-                        value={data.email}
-                        onChange={(e) => setData('email', e.target.value)}
-                        className="mt-1"
-                        required
-                    />
-                    {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
-                </div>
-
-                <div>
-                    <Label htmlFor="mobile">Mobile Number</Label>
-                    <Input
-                        id="mobile"
-                        value={data.mobile}
-                        onChange={(e) => setData('mobile', e.target.value)}
-                        className="mt-1"
-                        placeholder="09xxxxxxxxx"
-                    />
-                    {errors.mobile && <p className="mt-1 text-sm text-red-600">{errors.mobile}</p>}
-                </div>
-
-                <div>
-                    <Label htmlFor="address">Address</Label>
-                    <Input
-                        id="address"
-                        value={data.address}
-                        onChange={(e) => setData('address', e.target.value)}
-                        className="mt-1"
-                    />
-                    {errors.address && <p className="mt-1 text-sm text-red-600">{errors.address}</p>}
-                </div>
-
-                <div>
-                    <Label htmlFor="barangay">Barangay</Label>
+                <Field label="Barangay" error={errors.barangay}>
                     <select
-                        id="barangay"
                         value={data.barangay}
                         onChange={(e) => setData('barangay', e.target.value)}
-                        className="mt-1 flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="h-12 w-full rounded-xl border-slate-300 text-slate-900 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
                     >
                         <option value="">Select barangay</option>
                         {BARANGAYS.map((b) => (
                             <option key={b} value={b}>{b}</option>
                         ))}
                     </select>
-                    {errors.barangay && <p className="mt-1 text-sm text-red-600">{errors.barangay}</p>}
-                </div>
+                </Field>
 
                 <div>
-                    <Label>Notification Preferences</Label>
-                    <div className="mt-2 space-y-2">
-                        {(['email', 'sms', 'push'] as const).map((channel) => (
-                            <label key={channel} className="flex items-center gap-2">
-                                <input
-                                    type="checkbox"
-                                    checked={data.notification_preference[channel]}
-                                    onChange={(e) =>
-                                        setData('notification_preference', {
-                                            ...data.notification_preference,
-                                            [channel]: e.target.checked,
-                                        })
-                                    }
-                                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    <p className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-700">
+                        <Bell className="h-4 w-4 text-brand-600" /> Notification Preferences
+                    </p>
+                    <div className="space-y-2">
+                        {CHANNELS.map((c) => (
+                            <label key={c.key} className="flex items-center justify-between rounded-xl border border-slate-200 px-4 py-3">
+                                <span className="flex items-center gap-3 text-sm font-medium text-navy-900">
+                                    <c.icon className="h-4 w-4 text-slate-400" /> {c.label}
+                                </span>
+                                <Toggle
+                                    checked={data.notification_preference[c.key]}
+                                    onChange={(v) => setData('notification_preference', { ...data.notification_preference, [c.key]: v })}
                                 />
-                                <span className="text-sm text-gray-700 capitalize">{channel} notifications</span>
                             </label>
                         ))}
                     </div>
                 </div>
 
-                <div className="flex items-center gap-4">
-                    <Button type="submit" disabled={processing}>Save</Button>
-                    <Transition
-                        show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
-                        leaveTo="opacity-0"
-                    >
-                        <p className="text-sm text-gray-600">Saved.</p>
+                <div className="flex items-center gap-4 pt-1">
+                    <button type="submit" disabled={processing} className="h-11 rounded-xl bg-brand-600 px-6 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60">
+                        Save Changes
+                    </button>
+                    <Transition show={recentlySuccessful} enter="transition ease-in-out" enterFrom="opacity-0" leave="transition ease-in-out" leaveTo="opacity-0">
+                        <p className="text-sm text-emerald-600">Saved.</p>
                     </Transition>
                 </div>
             </form>
-        </section>
+        </SectionCard>
+    );
+}
+
+function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+    return (
+        <div>
+            <label className="mb-1.5 block text-sm font-semibold text-slate-700">{label}</label>
+            {children}
+            <InputError message={error} className="mt-1.5" />
+        </div>
+    );
+}
+
+function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) {
+    return (
+        <button
+            type="button"
+            role="switch"
+            aria-checked={checked}
+            onClick={() => onChange(!checked)}
+            className={cn('relative h-6 w-11 rounded-full transition-colors', checked ? 'bg-brand-600' : 'bg-slate-300')}
+        >
+            <span className={cn('absolute top-0.5 h-5 w-5 rounded-full bg-white transition-transform', checked ? 'translate-x-5' : 'translate-x-0.5')} />
+        </button>
     );
 }

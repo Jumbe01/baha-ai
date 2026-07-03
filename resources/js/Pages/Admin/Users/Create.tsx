@@ -1,9 +1,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Button } from '@/Components/ui/button';
-import { Input } from '@/Components/ui/input';
-import { Label } from '@/Components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
+import IconInput from '@/Components/IconInput';
+import InputError from '@/Components/InputError';
+import PageHeader from '@/Components/PageHeader';
+import SectionCard from '@/Components/SectionCard';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { Lock, Mail, Phone, User } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
 const BARANGAYS = [
@@ -29,87 +30,137 @@ export default function Create() {
         post(route('admin.users.store'));
     };
 
+    const selectClass =
+        'h-11 w-full rounded-xl border border-slate-300 bg-white px-3.5 text-sm text-slate-900 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30';
+    const labelClass = 'mb-1.5 block text-sm font-semibold text-slate-700';
+
     return (
-        <AuthenticatedLayout header="Add User">
+        <AuthenticatedLayout>
             <Head title="Add User" />
 
+            <PageHeader title="Add User" subtitle="Create a new system account." />
+
             <div className="mx-auto max-w-2xl">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>New User Account</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <form onSubmit={submit} className="space-y-4">
-                            <div>
-                                <Label htmlFor="name">Full Name</Label>
-                                <Input id="name" value={data.name} onChange={(e) => setData('name', e.target.value)} className="mt-1" required />
-                                {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
-                            </div>
+                <SectionCard title="New User Account">
+                    <form onSubmit={submit} className="space-y-5">
+                        <div>
+                            <label htmlFor="name" className={labelClass}>Full Name</label>
+                            <IconInput
+                                icon={User}
+                                id="name"
+                                className="h-11"
+                                value={data.name}
+                                onChange={(e) => setData('name', e.target.value)}
+                                required
+                            />
+                            <InputError message={errors.name} className="mt-1.5" />
+                        </div>
 
-                            <div>
-                                <Label htmlFor="email">Email</Label>
-                                <Input id="email" type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} className="mt-1" required />
-                                {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
-                            </div>
+                        <div>
+                            <label htmlFor="email" className={labelClass}>Email</label>
+                            <IconInput
+                                icon={Mail}
+                                id="email"
+                                type="email"
+                                className="h-11"
+                                value={data.email}
+                                onChange={(e) => setData('email', e.target.value)}
+                                required
+                            />
+                            <InputError message={errors.email} className="mt-1.5" />
+                        </div>
 
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <Label htmlFor="role">Role</Label>
-                                    <select
-                                        id="role"
-                                        value={data.role}
-                                        onChange={(e) => setData('role', e.target.value)}
-                                        className="mt-1 flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        required
-                                    >
-                                        <option value="resident">Resident</option>
-                                        <option value="staff">Staff</option>
-                                        <option value="admin">Admin</option>
-                                    </select>
-                                    {errors.role && <p className="mt-1 text-sm text-red-600">{errors.role}</p>}
-                                </div>
-                                <div>
-                                    <Label htmlFor="mobile">Mobile</Label>
-                                    <Input id="mobile" value={data.mobile} onChange={(e) => setData('mobile', e.target.value)} className="mt-1" />
-                                </div>
-                            </div>
-
+                        <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <Label htmlFor="barangay">Barangay</Label>
+                                <label htmlFor="role" className={labelClass}>Role</label>
                                 <select
-                                    id="barangay"
-                                    value={data.barangay}
-                                    onChange={(e) => setData('barangay', e.target.value)}
-                                    className="mt-1 flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    id="role"
+                                    value={data.role}
+                                    onChange={(e) => setData('role', e.target.value)}
+                                    className={selectClass}
+                                    required
                                 >
-                                    <option value="">Select barangay</option>
-                                    {BARANGAYS.map((b) => (
-                                        <option key={b} value={b}>{b}</option>
-                                    ))}
+                                    <option value="resident">Resident</option>
+                                    <option value="staff">Staff</option>
+                                    <option value="admin">Admin</option>
                                 </select>
+                                <InputError message={errors.role} className="mt-1.5" />
                             </div>
+                            <div>
+                                <label htmlFor="mobile" className={labelClass}>Mobile</label>
+                                <IconInput
+                                    icon={Phone}
+                                    id="mobile"
+                                    className="h-11"
+                                    value={data.mobile}
+                                    onChange={(e) => setData('mobile', e.target.value)}
+                                />
+                                <InputError message={errors.mobile} className="mt-1.5" />
+                            </div>
+                        </div>
 
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <Label htmlFor="password">Password</Label>
-                                    <Input id="password" type="password" value={data.password} onChange={(e) => setData('password', e.target.value)} className="mt-1" required />
-                                    {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
-                                </div>
-                                <div>
-                                    <Label htmlFor="password_confirmation">Confirm Password</Label>
-                                    <Input id="password_confirmation" type="password" value={data.password_confirmation} onChange={(e) => setData('password_confirmation', e.target.value)} className="mt-1" required />
-                                </div>
-                            </div>
+                        <div>
+                            <label htmlFor="barangay" className={labelClass}>Barangay</label>
+                            <select
+                                id="barangay"
+                                value={data.barangay}
+                                onChange={(e) => setData('barangay', e.target.value)}
+                                className={selectClass}
+                            >
+                                <option value="">Select barangay</option>
+                                {BARANGAYS.map((b) => (
+                                    <option key={b} value={b}>{b}</option>
+                                ))}
+                            </select>
+                            <InputError message={errors.barangay} className="mt-1.5" />
+                        </div>
 
-                            <div className="flex items-center justify-end gap-3 pt-4">
-                                <Link href={route('admin.users.index')}>
-                                    <Button type="button" variant="outline">Cancel</Button>
-                                </Link>
-                                <Button type="submit" disabled={processing}>Create User</Button>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <label htmlFor="password" className={labelClass}>Password</label>
+                                <IconInput
+                                    icon={Lock}
+                                    id="password"
+                                    passwordToggle
+                                    className="h-11"
+                                    value={data.password}
+                                    onChange={(e) => setData('password', e.target.value)}
+                                    required
+                                />
+                                <InputError message={errors.password} className="mt-1.5" />
                             </div>
-                        </form>
-                    </CardContent>
-                </Card>
+                            <div>
+                                <label htmlFor="password_confirmation" className={labelClass}>Confirm Password</label>
+                                <IconInput
+                                    icon={Lock}
+                                    id="password_confirmation"
+                                    passwordToggle
+                                    className="h-11"
+                                    value={data.password_confirmation}
+                                    onChange={(e) => setData('password_confirmation', e.target.value)}
+                                    required
+                                />
+                                <InputError message={errors.password_confirmation} className="mt-1.5" />
+                            </div>
+                        </div>
+
+                        <div className="flex items-center justify-end gap-3 pt-2">
+                            <Link
+                                href={route('admin.users.index')}
+                                className="flex h-10 items-center rounded-xl border border-slate-300 px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                            >
+                                Cancel
+                            </Link>
+                            <button
+                                type="submit"
+                                disabled={processing}
+                                className="flex h-10 items-center rounded-xl bg-brand-600 px-4 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60"
+                            >
+                                Create User
+                            </button>
+                        </div>
+                    </form>
+                </SectionCard>
             </div>
         </AuthenticatedLayout>
     );

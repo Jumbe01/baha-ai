@@ -1,10 +1,12 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import AlertSeverityBadge from '@/Components/AlertSeverityBadge';
-import { Badge } from '@/Components/ui/badge';
-import { Button } from '@/Components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
+import InfoBanner from '@/Components/InfoBanner';
+import PageHeader from '@/Components/PageHeader';
+import SectionCard from '@/Components/SectionCard';
+import StatusBadge from '@/Components/StatusBadge';
+import { cn } from '@/lib/utils';
+import { StatusLevel } from '@/lib/status';
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { ArrowLeft, CheckCircle, Mail, MapPin, MessageSquare, Smartphone } from 'lucide-react';
+import { AlertTriangle, ArrowLeft, CheckCircle, Droplet, Mail, MapPin, MessageSquare, Smartphone } from 'lucide-react';
 
 interface NotificationLog {
     id: number;
@@ -39,15 +41,13 @@ interface AlertDetail {
     notification_logs: NotificationLog[];
 }
 
-const channelIcon: Record<string, typeof Mail> = {
-    sms: Smartphone,
-    email: Mail,
-    push: MessageSquare,
-};
+const channelIcon: Record<string, typeof Mail> = { sms: Smartphone, email: Mail, push: MessageSquare };
+const severityLevel = (s: string): StatusLevel => (s === 'critical' ? 'critical' : s === 'warning' ? 'warning' : 'info');
 
 export default function Show({ alert }: { alert: AlertDetail }) {
     const { auth } = usePage().props as { auth: { user: { role: string } } };
     const canManage = auth.user.role === 'admin' || auth.user.role === 'staff';
+    const level = severityLevel(alert.severity);
 
     const resolve = () => {
         if (confirm('Mark this alert as resolved?')) {
@@ -56,138 +56,112 @@ export default function Show({ alert }: { alert: AlertDetail }) {
     };
 
     return (
-        <AuthenticatedLayout header="Alert Detail">
+        <AuthenticatedLayout>
             <Head title={alert.title} />
 
-            <div className="mb-6 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <Link href={route('alerts.index')}>
-                        <Button variant="ghost" size="icon">
-                            <ArrowLeft className="h-4 w-4" />
-                        </Button>
+            <PageHeader
+                title={alert.title}
+                subtitle={alert.flood_zone ? `${alert.flood_zone.name} · ${alert.flood_zone.barangay}` : 'System-wide alert'}
+                icon={
+                    <Link href={route('alerts.index')} className="mt-1 rounded-lg p-1.5 text-slate-500 transition-colors hover:bg-slate-100">
+                        <ArrowLeft className="h-5 w-5" />
                     </Link>
-                    <div>
-                        <div className="flex items-center gap-2">
-                            <h2 className="text-xl font-bold">{alert.title}</h2>
-                            <AlertSeverityBadge severity={alert.severity} />
-                            <Badge variant={alert.status === 'active' ? 'destructive' : 'success'}>
-                                {alert.status}
-                            </Badge>
-                        </div>
-                        {alert.flood_zone && (
-                            <div className="flex items-center gap-1 text-sm text-gray-500">
-                                <MapPin className="h-3 w-3" />
-                                {alert.flood_zone.name} · {alert.flood_zone.barangay}
-                            </div>
+                }
+                actions={
+                    <>
+                        <StatusBadge level={level} label={alert.severity} />
+                        <StatusBadge level={alert.status === 'active' ? 'critical' : 'safe'} label={alert.status} />
+                        {canManage && alert.status === 'active' && (
+                            <button onClick={resolve} className="flex h-10 items-center gap-2 rounded-xl bg-brand-600 px-4 text-sm font-semibold text-white hover:bg-brand-700">
+                                <CheckCircle className="h-4 w-4" /> Resolve
+                            </button>
                         )}
-                    </div>
-                </div>
-                {canManage && alert.status === 'active' && (
-                    <Button onClick={resolve}>
-                        <CheckCircle className="mr-2 h-4 w-4" />
-                        Resolve
-                    </Button>
-                )}
-            </div>
+                    </>
+                }
+            />
 
             <div className="grid gap-6 lg:grid-cols-3">
-                <Card className="lg:col-span-2">
-                    <CardHeader>
-                        <CardTitle className="text-base">Details</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                        <p className="text-sm text-gray-700">{alert.message}</p>
-                        <dl className="grid grid-cols-2 gap-4 pt-2 text-sm">
-                            <div>
-                                <dt className="text-gray-400">Water Level</dt>
-                                <dd className="font-medium">{alert.water_level != null ? `${alert.water_level}m` : '-'}</dd>
-                            </div>
-                            <div>
-                                <dt className="text-gray-400">Sensor</dt>
-                                <dd className="font-medium">{alert.sensor?.name ?? '-'}</dd>
-                            </div>
-                            <div>
-                                <dt className="text-gray-400">Source</dt>
-                                <dd className="font-medium capitalize">{alert.source}</dd>
-                            </div>
-                            <div>
-                                <dt className="text-gray-400">Triggered</dt>
-                                <dd className="font-medium">{new Date(alert.created_at).toLocaleString()}</dd>
-                            </div>
-                            {alert.creator && (
-                                <div>
-                                    <dt className="text-gray-400">Created by</dt>
-                                    <dd className="font-medium">{alert.creator.name}</dd>
-                                </div>
-                            )}
-                            {alert.resolved_at && (
-                                <div>
-                                    <dt className="text-gray-400">Resolved</dt>
-                                    <dd className="font-medium">
-                                        {new Date(alert.resolved_at).toLocaleString()}
-                                        {alert.resolver && ` by ${alert.resolver.name}`}
-                                    </dd>
-                                </div>
-                            )}
+                <div className="space-y-6 lg:col-span-2">
+                    <SectionCard title="Alert Details" icon={<AlertTriangle className={cn('h-5 w-5', level === 'critical' ? 'text-red-500' : level === 'warning' ? 'text-orange-500' : 'text-brand-500')} />}>
+                        <p className="text-sm leading-relaxed text-slate-700">{alert.message}</p>
+                        <dl className="mt-5 grid gap-4 sm:grid-cols-2">
+                            <Meta icon={Droplet} label="Water Level" value={alert.water_level != null ? `${alert.water_level} m` : '—'} />
+                            <Meta icon={MapPin} label="Sensor" value={alert.sensor?.name ?? '—'} />
+                            <Meta label="Source" value={alert.source} className="capitalize" />
+                            <Meta label="Triggered" value={new Date(alert.created_at).toLocaleString()} />
+                            {alert.creator && <Meta label="Created by" value={alert.creator.name} />}
+                            {alert.resolved_at && <Meta label="Resolved" value={`${new Date(alert.resolved_at).toLocaleString()}${alert.resolver ? ` · ${alert.resolver.name}` : ''}`} />}
                         </dl>
-                    </CardContent>
-                </Card>
+                    </SectionCard>
 
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-base">
-                            Recipients ({alert.recipients.length})
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="max-h-64 space-y-2 overflow-y-auto">
-                            {alert.recipients.map((r) => (
-                                <div key={r.id} className="flex items-center justify-between text-sm">
-                                    <div>
-                                        <p className="font-medium">{r.user?.name ?? 'Unknown'}</p>
-                                        {r.user?.barangay && (
-                                            <p className="text-xs text-gray-400">{r.user.barangay}</p>
-                                        )}
+                    <SectionCard title={`Notification Log (${alert.notification_logs.length})`}>
+                        <div className="space-y-2">
+                            {alert.notification_logs.map((log) => {
+                                const Icon = channelIcon[log.channel] ?? MessageSquare;
+                                return (
+                                    <div key={log.id} className="flex items-center gap-3 rounded-lg border border-slate-100 p-2.5 text-sm">
+                                        <Icon className="h-4 w-4 text-slate-400" />
+                                        <span className="w-14 font-semibold uppercase text-slate-500">{log.channel}</span>
+                                        <span className="flex-1 truncate text-navy-900">{log.user?.name ?? log.recipient}</span>
+                                        <StatusBadge level="safe" label={log.status} />
                                     </div>
-                                    <Badge variant={r.read_at ? 'success' : 'secondary'}>
-                                        {r.read_at ? 'Read' : 'Unread'}
-                                    </Badge>
+                                );
+                            })}
+                            {alert.notification_logs.length === 0 && <p className="text-sm text-slate-400">No notifications dispatched.</p>}
+                        </div>
+                    </SectionCard>
+                </div>
+
+                <div className="space-y-6">
+                    <SectionCard title="Alert Channels">
+                        <div className="grid grid-cols-2 gap-3">
+                            {[
+                                { icon: MessageSquare, label: 'In-App' },
+                                { icon: Smartphone, label: 'SMS' },
+                                { icon: Smartphone, label: 'Push' },
+                                { icon: Mail, label: 'Email' },
+                            ].map((c, i) => (
+                                <div key={i} className="rounded-xl border border-slate-200 p-3 text-center">
+                                    <c.icon className="mx-auto h-5 w-5 text-brand-500" />
+                                    <p className="mt-1 text-sm font-semibold text-navy-900">{c.label}</p>
+                                    <p className="text-xs text-emerald-600">Enabled</p>
                                 </div>
                             ))}
-                            {alert.recipients.length === 0 && (
-                                <p className="text-sm text-gray-400">No recipients</p>
-                            )}
                         </div>
-                    </CardContent>
-                </Card>
+                    </SectionCard>
+
+                    <SectionCard title={`Recipients (${alert.recipients.length})`}>
+                        <div className="max-h-72 space-y-2 overflow-y-auto">
+                            {alert.recipients.map((r) => (
+                                <div key={r.id} className="flex items-center justify-between text-sm">
+                                    <div className="min-w-0">
+                                        <p className="truncate font-medium text-navy-900">{r.user?.name ?? 'Unknown'}</p>
+                                        {r.user?.barangay && <p className="text-xs text-slate-400">{r.user.barangay}</p>}
+                                    </div>
+                                    <StatusBadge level={r.read_at ? 'safe' : 'neutral'} label={r.read_at ? 'Read' : 'Unread'} />
+                                </div>
+                            ))}
+                            {alert.recipients.length === 0 && <p className="text-sm text-slate-400">No recipients.</p>}
+                        </div>
+                    </SectionCard>
+                </div>
             </div>
 
-            <Card className="mt-6">
-                <CardHeader>
-                    <CardTitle className="text-base">
-                        Notification Log ({alert.notification_logs.length})
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-2">
-                        {alert.notification_logs.map((log) => {
-                            const Icon = channelIcon[log.channel] ?? MessageSquare;
-                            return (
-                                <div key={log.id} className="flex items-center gap-3 rounded-lg border border-gray-100 p-2 text-sm">
-                                    <Icon className="h-4 w-4 text-gray-400" />
-                                    <span className="w-16 font-medium uppercase text-gray-500">{log.channel}</span>
-                                    <span className="flex-1">{log.user?.name ?? log.recipient}</span>
-                                    <span className="text-xs text-gray-400">{log.recipient}</span>
-                                    <Badge variant="success">{log.status}</Badge>
-                                </div>
-                            );
-                        })}
-                        {alert.notification_logs.length === 0 && (
-                            <p className="text-sm text-gray-400">No notifications dispatched</p>
-                        )}
-                    </div>
-                </CardContent>
-            </Card>
+            <InfoBanner>
+                Alerts are based on real-time data from IoT sensors, weather updates, and AI predictions. Always follow the safety guidelines from your local authorities.
+            </InfoBanner>
         </AuthenticatedLayout>
+    );
+}
+
+function Meta({ icon: Icon, label, value, className }: { icon?: typeof Mail; label: string; value: string; className?: string }) {
+    return (
+        <div>
+            <dt className="flex items-center gap-1.5 text-xs text-slate-400">
+                {Icon && <Icon className="h-3.5 w-3.5" />}
+                {label}
+            </dt>
+            <dd className={cn('mt-0.5 font-semibold text-navy-900', className)}>{value}</dd>
+        </div>
     );
 }

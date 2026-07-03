@@ -1,9 +1,11 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Button } from '@/Components/ui/button';
-import { Input } from '@/Components/ui/input';
-import { Label } from '@/Components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
+import IconInput from '@/Components/IconInput';
+import InfoBanner from '@/Components/InfoBanner';
+import InputError from '@/Components/InputError';
+import PageHeader from '@/Components/PageHeader';
+import SectionCard from '@/Components/SectionCard';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { Megaphone } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
 interface FloodZoneOption {
@@ -24,88 +26,98 @@ export default function Create({ floodZones }: { floodZones: FloodZoneOption[] }
         post(route('alerts.store'));
     };
 
+    const selectClass =
+        'h-11 w-full rounded-xl border border-slate-300 bg-white px-3.5 text-sm text-slate-900 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30';
+    const labelClass = 'mb-1.5 block text-sm font-semibold text-slate-700';
+
     return (
-        <AuthenticatedLayout header="Create Alert">
+        <AuthenticatedLayout>
             <Head title="Create Alert" />
 
+            <PageHeader title="Create Alert" subtitle="Dispatch a manual flood alert to affected residents and staff." />
+
             <div className="mx-auto max-w-2xl">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Manual Alert</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <form onSubmit={submit} className="space-y-4">
-                            <div>
-                                <Label htmlFor="flood_zone_id">Flood Zone</Label>
-                                <select
-                                    id="flood_zone_id"
-                                    value={data.flood_zone_id}
-                                    onChange={(e) => setData('flood_zone_id', e.target.value)}
-                                    className="mt-1 flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                >
-                                    <option value="">Select flood zone</option>
-                                    {floodZones.map((zone) => (
-                                        <option key={zone.id} value={zone.id}>{zone.name}</option>
-                                    ))}
-                                </select>
-                                {errors.flood_zone_id && <p className="mt-1 text-sm text-red-600">{errors.flood_zone_id}</p>}
-                            </div>
+                <SectionCard title="Manual Alert">
+                    <form onSubmit={submit} className="space-y-5">
+                        <div>
+                            <label htmlFor="flood_zone_id" className={labelClass}>Flood Zone</label>
+                            <select
+                                id="flood_zone_id"
+                                value={data.flood_zone_id}
+                                onChange={(e) => setData('flood_zone_id', e.target.value)}
+                                className={selectClass}
+                                required
+                            >
+                                <option value="">Select flood zone</option>
+                                {floodZones.map((zone) => (
+                                    <option key={zone.id} value={zone.id}>{zone.name}</option>
+                                ))}
+                            </select>
+                            <InputError message={errors.flood_zone_id} className="mt-1.5" />
+                        </div>
 
-                            <div>
-                                <Label htmlFor="severity">Severity</Label>
-                                <select
-                                    id="severity"
-                                    value={data.severity}
-                                    onChange={(e) => setData('severity', e.target.value)}
-                                    className="mt-1 flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                >
-                                    <option value="warning">Warning</option>
-                                    <option value="critical">Critical</option>
-                                </select>
-                                {errors.severity && <p className="mt-1 text-sm text-red-600">{errors.severity}</p>}
-                            </div>
+                        <div>
+                            <label htmlFor="severity" className={labelClass}>Severity</label>
+                            <select
+                                id="severity"
+                                value={data.severity}
+                                onChange={(e) => setData('severity', e.target.value)}
+                                className={selectClass}
+                                required
+                            >
+                                <option value="warning">Warning</option>
+                                <option value="critical">Critical</option>
+                            </select>
+                            <InputError message={errors.severity} className="mt-1.5" />
+                        </div>
 
-                            <div>
-                                <Label htmlFor="title">Title</Label>
-                                <Input
-                                    id="title"
-                                    value={data.title}
-                                    onChange={(e) => setData('title', e.target.value)}
-                                    className="mt-1"
-                                    required
-                                />
-                                {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title}</p>}
-                            </div>
+                        <div>
+                            <label htmlFor="title" className={labelClass}>Title</label>
+                            <IconInput
+                                icon={Megaphone}
+                                id="title"
+                                className="h-11"
+                                value={data.title}
+                                onChange={(e) => setData('title', e.target.value)}
+                                required
+                            />
+                            <InputError message={errors.title} className="mt-1.5" />
+                        </div>
 
-                            <div>
-                                <Label htmlFor="message">Message</Label>
-                                <textarea
-                                    id="message"
-                                    value={data.message}
-                                    onChange={(e) => setData('message', e.target.value)}
-                                    className="mt-1 flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    rows={4}
-                                    required
-                                />
-                                {errors.message && <p className="mt-1 text-sm text-red-600">{errors.message}</p>}
-                            </div>
+                        <div>
+                            <label htmlFor="message" className={labelClass}>Message</label>
+                            <textarea
+                                id="message"
+                                value={data.message}
+                                onChange={(e) => setData('message', e.target.value)}
+                                className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
+                                rows={4}
+                                required
+                            />
+                            <InputError message={errors.message} className="mt-1.5" />
+                        </div>
 
-                            <div className="rounded-lg border border-blue-100 bg-blue-50 p-3 text-xs text-blue-700">
-                                Creating this alert will immediately dispatch notifications to all residents
-                                in the affected barangay and all staff members.
-                            </div>
+                        <InfoBanner className="mt-0">
+                            Creating this alert will immediately dispatch notifications to all residents in the affected barangay and all staff members.
+                        </InfoBanner>
 
-                            <div className="flex items-center justify-end gap-3 pt-4">
-                                <Link href={route('alerts.index')}>
-                                    <Button type="button" variant="outline">Cancel</Button>
-                                </Link>
-                                <Button type="submit" disabled={processing}>Create & Dispatch</Button>
-                            </div>
-                        </form>
-                    </CardContent>
-                </Card>
+                        <div className="flex items-center justify-end gap-3 pt-2">
+                            <Link
+                                href={route('alerts.index')}
+                                className="flex h-10 items-center rounded-xl border border-slate-300 px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                            >
+                                Cancel
+                            </Link>
+                            <button
+                                type="submit"
+                                disabled={processing}
+                                className="flex h-10 items-center rounded-xl bg-brand-600 px-4 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60"
+                            >
+                                Create &amp; Dispatch
+                            </button>
+                        </div>
+                    </form>
+                </SectionCard>
             </div>
         </AuthenticatedLayout>
     );
