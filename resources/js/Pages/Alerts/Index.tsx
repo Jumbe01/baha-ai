@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { StatusLevel } from '@/lib/status';
 import { Paginated } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { AlertTriangle, Bell, CheckCircle2, Info, Mail, MessageSquare, Plus, Search, Settings, Smartphone } from 'lucide-react';
+import { AlertTriangle, Bell, CheckCheck, CheckCircle2, Info, Mail, MessageSquare, Plus, Search, Settings, Smartphone } from 'lucide-react';
 import { useState } from 'react';
 
 interface AlertRow {
@@ -47,6 +47,10 @@ export default function AlertsIndex({ alerts, floodZones, filters }: Props) {
 
     const applyFilter = (patch: Record<string, string | undefined>) => {
         router.get(route('alerts.index'), { ...filters, ...patch }, { preserveState: true, replace: true });
+    };
+
+    const markAllRead = () => {
+        router.patch(route('notifications.read-all'), {}, { preserveScroll: true });
     };
 
     const activeTab = filters.severity
@@ -97,18 +101,27 @@ export default function AlertsIndex({ alerts, floodZones, filters }: Props) {
                     title="Alert History"
                     className="lg:col-span-2"
                     action={
-                        <form
-                            onSubmit={(e) => { e.preventDefault(); applyFilter({ search: search || undefined }); }}
-                            className="relative"
-                        >
-                            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                            <input
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                                placeholder="Search alerts…"
-                                className="h-9 w-48 rounded-lg border-slate-300 pl-9 text-sm focus:border-brand-500 focus:ring-brand-500"
-                            />
-                        </form>
+                        <div className="flex items-center gap-3">
+                            <button
+                                type="button"
+                                onClick={markAllRead}
+                                className="flex items-center gap-1.5 text-sm font-semibold text-brand-600 hover:text-brand-700"
+                            >
+                                <CheckCheck className="h-4 w-4" /> Mark all as read
+                            </button>
+                            <form
+                                onSubmit={(e) => { e.preventDefault(); applyFilter({ search: search || undefined }); }}
+                                className="relative"
+                            >
+                                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                                <input
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    placeholder="Search alerts…"
+                                    className="h-9 w-44 rounded-lg border-slate-300 pl-9 text-sm focus:border-brand-500 focus:ring-brand-500"
+                                />
+                            </form>
+                        </div>
                     }
                 >
                     <div className="space-y-3">

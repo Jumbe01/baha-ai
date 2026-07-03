@@ -22,7 +22,8 @@ import {
     Users,
     X,
 } from 'lucide-react';
-import { PropsWithChildren, ReactNode, useState } from 'react';
+import { PropsWithChildren, ReactNode, useEffect, useState } from 'react';
+import { Toaster, toast } from 'sonner';
 
 interface NavItem {
     name: string;
@@ -46,10 +47,19 @@ export default function AuthenticatedLayout({
     const page = usePage().props as {
         auth: { user: { name: string; email: string; role: string; location?: string } };
         unreadNotifications?: number;
+        flash?: { status?: string | null; success?: string | null; error?: string | null };
     };
     const user = page.auth.user;
     const unread = page.unreadNotifications ?? 0;
     const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    // Surface server flash messages as toasts.
+    const flash = page.flash;
+    useEffect(() => {
+        if (flash?.success) toast.success(flash.success);
+        if (flash?.error) toast.error(flash.error);
+        if (flash?.status) toast(flash.status);
+    }, [flash?.success, flash?.error, flash?.status]);
 
     const { primary, admin } = getNavigation(user.role, unread);
     const roleLabel = ROLE_LABELS[user.role] ?? user.role;
@@ -59,6 +69,7 @@ export default function AuthenticatedLayout({
 
     return (
         <div className="min-h-screen bg-slate-50">
+            <Toaster richColors closeButton position="top-right" />
             {sidebarOpen && (
                 <div
                     className="fixed inset-0 z-40 bg-black/50 lg:hidden"

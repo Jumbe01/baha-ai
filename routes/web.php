@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FloodReportController;
 use App\Http\Controllers\GpsAlertController;
 use App\Http\Controllers\HistoricalController;
 use App\Http\Controllers\LocationController;
@@ -53,6 +54,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/map', [MapController::class, 'index'])->name('map.index');
 
     Route::get('/gps-alerts', [GpsAlertController::class, 'index'])->name('gps-alerts.index');
+
+    Route::post('/flood-reports', [FloodReportController::class, 'store'])->name('flood-reports.store');
 
     // Informational / secondary pages (full parity with reference nav).
     Route::get('/evacuation-centers', fn () => Inertia::render('EvacuationCenters/Index'))->name('evacuation.index');

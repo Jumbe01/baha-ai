@@ -7,7 +7,9 @@ import StatusBadge from '@/Components/StatusBadge';
 import WaterGauge from '@/Components/WaterGauge';
 import { cn } from '@/lib/utils';
 import { riskToStatus, statusStyle } from '@/lib/status';
-import { Head, Link, usePage } from '@inertiajs/react';
+import ReportFloodModal from '@/Components/ReportFloodModal';
+import { Head, Link, router, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 import {
     AlertTriangle,
     BrainCircuit,
@@ -59,6 +61,15 @@ interface Props {
 export default function Dashboard({ stats, floodZones, recentReadings }: Props) {
     const { auth } = usePage().props as { auth: { user: { name: string } } };
     const firstName = auth.user.name.split(' ')[0];
+    const [reportOpen, setReportOpen] = useState(false);
+
+    // Live auto-refresh: pull fresh data every 15s without a full page reload.
+    useEffect(() => {
+        const id = setInterval(() => {
+            router.reload({ only: ['stats', 'floodZones', 'recentReadings'] });
+        }, 15000);
+        return () => clearInterval(id);
+    }, []);
 
     const { critical, warning, safe } = stats.riskCounts;
     const activeAlerts = warning + critical;
@@ -77,6 +88,15 @@ export default function Dashboard({ stats, floodZones, recentReadings }: Props) 
             <PageHeader
                 title={`Welcome back, ${firstName}! 👋`}
                 subtitle="Stay informed. Stay safe."
+                actions={
+                    <span className="flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-600">
+                        <span className="relative flex h-2 w-2">
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                        </span>
+                        Live
+                    </span>
+                }
             />
 
             {/* Situation banner */}
@@ -277,7 +297,7 @@ export default function Dashboard({ stats, floodZones, recentReadings }: Props) 
 
                 <SectionCard title="Quick Actions">
                     <div className="grid grid-cols-2 gap-3">
-                        <QuickAction icon={Camera} label="Report Flood" href={route('gps-alerts.index')} tone="info" />
+                        <QuickAction icon={Camera} label="Report Flood" onClick={() => setReportOpen(true)} tone="info" />
                         <QuickAction icon={Home} label="Evacuation Centers" href={route('evacuation.index')} tone="safe" />
                         <QuickAction icon={Phone} label="Emergency Hotline" href={route('help.index')} tone="critical" />
                         <QuickAction icon={Share2} label="Share Location" href={route('location.select')} tone="moderate" />
@@ -288,6 +308,8 @@ export default function Dashboard({ stats, floodZones, recentReadings }: Props) 
             <InfoBanner>
                 Always stay updated and follow the safety guidelines from your local authorities.
             </InfoBanner>
+
+            <ReportFloodModal show={reportOpen} onClose={() => setReportOpen(false)} />
         </AuthenticatedLayout>
     );
 }
@@ -302,14 +324,19 @@ function WeatherMetric({ icon: Icon, label, value }: { icon: typeof Wind; label:
     );
 }
 
-function QuickAction({ icon: Icon, label, href, tone }: { icon: typeof Wind; label: string; href: string; tone: Parameters<typeof statusStyle>[0] }) {
+function QuickAction({ icon: Icon, label, href, onClick, tone }: { icon: typeof Wind; label: string; href?: string; onClick?: () => void; tone: Parameters<typeof statusStyle>[0] }) {
     const s = statusStyle(tone);
-    return (
-        <Link href={href} className={cn('flex flex-col items-center gap-2 rounded-xl p-4 text-center transition-colors hover:opacity-90', s.softBg)}>
+    const className = cn('flex flex-col items-center gap-2 rounded-xl p-4 text-center transition-colors hover:opacity-90', s.softBg);
+    const content = (
+        <>
             <Icon className={cn('h-6 w-6', s.icon)} />
             <span className="text-xs font-semibold text-navy-900">{label}</span>
-        </Link>
+        </>
     );
+    if (onClick) {
+        return <button type="button" onClick={onClick} className={className}>{content}</button>;
+    }
+    return <Link href={href!} className={className}>{content}</Link>;
 }
 
 /** Stylized mini flood-risk map for the dashboard preview. */

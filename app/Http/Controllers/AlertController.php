@@ -81,10 +81,20 @@ class AlertController extends Controller
         ]);
 
         $alert->loadMissing('floodZone');
-        $dispatcher->dispatch($alert);
+        $result = $dispatcher->dispatch($alert);
 
-        return redirect()->route('alerts.index')
-            ->with('success', 'Alert created and notifications dispatched.');
+        $message = sprintf(
+            'Alert created — %d recipient(s) notified, %d email(s) sent.',
+            $result['notified'],
+            $result['email_sent'],
+        );
+
+        if ($result['email_failed'] > 0) {
+            return redirect()->route('alerts.index')
+                ->with('error', $message.sprintf(' %d email(s) failed to send — check that the mail server is running.', $result['email_failed']));
+        }
+
+        return redirect()->route('alerts.index')->with('success', $message);
     }
 
     public function resolve(Alert $alert, Request $request, AlertService $alertService): RedirectResponse
