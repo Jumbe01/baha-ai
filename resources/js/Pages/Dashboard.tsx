@@ -14,6 +14,7 @@ import {
     AlertTriangle,
     BrainCircuit,
     Camera,
+    CloudLightning,
     CloudRain,
     Droplets,
     Gauge,
@@ -59,8 +60,9 @@ interface Props {
 }
 
 export default function Dashboard({ stats, floodZones, recentReadings }: Props) {
-    const { auth } = usePage().props as { auth: { user: { name: string } } };
+    const { auth } = usePage().props as { auth: { user: { name: string; role: string } } };
     const firstName = auth.user.name.split(' ')[0];
+    const isStaff = auth.user.role === 'admin' || auth.user.role === 'staff';
     const [reportOpen, setReportOpen] = useState(false);
 
     // Live auto-refresh: pull fresh data every 15s without a full page reload.
@@ -89,13 +91,31 @@ export default function Dashboard({ stats, floodZones, recentReadings }: Props) 
                 title={`Welcome back, ${firstName}! 👋`}
                 subtitle="Stay informed. Stay safe."
                 actions={
-                    <span className="flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-600">
-                        <span className="relative flex h-2 w-2">
-                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                    <div className="flex flex-wrap items-center gap-3">
+                        {isStaff && (
+                            <>
+                                <button
+                                    onClick={() => router.post(route('simulation.storm'), {}, { preserveScroll: true })}
+                                    className="flex h-9 items-center gap-2 rounded-xl bg-red-600 px-3 text-sm font-semibold text-white hover:bg-red-700"
+                                >
+                                    <CloudLightning className="h-4 w-4" /> Simulate Storm
+                                </button>
+                                <button
+                                    onClick={() => router.post(route('simulation.calm'), {}, { preserveScroll: true })}
+                                    className="flex h-9 items-center gap-2 rounded-xl border border-slate-300 px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                                >
+                                    Reset
+                                </button>
+                            </>
+                        )}
+                        <span className="flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-600">
+                            <span className="relative flex h-2 w-2">
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                            </span>
+                            Live
                         </span>
-                        Live
-                    </span>
+                    </div>
                 }
             />
 

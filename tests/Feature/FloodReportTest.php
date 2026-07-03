@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\FloodReport;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -52,5 +53,48 @@ class FloodReportTest extends TestCase
         ]);
 
         $response->assertRedirect(route('login'));
+    }
+
+    public function test_staff_can_view_reports_list(): void
+    {
+        $staff = User::factory()->staff()->create();
+        FloodReport::create([
+            'severity' => 'moderate',
+            'description' => 'Rising water near the bridge.',
+            'status' => 'pending',
+        ]);
+
+        $response = $this->actingAs($staff)->get(route('flood-reports.index'));
+
+        $response->assertOk();
+        $response->assertInertia(fn ($page) => $page
+            ->component('FloodReports/Index')
+            ->has('reports.data', 1)
+            ->where('counts.pending', 1)
+        );
+    }
+
+    public function test_residents_cannot_view_reports_list(): void
+    {
+        $resident = User::factory()->resident()->create();
+
+        $this->actingAs($resident)->get(route('flood-reports.index'))->assertForbidden();
+    }
+
+    public function test_staff_can_update_report_status(): void
+    {
+        $staff = User::factory()->staff()->create();
+        $report = FloodReport::create([
+            'severity' => 'severe',
+            'description' => 'Flooded street.',
+            'status' => 'pending',
+        ]);
+
+        $response = $this->actingAs($staff)->patch(route('flood-reports.update', $report), [
+            'status' => 'resolved',
+        ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('flood_reports', ['id' => $report->id, 'status' => 'resolved']);
     }
 }

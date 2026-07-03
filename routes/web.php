@@ -15,6 +15,7 @@ use App\Http\Controllers\MapController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PredictionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SimulationController;
 use App\Http\Controllers\WaterLevelController;
 use App\Http\Controllers\WeatherController;
 use Illuminate\Foundation\Application;
@@ -56,6 +57,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/gps-alerts', [GpsAlertController::class, 'index'])->name('gps-alerts.index');
 
     Route::post('/flood-reports', [FloodReportController::class, 'store'])->name('flood-reports.store');
+
+    Route::middleware('staff')->group(function () {
+        Route::get('/flood-reports', [FloodReportController::class, 'index'])->name('flood-reports.index');
+        Route::patch('/flood-reports/{floodReport}', [FloodReportController::class, 'updateStatus'])->name('flood-reports.update');
+
+        Route::post('/simulate/storm', [SimulationController::class, 'storm'])->name('simulation.storm');
+        Route::post('/simulate/calm', [SimulationController::class, 'calm'])->name('simulation.calm');
+    });
 
     // Informational / secondary pages (full parity with reference nav).
     Route::get('/evacuation-centers', fn () => Inertia::render('EvacuationCenters/Index'))->name('evacuation.index');

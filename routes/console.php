@@ -10,3 +10,4 @@ Artisan::command('inspire', function () {
 
 Schedule::command('weather:fetch')->hourly();
 Schedule::command('predictions:generate')->everyFifteenMinutes();
+Schedule::command('sensors:check-offline')->everyFifteenMinutes();
