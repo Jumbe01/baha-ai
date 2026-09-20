@@ -28,9 +28,15 @@ export default function Index({ sensors }: { sensors: Sensor[] }) {
 
     const statusLevel = (status: string): StatusLevel => {
         if (status === 'active') return 'safe';
+        if (status === 'offline') return 'critical';
         if (status === 'maintenance') return 'warning';
         return 'neutral';
     };
+
+    // Battery is reported by the device itself, so a missing value means the
+    // node has never sent one rather than a flat cell.
+    const batteryLevel = (pct: number | null): StatusLevel =>
+        pct === null ? 'neutral' : pct <= 20 ? 'critical' : pct <= 40 ? 'warning' : 'safe';
 
     return (
         <AuthenticatedLayout>
@@ -80,8 +86,15 @@ export default function Index({ sensors }: { sensors: Sensor[] }) {
                                     <td className="px-5 py-4 text-slate-500">
                                         {sensor.latest_reading ? `${sensor.latest_reading.water_level}m` : '-'}
                                     </td>
-                                    <td className="px-5 py-4 text-slate-500">
-                                        {sensor.battery_level ? `${sensor.battery_level}%` : '-'}
+                                    <td className="px-5 py-4">
+                                        {sensor.battery_level != null ? (
+                                            <StatusBadge
+                                                level={batteryLevel(Number(sensor.battery_level))}
+                                                label={`${Math.round(Number(sensor.battery_level))}%`}
+                                            />
+                                        ) : (
+                                            <span className="text-slate-400">not reported</span>
+                                        )}
                                     </td>
                                     <td className="px-5 py-4">
                                         <StatusBadge level={statusLevel(sensor.status)} label={sensor.status} />

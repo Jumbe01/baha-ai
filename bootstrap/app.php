@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureSensorToken;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\EnsureUserIsStaff;
 use App\Http\Middleware\HandleInertiaRequests;
@@ -22,9 +23,12 @@ return Application::configure(basePath: dirname(__DIR__))
             AddLinkHeadersForPreloadedAssets::class,
         ]);
 
+        $middleware->throttleApi();
+
         $middleware->alias([
             'admin' => EnsureUserIsAdmin::class,
             'staff' => EnsureUserIsStaff::class,
+            'sensor.token' => EnsureSensorToken::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

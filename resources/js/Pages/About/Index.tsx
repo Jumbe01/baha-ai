@@ -10,9 +10,9 @@ import { BrainCircuit, CloudRain, Info, Radio, Siren } from 'lucide-react';
 
 const FEATURES = [
     { icon: Radio, tone: 'info' as const, title: 'Real-time Monitoring', desc: 'IoT water-level and rainfall sensors stream live readings from across the community.' },
-    { icon: BrainCircuit, tone: 'moderate' as const, title: 'AI Flood Prediction', desc: 'A predictive model forecasts rising water levels before flooding happens.' },
-    { icon: Siren, tone: 'critical' as const, title: 'Instant Alerts', desc: 'Multi-channel alerts (in-app, SMS, push, email) reach residents the moment risk rises.' },
-    { icon: CloudRain, tone: 'safe' as const, title: 'Weather Integration', desc: 'Rainfall and weather data enrich predictions and keep communities informed.' },
+    { icon: BrainCircuit, tone: 'moderate' as const, title: 'Flood Prediction', desc: 'A linear-regression model fits recent water-level readings to project the rate of rise and estimate time-to-critical, with an R² confidence score.' },
+    { icon: Siren, tone: 'critical' as const, title: 'Instant Alerts', desc: 'In-app notifications and email reach residents the moment risk rises. SMS is simulated by default and can be switched to a live gateway.' },
+    { icon: CloudRain, tone: 'safe' as const, title: 'Weather Monitoring', desc: 'Local rainfall and weather conditions are tracked and displayed alongside sensor readings to give context during an event.' },
 ];
 
 export default function AboutIndex() {

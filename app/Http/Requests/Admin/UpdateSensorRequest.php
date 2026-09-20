@@ -19,7 +19,7 @@ class UpdateSensorRequest extends FormRequest
             'type' => ['required', 'string', 'in:ultrasonic,rain_gauge,pressure'],
             'latitude' => ['required', 'numeric', 'between:-90,90'],
             'longitude' => ['required', 'numeric', 'between:-180,180'],
-            'status' => ['required', 'string', 'in:active,inactive,maintenance'],
+            'status' => ['required', 'string', 'in:active,inactive,maintenance,offline'],
         ];
     }
 }

@@ -134,7 +134,7 @@ export default function ActuationIndex({ devices, logs }: { devices: Device[]; l
                                 <Cpu className="mt-0.5 h-5 w-5 text-emerald-600" />
                                 <div>
                                     <p className="text-sm font-semibold text-navy-900">Automatic Mode</p>
-                                    <p className="text-xs text-slate-500">Devices controlled by sensor data and AI predictions.</p>
+                                    <p className="text-xs text-slate-500">Pumps, valves and floodgates engage when the zone reaches <span className="font-semibold">critical</span> and release when it returns to safe. Sirens sound from <span className="font-semibold">warning</span>.</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3 rounded-xl border border-slate-200 p-3">
@@ -158,7 +158,7 @@ export default function ActuationIndex({ devices, logs }: { devices: Device[]; l
                                         </p>
                                         <p className="text-xs text-slate-400">{new Date(log.logged_at).toLocaleString()}</p>
                                     </div>
-                                    <StatusBadge level={log.trigger === 'auto' ? 'info' : 'neutral'} label={log.trigger} />
+                                    <StatusBadge level={log.trigger === 'automatic' ? 'info' : 'neutral'} label={log.trigger} />
                                 </div>
                             ))}
                             {logs.length === 0 && <p className="text-sm text-slate-400">No activity logged yet.</p>}

@@ -23,7 +23,9 @@ class ActuatorDeviceFactory extends Factory
             'latitude' => $this->faker->randomFloat(7, 10.35, 10.39),
             'longitude' => $this->faker->randomFloat(7, 123.93, 123.97),
             'is_on' => false,
-            'mode' => $this->faker->randomElement(['auto', 'manual']),
+            // Deterministic by default: a random mode makes any test that
+            // toggles a device flaky, since auto-mode devices refuse manual control.
+            'mode' => 'manual',
             'status' => 'operational',
         ];
     }
@@ -31,5 +33,15 @@ class ActuatorDeviceFactory extends Factory
     public function on(): static
     {
         return $this->state(fn () => ['is_on' => true, 'last_activated_at' => now()]);
+    }
+
+    public function auto(): static
+    {
+        return $this->state(fn () => ['mode' => 'auto']);
+    }
+
+    public function manual(): static
+    {
+        return $this->state(fn () => ['mode' => 'manual']);
     }
 }

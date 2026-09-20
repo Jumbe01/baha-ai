@@ -256,10 +256,16 @@ The suite covers auth/OTP, role middleware, sensor/zone CRUD, the ingestion API,
 
 ## Documentation
 
-- **[`docs/student-guide.html`](docs/student-guide.html)** — hands-on testing guide for students: how to start it with Docker, a command cheat sheet, a guided "make a flood happen" walkthrough, and a field-by-field reference for every screen. Start here.
+- **[`docs/manual-test-walkthrough.html`](docs/manual-test-walkthrough.html)** — **start here for checking or defense prep.** 67 numbered test cases covering every function from a clean install, each with steps, the exact expected result, and a pass/fail box. Ends with a module coverage summary and an adviser sign-off page. Also available as [PDF](docs/manual-test-walkthrough.pdf).
+- **[`docs/student-guide.html`](docs/student-guide.html)** — hands-on testing guide for students: how to start it with Docker, a command cheat sheet, a guided "make a flood happen" walkthrough, and a field-by-field reference for every screen.
 - **[`docs/user-guide.html`](docs/user-guide.html)** — deeper end-user manual explaining all three roles and how predictions/alerts/data work internally.
 
-Open either in a browser or print to PDF.
+### Building real hardware
+
+- **[`docs/hardware-buying-guide.html`](docs/hardware-buying-guide.html)** — what to buy, what it costs, and where to get it in the Philippines. Also available as [PDF](docs/hardware-buying-guide.pdf).
+- **[`docs/hardware-assembly-guide.html`](docs/hardware-assembly-guide.html)** — wiring, firmware, calibration and bring-up: taking those parts to a live ESP32 node posting real readings into this app. Also available as [PDF](docs/hardware-assembly-guide.pdf).
+
+Open any of them in a browser or print to PDF.
 
 ## Project Structure
 

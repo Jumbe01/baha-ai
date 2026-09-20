@@ -38,7 +38,10 @@ class ActuatorTest extends TestCase
     public function test_staff_can_toggle_device(): void
     {
         $user = User::factory()->staff()->create();
-        $device = ActuatorDevice::factory()->for($this->zone)->create(['is_on' => false]);
+        $device = ActuatorDevice::factory()->for($this->zone)->create([
+            'is_on' => false,
+            'mode' => 'manual',
+        ]);
 
         $response = $this->actingAs($user)->patch(route('actuation.toggle', $device));
 
@@ -53,7 +56,10 @@ class ActuatorTest extends TestCase
     public function test_toggle_logs_user_and_records_activation_time(): void
     {
         $user = User::factory()->staff()->create();
-        $device = ActuatorDevice::factory()->for($this->zone)->create(['is_on' => false]);
+        $device = ActuatorDevice::factory()->for($this->zone)->create([
+            'is_on' => false,
+            'mode' => 'manual',
+        ]);
 
         $this->actingAs($user)->patch(route('actuation.toggle', $device));
 

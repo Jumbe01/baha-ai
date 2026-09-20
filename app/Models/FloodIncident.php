@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable([
-    'flood_zone_id', 'severity', 'peak_water_level', 'total_rainfall',
+    'flood_zone_id', 'alert_id', 'severity', 'peak_water_level', 'total_rainfall',
     'duration_minutes', 'affected_residents', 'description', 'occurred_at',
 ])]
 class FloodIncident extends Model
@@ -29,5 +29,10 @@ class FloodIncident extends Model
     public function floodZone(): BelongsTo
     {
         return $this->belongsTo(FloodZone::class);
+    }
+
+    public function alert(): BelongsTo
+    {
+        return $this->belongsTo(Alert::class);
     }
 }

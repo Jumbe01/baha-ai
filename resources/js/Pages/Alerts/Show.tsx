@@ -6,7 +6,7 @@ import StatusBadge from '@/Components/StatusBadge';
 import { cn } from '@/lib/utils';
 import { StatusLevel } from '@/lib/status';
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { AlertTriangle, ArrowLeft, CheckCircle, Droplet, Mail, MapPin, MessageSquare, Smartphone } from 'lucide-react';
+import { AlertTriangle, ArrowLeft, Bell, CheckCircle, Droplet, Mail, MapPin, MessageSquare, Siren, Smartphone } from 'lucide-react';
 
 interface NotificationLog {
     id: number;
@@ -41,7 +41,10 @@ interface AlertDetail {
     notification_logs: NotificationLog[];
 }
 
-const channelIcon: Record<string, typeof Mail> = { sms: Smartphone, email: Mail, push: MessageSquare };
+const channelIcon: Record<string, typeof Mail> = { sms: Smartphone, email: Mail, push: Bell, siren: Siren };
+// A delivery that failed or was only simulated must not render as a green success.
+const deliveryLevel = (status: string): StatusLevel =>
+    status === 'sent' ? 'safe' : status === 'failed' ? 'critical' : 'neutral';
 const severityLevel = (s: string): StatusLevel => (s === 'critical' ? 'critical' : s === 'warning' ? 'warning' : 'info');
 
 export default function Show({ alert }: { alert: AlertDetail }) {
@@ -103,7 +106,7 @@ export default function Show({ alert }: { alert: AlertDetail }) {
                                         <Icon className="h-4 w-4 text-slate-400" />
                                         <span className="w-14 font-semibold uppercase text-slate-500">{log.channel}</span>
                                         <span className="flex-1 truncate text-navy-900">{log.user?.name ?? log.recipient}</span>
-                                        <StatusBadge level="safe" label={log.status} />
+                                        <StatusBadge level={deliveryLevel(log.status)} label={log.status} />
                                     </div>
                                 );
                             })}

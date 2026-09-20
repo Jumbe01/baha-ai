@@ -1,0 +1,1119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BahaAI — Manual Test Walkthrough</title>
+<style>
+  @page { size: A4; margin: 13mm 12mm 14mm 12mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 9.3pt; line-height: 1.42; color: #16232e; margin: 0;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  h1, h2, h3, h4 { margin: 0; font-weight: 700; }
+  .page-break { page-break-before: always; }
+
+  /* Cover */
+  .cover {
+    background: linear-gradient(135deg, #0b3c5d 0%, #1076a8 55%, #14a3b8 100%);
+    color: #fff; padding: 20px 24px; border-radius: 10px; margin-bottom: 12px;
+    position: relative; overflow: hidden;
+  }
+  .cover h1 { font-size: 22pt; letter-spacing: -0.5px; }
+  .cover .sub { font-size: 10.5pt; opacity: .95; margin-top: 4px; font-weight: 600; }
+  .cover .meta { font-size: 8.2pt; opacity: .85; margin-top: 9px; }
+  .wave { position: absolute; right: -30px; bottom: -46px; opacity: .16; }
+
+  /* Callouts */
+  .callout { border-left: 4px solid #1076a8; background: #eef7fc; padding: 7px 11px;
+             border-radius: 0 6px 6px 0; margin: 8px 0; page-break-inside: avoid; }
+  .callout.warn   { border-left-color: #d98014; background: #fdf5e9; }
+  .callout.danger { border-left-color: #c0392b; background: #fdeeec; }
+  .callout.ok     { border-left-color: #1e8a54; background: #ecf8f1; }
+  .callout p { margin: 3px 0; }
+  .callout .label { font-weight: 700; letter-spacing: .3px; font-size: 8.2pt; text-transform: uppercase; }
+  .callout .label.w { color: #a5620a; } .callout .label.d { color: #9d2c20; }
+  .callout .label.o { color: #156b41; } .callout .label.i { color: #0b5f8f; }
+
+  /* Sections */
+  h2.part {
+    font-size: 13pt; color: #0b3c5d; margin: 18px 0 4px;
+    padding-bottom: 5px; border-bottom: 2.5px solid #14a3b8; page-break-after: avoid;
+  }
+  h2.part .n {
+    display: inline-block; background: #14a3b8; color: #fff; min-width: 22px; height: 21px;
+    line-height: 21px; text-align: center; border-radius: 5px; font-size: 9.5pt;
+    margin-right: 7px; vertical-align: 1px; padding: 0 5px;
+  }
+  .lede { color: #4a5c6b; margin: 4px 0 10px; font-size: 9pt; }
+  h3.sub { font-size: 10pt; color: #0b3c5d; margin: 12px 0 4px; page-break-after: avoid; }
+
+  /* Test case */
+  .tc { border: 1px solid #d5e0e8; border-radius: 7px; margin: 7px 0;
+        page-break-inside: avoid; overflow: hidden; background: #fff; }
+  .tch { background: #f2f7fa; padding: 5px 9px; border-bottom: 1px solid #e1ebf1;
+         display: flex; align-items: center; gap: 8px; }
+  .tid { background: #0b3c5d; color: #fff; font-size: 7.6pt; font-weight: 700;
+         padding: 2px 7px; border-radius: 9px; letter-spacing: .3px; white-space: nowrap; }
+  .tt { font-weight: 700; color: #0b3c5d; font-size: 9.4pt; flex: 1; }
+  .role { font-size: 7.4pt; font-weight: 700; padding: 2px 7px; border-radius: 9px;
+          white-space: nowrap; letter-spacing: .3px; }
+  .role.admin { background: #ede4f7; color: #6b3fa0; }
+  .role.staff { background: #e2eefb; color: #1b5fa8; }
+  .role.res   { background: #e4f5ea; color: #1b7a47; }
+  .role.guest { background: #eef2f5; color: #55677a; }
+  .role.cli   { background: #16232e; color: #b9dcef; }
+  .tcb { padding: 6px 9px 7px; }
+  ol.steps { margin: 0 0 5px 16px; padding: 0; }
+  ol.steps li { margin-bottom: 2px; }
+  .exp { background: #ecf8f1; border-left: 3px solid #1e8a54; padding: 4px 8px;
+         border-radius: 0 4px 4px 0; font-size: 9pt; }
+  .exp b { color: #156b41; }
+  .verdict { border-top: 1px dashed #cdd9e2; padding: 4px 9px; font-size: 8.4pt; color: #55677a; }
+  .box { display: inline-block; width: 9px; height: 9px; border: 1.3px solid #7b8a99;
+         border-radius: 2px; margin: 0 4px -1px 0; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; font-size: 8.5pt; margin: 7px 0; }
+  th { background: #0b3c5d; color: #fff; text-align: left; padding: 5px 7px; font-size: 8.2pt; }
+  td { padding: 4px 7px; border-bottom: 1px solid #e4ebf0; vertical-align: top; }
+  tr:nth-child(even) td { background: #f8fafc; }
+  td.mid { text-align: center; }
+
+  code { font-family: Consolas, "Courier New", monospace; font-size: 8.2pt;
+         background: #eef2f5; padding: 1px 4px; border-radius: 3px; color: #14384f; }
+  pre { font-family: Consolas, "Courier New", monospace; font-size: 7.8pt; line-height: 1.38;
+        background: #14384f; color: #d6e6f2; padding: 7px 10px; border-radius: 6px;
+        margin: 5px 0; white-space: pre-wrap; word-wrap: break-word; page-break-inside: avoid; }
+
+  ul.tight { margin: 4px 0 4px 16px; padding: 0; }
+  ul.tight li { margin-bottom: 2px; }
+  .foot { margin-top: 14px; padding-top: 7px; border-top: 1px solid #d5e0e8;
+          font-size: 7.4pt; color: #7b8a99; text-align: center; }
+  .sign { border: 1.5px solid #0b3c5d; border-radius: 8px; padding: 12px 14px; margin-top: 10px; }
+  .sigline { border-bottom: 1px solid #16232e; height: 26px; margin-top: 14px; }
+  .siglabel { font-size: 8pt; color: #55677a; margin-top: 3px; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <svg class="wave" width="300" height="150" viewBox="0 0 300 150" fill="none">
+    <path d="M0 90 Q37 60 75 90 T150 90 T225 90 T300 90 V150 H0 Z" fill="#fff"/>
+    <path d="M0 112 Q37 82 75 112 T150 112 T225 112 T300 112 V150 H0 Z" fill="#fff" opacity=".6"/>
+  </svg>
+  <h1>BahaAI — Manual Test Walkthrough</h1>
+  <div class="sub">Every function, from a clean install to adviser sign-off</div>
+  <div class="meta">
+    An IoT-Based Flood Alert System &nbsp;·&nbsp; Municipality of Consolacion, Cebu<br>
+    University of Cebu Lapu-Lapu and Mandaue &nbsp;·&nbsp; Prepared 20 September 2026
+  </div>
+</div>
+
+<div class="callout">
+  <p><span class="label i">How to use this document</span></p>
+  <p>Work through the parts <b>in order</b> — later tests depend on data created by earlier ones. Each test gives
+  the role required, the exact steps, and the exact result to expect. Tick <b>Pass</b> or <b>Fail</b> and write a
+  note for anything that fails.</p>
+  <p>Allow about <b>90 minutes</b> for a complete pass. Part 0 must be finished before anything else.</p>
+</div>
+
+<div class="callout warn">
+  <p><span class="label w">Before you demonstrate this to your adviser</span></p>
+  <p>Run the whole walkthrough yourself first and fix anything that fails. A test marked Pass that fails in front of
+  a panel costs more than an honest Fail written down in advance.</p>
+</div>
+
+<h3 class="sub">Role legend</h3>
+<p>Each test shows the account you must be signed in as:</p>
+<p>
+  <span class="role admin">ADMIN</span> Administrator &nbsp;
+  <span class="role staff">STAFF</span> DRRMO / Staff &nbsp;
+  <span class="role res">RESIDENT</span> Community Resident &nbsp;
+  <span class="role guest">GUEST</span> Not signed in &nbsp;
+  <span class="role cli">TERMINAL</span> Command line
+</p>
+
+<h3 class="sub">Test accounts</h3>
+<table>
+  <tr><th style="width:22%">Role</th><th style="width:38%">Email</th><th>Password</th></tr>
+  <tr><td>Administrator</td><td><code>admin@bahaai.test</code></td><td><code>password</code></td></tr>
+  <tr><td>DRRMO / Staff</td><td>See <b>Admin → Users</b>, filter by Staff</td><td><code>password</code></td></tr>
+  <tr><td>Resident</td><td>See <b>Admin → Users</b>, filter by Resident</td><td><code>password</code></td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<h2 class="part"><span class="n">0</span>Setting up from nothing</h2>
+<p class="lede">Nothing but Docker Desktop is required. No PHP, Node, Composer or PostgreSQL on the machine.</p>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T0.1</span><span class="tt">Install Docker Desktop</span><span class="role guest">SETUP</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Download Docker Desktop from <code>docker.com/products/docker-desktop</code>.</li>
+      <li><b>Windows:</b> install, then restart the computer. Allow WSL 2 if prompted.</li>
+      <li>Open Docker Desktop and wait for the bottom-left indicator.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> Docker Desktop shows <b>Engine running</b>.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T0.2</span><span class="tt">Start the application</span><span class="role cli">TERMINAL</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Open a terminal in the project folder (the one containing <code>docker-compose.yml</code>).</li>
+      <li>Run a clean first build:</li>
+    </ol>
+    <pre>docker compose up --build</pre>
+    <div class="exp"><b>Expected:</b> after a few minutes the log ends with
+    <code>BahaAI is running -&gt; http://localhost:8000</code>. Migrations run automatically and demo data is seeded
+    on the first start only.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T0.3</span><span class="tt">Confirm the seeded data</span><span class="role cli">TERMINAL</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>In a second terminal, run:</li></ol>
+    <pre>docker compose exec app php artisan tinker --execute='
+foreach (["users","flood_zones","sensors","sensor_readings","actuator_devices","evacuation_centers","flood_incidents"] as $t) {
+    printf("%-20s %d\n", $t, DB::table($t)->count());
+}'</pre>
+    <div class="exp"><b>Expected:</b> 24 users, 7 flood zones, 13 sensors, thousands of readings,
+    7 actuator devices, <b>8 evacuation centers</b>, 25 flood incidents. Zero of anything listed means the seed
+    did not run.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T0.4</span><span class="tt">Open the application and sign in</span><span class="role guest">GUEST</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Browse to <code>http://localhost:8000</code>.</li>
+      <li>Sign in as <code>admin@bahaai.test</code> / <code>password</code>.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> the Administrator dashboard loads with live sensor counts and a sidebar
+    containing Dashboard through GPS Flood Alerts, plus an admin group with Flood Zones, Sensors, Evac. Centers,
+    Users and Audit Log.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T0.5</span><span class="tt">Open the mail catcher</span><span class="role guest">SETUP</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Open <code>http://localhost:8025</code> in a second browser tab and keep it open.</li></ol>
+    <div class="exp"><b>Expected:</b> the Mailpit inbox loads. Every email the system sends appears here; nothing
+    reaches a real inbox.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="page-break"></div>
+
+<h2 class="part"><span class="n">1</span>Account Management</h2>
+<p class="lede">Module 1 — registration with one-time-password verification, sign-in, profile and location.</p>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T1.1</span><span class="tt">Register a new resident account</span><span class="role guest">GUEST</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Sign out. From the login page choose <b>Register here</b>.</li>
+      <li>Enter a name, an email you have not used, a mobile number and a password.</li>
+      <li>Submit.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> you are taken to the <b>Verify OTP</b> screen, not straight into the app.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T1.2</span><span class="tt">Receive and use the one-time password</span><span class="role guest">GUEST</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Switch to the Mailpit tab at <code>http://localhost:8025</code>.</li>
+      <li>Open the newest message and note the 6-digit code.</li>
+      <li>Enter it on the Verify OTP screen.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> a branded email containing a 6-digit code arrives within seconds. Entering it
+    signs you in and lands you on the resident dashboard.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T1.3</span><span class="tt">A wrong code is rejected</span><span class="role guest">GUEST</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Register a second account.</li>
+      <li>On the Verify OTP screen enter <code>000000</code>.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> a validation error appears and you stay on the OTP screen. You are not
+    signed in.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T1.4</span><span class="tt">Resend is rate limited</span><span class="role guest">GUEST</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>On the Verify OTP screen press <b>Resend</b> four times in quick succession.</li></ol>
+    <div class="exp"><b>Expected:</b> the first three succeed; the fourth is refused with a "too many attempts"
+    message. This proves the throttle protects against email flooding.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T1.5</span><span class="tt">Each role lands on the right dashboard</span><span class="role guest">GUEST</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Sign in as the administrator, note the sidebar, sign out.</li>
+      <li>Repeat as a staff account, then as a resident account.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> Admin sees every item including the admin group. Staff sees operational items
+    (Alerts, Analytics, Smart Actuation, Flood Reports) but no admin group. Resident sees monitoring and
+    information items only — no Analytics, no Smart Actuation, no admin group.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T1.6</span><span class="tt">Password reset</span><span class="role guest">GUEST</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>From the login page choose <b>Forgot Password?</b> and submit a known email.</li>
+      <li>Open the reset link from Mailpit and set a new password.</li>
+      <li>Sign in with the new password.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> the reset email arrives, the link opens a reset form, and the new password
+    works while the old one no longer does.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T1.7</span><span class="tt">Update the profile</span><span class="role res">RESIDENT</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Open <b>Profile &amp; Settings</b> from the sidebar.</li>
+      <li>Change the name and mobile number, set the barangay to <b>Tayud</b>, and save.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> a success message appears and the values persist after a page reload.
+    Setting the barangay matters — it decides which alerts this account receives.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T1.8</span><span class="tt">Notification preferences</span><span class="role res">RESIDENT</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>On the profile page find <b>Notification Preferences</b>.</li>
+      <li>Enable SMS and email, disable push, and save.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> the choices persist after reload. These decide which channel rows appear in
+    the notification log in Part 7.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T1.9</span><span class="tt">Set the monitored location</span><span class="role res">RESIDENT</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Choose <b>Change Location</b> at the bottom of the sidebar.</li>
+      <li>Set a latitude and longitude inside Consolacion, for example <code>10.3600</code> and <code>123.9500</code>, and save.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> the location saves. This is what lets the Evacuation Centers page sort
+    shelters nearest-first in Part 11.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="page-break"></div>
+
+<h2 class="part"><span class="n">2</span>Dashboard and Visualisation</h2>
+<p class="lede">Module 2 — live dashboard, water levels, GIS map and predictive forecasts.</p>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T2.1</span><span class="tt">Dashboard shows live figures</span><span class="role staff">STAFF</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Open <b>Dashboard</b>.</li></ol>
+    <div class="exp"><b>Expected:</b> sensor counts, a breakdown of zones by risk level, recent alerts and a water
+    level chart. Figures must be non-zero — they come from the seeded readings.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T2.2</span><span class="tt">Water levels list and detail</span><span class="role res">RESIDENT</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Open <b>Real-time Monitoring</b>.</li>
+      <li>Open any sensor to see its detail page.</li>
+      <li>Change the time range (for example 24 hours to 7 days).</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> each sensor shows its latest level with a safe, warning or critical badge.
+    The detail page shows a time-series chart that redraws when the range changes.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T2.3</span><span class="tt">GIS flood map</span><span class="role res">RESIDENT</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Open <b>Flood Map</b>.</li>
+      <li>Zoom and pan. Click a zone polygon, then a sensor marker.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> a real street map of Consolacion with zone polygons coloured by risk (green,
+    amber, red) and sensor markers. Clicking either opens a popup with its details.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T2.4</span><span class="tt">Weather</span><span class="role res">RESIDENT</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Open <b>Rainfall &amp; Weather</b>.</li></ol>
+    <div class="exp"><b>Expected:</b> current conditions for Consolacion with temperature, humidity, rainfall and
+    wind. With no API key configured these values are simulated — say so if asked.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<h2 class="part"><span class="n">3</span>Notifications and Alerts interface</h2>
+<p class="lede">Module 3 — the resident-facing inbox.</p>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T3.1</span><span class="tt">Notification inbox and unread badge</span><span class="role res">RESIDENT</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Look at the bell icon in the top bar and note the unread count.</li>
+      <li>Open <b>Notifications</b>.</li>
+      <li>Click an unread item.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> unread entries are visually distinct. Opening one marks it read and the bell
+    count decreases by one.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T3.2</span><span class="tt">Mark all as read</span><span class="role res">RESIDENT</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>On the Notifications page choose <b>Mark all as read</b>.</li></ol>
+    <div class="exp"><b>Expected:</b> every entry becomes read and the bell badge disappears.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="page-break"></div>
+
+<h2 class="part"><span class="n">4</span>IoT Telemetry and Device Management</h2>
+<p class="lede">Module 4 — sensor records, device authentication, battery reporting and reachability.
+This part proves the path a real ESP32 will use.</p>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T4.1</span><span class="tt">Create, edit and delete a sensor</span><span class="role admin">ADMIN</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Open <b>Sensors</b> in the admin group and choose <b>Add Sensor</b>.</li>
+      <li>Create one named <code>Test Sensor A</code> in any zone, then edit its name and save.</li>
+      <li>Delete it.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> each operation shows a success message and the list updates. Submitting the
+    form with a blank name shows a validation error instead of saving.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T4.2</span><span class="tt">Issue a device token</span><span class="role cli">TERMINAL</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Mint a token for sensor 1 and copy the printed value:</li></ol>
+    <pre>docker compose exec app php artisan sensors:token 1</pre>
+    <div class="exp"><b>Expected:</b> a 48-character token is printed once, with a warning that it is stored hashed
+    and cannot be shown again.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T4.3</span><span class="tt">A reading with no token is rejected</span><span class="role cli">TERMINAL</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Post a reading without an <code>Authorization</code> header:</li></ol>
+    <pre>curl.exe -i -X POST http://localhost:8000/api/sensors/1/readings ^
+  -H "Content-Type: application/json" -H "Accept: application/json" ^
+  -d "{\"water_level\":9.9}"</pre>
+    <div class="exp"><b>Expected:</b> <b>HTTP 401</b>. No reading is stored and no alert is raised. This is the
+    security fix: without it, anyone could fabricate a flood and trigger real evacuation messages.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T4.4</span><span class="tt">A reading with a valid token is accepted</span><span class="role cli">TERMINAL</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Repeat with the token from T4.2 and include a battery level:</li></ol>
+    <pre>curl.exe -i -X POST http://localhost:8000/api/sensors/1/readings ^
+  -H "Content-Type: application/json" -H "Accept: application/json" ^
+  -H "Authorization: Bearer PASTE_TOKEN_HERE" ^
+  -d "{\"water_level\":1.42,\"temperature\":28.4,\"humidity\":81,\"battery_level\":76.5}"</pre>
+    <div class="exp"><b>Expected:</b> <b>HTTP 201</b> with the created reading in the response body.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="callout warn">
+  <p><span class="label w">PowerShell note</span></p>
+  <p>In PowerShell, <code>curl</code> is an alias for a different command. Type <code>curl.exe</code> with the
+  extension, and use <code>^</code> for line continuation as shown. In Git Bash use <code>curl</code> and
+  <code>\</code> instead.</p>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T4.5</span><span class="tt">Battery level appears in the sensor list</span><span class="role admin">ADMIN</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Open <b>Sensors</b> and find the row for sensor 1.</li></ol>
+    <div class="exp"><b>Expected:</b> the Battery column shows <b>77%</b> as a green badge. Sensors that have never
+    reported show "not reported" rather than a fabricated figure.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T4.6</span><span class="tt">An impossible battery value is refused</span><span class="role cli">TERMINAL</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Repeat T4.4 with <code>"battery_level":150</code>.</li></ol>
+    <div class="exp"><b>Expected:</b> <b>HTTP 422</b> with the message "The battery level field must be between 0
+    and 100."</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T4.7</span><span class="tt">A silent sensor is marked unreachable</span><span class="role cli">TERMINAL</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Age a sensor artificially, then run the offline check:</li>
+    </ol>
+    <pre>docker compose exec app php artisan tinker --execute='
+App\Models\Sensor::find(2)->update(["last_reading_at" =&gt; now()->subHours(3)]);'
+docker compose exec app php artisan sensors:check-offline</pre>
+    <div class="exp"><b>Expected:</b> the command reports a new offline alert. In <b>Admin → Sensors</b> that sensor
+    now shows status <b>offline</b> in red, and an alert appears on the Alerts page.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T4.8</span><span class="tt">Reporting again brings it back online</span><span class="role cli">TERMINAL</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Run the simulator, which represents every device reporting again:</li></ol>
+    <pre>docker compose exec app php artisan sensors:simulate</pre>
+    <div class="exp"><b>Expected:</b> the sensor from T4.7 returns to status <b>active</b>.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="page-break"></div>
+
+<h2 class="part"><span class="n">5</span>Smart Actuation</h2>
+<p class="lede">Module 5 — the Smart Drainage Module. Pumps, valves and floodgates engage at critical; sirens engage
+at warning; everything releases when the water recedes.</p>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T5.1</span><span class="tt">Set every device to automatic</span><span class="role staff">STAFF</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Open <b>Smart Actuation</b>.</li>
+      <li>Set each device's mode to <b>Auto</b>.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> each change is confirmed, and the Start/Stop button becomes disabled for
+    devices in auto mode with the note "Switch to manual mode to control directly."</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T5.2</span><span class="tt">A storm engages the hardware automatically</span><span class="role cli">TERMINAL</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Drive every zone to warning or critical:</li></ol>
+    <pre>docker compose exec app php artisan sensors:simulate --storm</pre>
+    <div class="exp"><b>Expected:</b> alerts are created. On <b>Smart Actuation</b>, pumps in critical zones now show
+    <b>ON</b>, and sirens in zones at warning or above show <b>ON</b> — without anyone pressing a button.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T5.3</span><span class="tt">The activity log attributes it to the system</span><span class="role staff">STAFF</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Scroll to the activity log on the Smart Actuation page.</li></ol>
+    <div class="exp"><b>Expected:</b> recent entries are tagged <b>automatic</b> rather than manual, with a note such
+    as "Zone risk critical — auto engaged". Manual entries carry the name of the operator.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T5.4</span><span class="tt">Hardware releases when the water recedes</span><span class="role cli">TERMINAL</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Generate calm readings:</li></ol>
+    <pre>docker compose exec app php artisan sensors:simulate</pre>
+    <div class="exp"><b>Expected:</b> every auto device returns to <b>off</b>, with log entries reading
+    "Zone risk safe — auto released". Automation that only switches on is not automation.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T5.5</span><span class="tt">Manual control works in manual mode</span><span class="role staff">STAFF</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Switch one pump to <b>Manual</b>.</li>
+      <li>Press <b>Start</b>, then <b>Stop</b>.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> the device switches on and off, and two log entries appear tagged
+    <b>manual</b> with your name against them.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T5.6</span><span class="tt">Residents cannot reach the control panel</span><span class="role res">RESIDENT</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Sign in as a resident.</li>
+      <li>Browse directly to <code>http://localhost:8000/actuation</code>.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> <b>403 Forbidden</b>. The item is also absent from the resident sidebar.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<h2 class="part"><span class="n">6</span>Flood Prediction</h2>
+<p class="lede">Module 6 — linear regression over recent readings producing rate of rise, time-to-critical and a
+confidence score.</p>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T6.1</span><span class="tt">Generate predictions</span><span class="role cli">TERMINAL</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Create a rising trend, then generate predictions:</li>
+    </ol>
+    <pre>docker compose exec app php artisan sensors:simulate
+docker compose exec app php artisan sensors:simulate --storm
+docker compose exec app php artisan predictions:generate</pre>
+    <div class="exp"><b>Expected:</b> the command reports predictions generated for the active sensors.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T6.2</span><span class="tt">Read the forecast</span><span class="role staff">STAFF</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Open <b>AI Flood Prediction</b>.</li></ol>
+    <div class="exp"><b>Expected:</b> each sensor shows its current level, rate of rise in metres per minute, a
+    projected level, a time-to-critical estimate where the water is rising, and a confidence gauge.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="callout">
+  <p><span class="label i">Be ready for this question</span></p>
+  <p>If an adviser asks what the confidence percentage means, the correct answer is: <b>it is R² × 100 — how
+  closely the recent readings fit a straight line, not the probability that the forecast is correct.</b> A steady
+  rise gives high confidence; an erratic one gives low confidence. Saying this plainly is stronger than
+  overclaiming.</p>
+</div>
+
+<div class="page-break"></div>
+
+<h2 class="part"><span class="n">7</span>Automated Alert Dispatch</h2>
+<p class="lede">Module 7 — threshold breach to alert to multi-channel dispatch, with a per-recipient delivery log.</p>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T7.1</span><span class="tt">A breach creates an alert</span><span class="role cli">TERMINAL</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Run <code>docker compose exec app php artisan sensors:simulate --storm</code>.</li>
+    <li>Open <b>Alerts &amp; Notifications</b> as staff.</li></ol>
+    <div class="exp"><b>Expected:</b> new alerts appear with severity warning or critical, naming the sensor, the
+    recorded level, the threshold breached and the barangay.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T7.2</span><span class="tt">The delivery log names every recipient and channel</span><span class="role staff">STAFF</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Open any critical alert and find the <b>Notification Log</b> panel.</li></ol>
+    <div class="exp"><b>Expected:</b> one row per recipient per channel. Email rows show <b>sent</b> in green. SMS
+    rows show <b>simulated</b> in grey. Siren rows name the device rather than a person.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="callout ok">
+  <p><span class="label o">This is the honesty point to highlight</span></p>
+  <p>SMS is recorded as <b>simulated</b>, never as sent, and carries no delivery timestamp — so a simulated message
+  can never be mistaken for a delivered one. Real SMS can be enabled by setting <code>SMS_GATEWAY=semaphore</code>
+  with a provider key; no code changes are required.</p>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T7.3</span><span class="tt">Residents really receive the email</span><span class="role guest">GUEST</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Switch to the Mailpit tab at <code>http://localhost:8025</code>.</li></ol>
+    <div class="exp"><b>Expected:</b> a branded flood alert email for each affected resident, containing the
+    severity, zone, water level and guidance. Email is genuinely delivered, not simulated.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T7.4</span><span class="tt">Alerts are not duplicated</span><span class="role cli">TERMINAL</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Run <code>--storm</code> twice more and count the alerts for one sensor.</li></ol>
+    <div class="exp"><b>Expected:</b> no second alert of the same severity is created for the same sensor while the
+    first is still active. This is deliberate: without it, residents would be messaged every five minutes for the
+    whole event.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T7.5</span><span class="tt">Staff can issue a manual alert</span><span class="role staff">STAFF</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>On the Alerts page choose <b>Create Alert</b>.</li>
+      <li>Pick a zone and severity, write a message, and submit.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> the alert is created with source <b>manual</b> and your name recorded as its
+    creator, and notifications dispatch exactly as for an automatic alert.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T7.6</span><span class="tt">Resolving an alert records a flood incident</span><span class="role staff">STAFF</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Open an active <b>critical</b> alert and choose <b>Resolve</b>.</li>
+      <li>Then run:</li>
+    </ol>
+    <pre>docker compose exec app php artisan tinker --execute='
+$i = App\Models\FloodIncident::latest("id")->first();
+printf("peak=%s rainfall=%s residents=%d duration=%d min\n",
+  $i->peak_water_level, $i->total_rainfall, $i->affected_residents, $i->duration_minutes);'</pre>
+    <div class="exp"><b>Expected:</b> a flood incident now exists whose peak level and rainfall come from the
+    readings recorded while that alert was active, and whose affected-resident count is the real number of
+    residents registered in that barangay.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="page-break"></div>
+
+<h2 class="part"><span class="n">8</span>Reports and Historical Analytics</h2>
+<p class="lede">Module 8 — analytics, historical review and export.</p>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T8.1</span><span class="tt">Analytics with a date filter</span><span class="role staff">STAFF</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Open <b>Reports &amp; Analytics</b>.</li>
+      <li>Set a date range covering the last 30 days and apply it.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> total incidents, critical incidents, affected residents and peak level update
+    with the range, plus a per-zone breakdown.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T8.2</span><span class="tt">Export to CSV</span><span class="role staff">STAFF</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Choose <b>Export</b> and select CSV.</li><li>Open the file in a spreadsheet.</li></ol>
+    <div class="exp"><b>Expected:</b> a CSV downloads containing a header row and one row per incident, with zone,
+    barangay, severity, peak level, rainfall and date.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T8.3</span><span class="tt">Export to PDF</span><span class="role staff">STAFF</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Choose <b>Export</b> and select PDF.</li></ol>
+    <div class="exp"><b>Expected:</b> a formatted PDF report downloads and opens, with a title, the date range and
+    the incident table.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T8.4</span><span class="tt">Historical data view</span><span class="role staff">STAFF</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Open <b>Historical Data</b> and change the date range.</li></ol>
+    <div class="exp"><b>Expected:</b> readings and flood events aggregated over the chosen period, with charts that
+    redraw when the range changes.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<h2 class="part"><span class="n">9</span>User and Access Management</h2>
+<p class="lede">Module 9 — accounts and roles.</p>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T9.1</span><span class="tt">Search and filter users</span><span class="role admin">ADMIN</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Open <b>Users</b>. Search for part of a name, then filter by role.</li></ol>
+    <div class="exp"><b>Expected:</b> the list narrows correctly and the filters combine.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T9.2</span><span class="tt">Create an account</span><span class="role admin">ADMIN</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Choose <b>Add User</b>, create a staff account, and sign in as it in a private window.</li></ol>
+    <div class="exp"><b>Expected:</b> the account is created pre-verified — it skips the OTP step — and the staff
+    sidebar appears. Reusing an existing email shows a validation error.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T9.3</span><span class="tt">Change an existing user's role</span><span class="role admin">ADMIN</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Choose the pencil icon beside any resident.</li>
+      <li>Change the role to <b>DRRMO / Staff</b>, leave the password fields blank, and save.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> the role changes and the user's existing password still works. Leaving the
+    password blank must not clear it.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T9.4</span><span class="tt">An administrator cannot demote themselves</span><span class="role admin">ADMIN</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Edit your own account and try to change the role to Resident.</li></ol>
+    <div class="exp"><b>Expected:</b> refused with "You cannot change your own role." This prevents the last
+    administrator locking everyone out.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T9.5</span><span class="tt">Role enforcement holds on direct URLs</span><span class="role res">RESIDENT</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Signed in as a resident, visit each URL below directly.</li>
+    </ol>
+    <table>
+      <tr><th style="width:52%">URL</th><th>Expected</th></tr>
+      <tr><td><code>/admin/users</code></td><td>403 Forbidden</td></tr>
+      <tr><td><code>/admin/audit-logs</code></td><td>403 Forbidden</td></tr>
+      <tr><td><code>/admin/evacuation-centers</code></td><td>403 Forbidden</td></tr>
+      <tr><td><code>/analytics</code></td><td>403 Forbidden</td></tr>
+      <tr><td><code>/actuation</code></td><td>403 Forbidden</td></tr>
+      <tr><td><code>/dashboard</code></td><td>Loads normally</td></tr>
+    </table>
+    <div class="exp"><b>Expected:</b> hiding a menu item is not security. Each restricted URL must be refused by the
+    server even when typed directly.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="page-break"></div>
+
+<h2 class="part"><span class="n">10</span>System Configuration</h2>
+<p class="lede">Module 10 — flood zones and the thresholds that drive every alert.</p>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T10.1</span><span class="tt">Flood zone create, edit and delete</span><span class="role admin">ADMIN</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Open <b>Flood Zones</b> and add a test zone with at least four boundary points.</li>
+      <li>Edit its description, then delete it.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> each operation succeeds with a confirmation. The new zone appears on the Flood
+    Map while it exists.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T10.2</span><span class="tt">Thresholds must be ordered</span><span class="role admin">ADMIN</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Edit a zone and set warning <code>3.0</code> with critical <code>1.5</code>. Save.</li></ol>
+    <div class="exp"><b>Expected:</b> a validation error. Critical must exceed warning, which must exceed safe —
+    otherwise risk classification would be nonsense.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T10.3</span><span class="tt">Thresholds change classification immediately</span><span class="role admin">ADMIN</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Note a zone currently showing <b>safe</b> and its latest water level.</li>
+      <li>Edit the zone and set the warning threshold below that level. Save.</li>
+      <li>Return to Real-time Monitoring.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> the zone and its sensors now classify as <b>warning</b>, with no new reading
+    required. Restore the original values afterwards.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<h2 class="part"><span class="n">11</span>Evacuation Center Management</h2>
+<p class="lede">Module 11 — shelter records, capacity and nearest-shelter selection.</p>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T11.1</span><span class="tt">The shelter register</span><span class="role admin">ADMIN</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Open <b>Evac. Centers</b> in the admin group.</li></ol>
+    <div class="exp"><b>Expected:</b> eight seeded shelters across the barangays, with total capacity and spaces
+    available shown as summary figures, and an occupancy bar per shelter.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T11.2</span><span class="tt">Create, edit and delete a shelter</span><span class="role admin">ADMIN</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Choose <b>Add Center</b>, create one in Tayud with capacity 200, and save.</li>
+      <li>Edit its occupancy to 150, then delete it.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> each operation succeeds; the occupancy bar reflects 75 per cent while it
+    exists.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T11.3</span><span class="tt">Occupancy cannot exceed capacity</span><span class="role admin">ADMIN</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Edit a shelter and set occupancy above its capacity. Save.</li></ol>
+    <div class="exp"><b>Expected:</b> "Occupancy cannot exceed the centre capacity."</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T11.4</span><span class="tt">Residents see shelters nearest first</span><span class="role res">RESIDENT</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Signed in as the resident whose location you set in T1.9, open <b>Evacuation Centers</b>.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> a real street map with shelter markers coloured by availability, a
+    <b>Nearest Center</b> card naming a shelter with its distance in kilometres and spaces free, a working
+    <b>Get directions</b> link, and a full list ordered by distance.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T11.5</span><span class="tt">A full shelter is not offered</span><span class="role admin">ADMIN</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Set the nearest shelter from T11.4 to status <b>full</b> and save.</li>
+      <li>Return to the resident's Evacuation Centers page, then open <b>GPS Flood Alerts</b> as staff.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> the full shelter is marked accordingly, and the evacuation route now targets
+    the nearest shelter that is still <b>open</b> rather than the closest one overall.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="page-break"></div>
+
+<h2 class="part"><span class="n">12</span>Audit and Compliance</h2>
+<p class="lede">Module 12 — who changed what, when, and from where.</p>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T12.1</span><span class="tt">Changes are recorded with the actor</span><span class="role admin">ADMIN</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Open <b>Audit Log</b> and note the current count.</li>
+      <li>Edit any flood zone's critical threshold and save.</li>
+      <li>Return to the Audit Log.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> a new entry showing the time, your name, action <b>updated</b>, the record
+    type and name, and the originating IP address.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T12.2</span><span class="tt">Before and after values are captured</span><span class="role admin">ADMIN</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Click that entry to expand it.</li></ol>
+    <div class="exp"><b>Expected:</b> a field-by-field table showing the old value in red and the new value in
+    green — for example <code>critical_threshold</code> 3.00 → 4.50.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T12.3</span><span class="tt">Creations and deletions are recorded too</span><span class="role admin">ADMIN</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Create a shelter, then delete it. Return to the Audit Log.</li></ol>
+    <div class="exp"><b>Expected:</b> one <b>created</b> entry and one <b>deleted</b> entry, both naming the
+    shelter. Deleted records remain traceable after the record itself is gone.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T12.4</span><span class="tt">Credentials never appear in the trail</span><span class="role admin">ADMIN</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Edit a user and set a new password. Save.</li>
+      <li>Expand the resulting audit entry.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> the password field shows <code>[redacted]</code>. Device API tokens are
+    redacted the same way. An audit trail that leaks credentials is worse than none.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T12.5</span><span class="tt">Filters work</span><span class="role admin">ADMIN</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Filter by action <b>updated</b>, then by record type, then search a record name.</li></ol>
+    <div class="exp"><b>Expected:</b> the list narrows correctly and the filters combine.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<h2 class="part"><span class="n">13</span>Community Flood Reports</h2>
+<p class="lede">Residents report what they see; staff verify it.</p>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T13.1</span><span class="tt">A resident submits a report</span><span class="role res">RESIDENT</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>On the resident dashboard choose <b>Report Flooding</b>.</li>
+      <li>Pick a severity, describe the situation, allow location access if prompted, and submit.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> the modal closes with a confirmation message.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T13.2</span><span class="tt">Staff verify the report</span><span class="role staff">STAFF</span></div>
+  <div class="tcb">
+    <ol class="steps">
+      <li>Open <b>Flood Reports</b>.</li>
+      <li>Find the pending report, mark it <b>Reviewed</b>, then <b>Resolved</b>.</li>
+    </ol>
+    <div class="exp"><b>Expected:</b> the report shows the reporter, barangay, severity and description, with a
+    map link if coordinates were attached. The status tabs and counts update at each step, and every change appears
+    in the Audit Log.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="page-break"></div>
+
+<h2 class="part"><span class="n">14</span>Automated test suite</h2>
+<p class="lede">Manual testing shows the system works today; the automated suite shows it keeps working.</p>
+
+<div class="tc">
+  <div class="tch"><span class="tid">T14.1</span><span class="tt">Run the full suite</span><span class="role cli">TERMINAL</span></div>
+  <div class="tcb">
+    <ol class="steps"><li>Run:</li></ol>
+    <pre>docker compose exec app php artisan test</pre>
+    <div class="exp"><b>Expected:</b> <b>259 passing tests</b> and no failures, in well under a minute. The suite
+    runs against an isolated in-memory database and never touches your demonstration data.</div>
+  </div>
+  <div class="verdict"><span class="box"></span>Pass &nbsp; <span class="box"></span>Fail &nbsp; Notes: ______________________________</div>
+</div>
+
+<div class="callout">
+  <p><span class="label i">Worth pointing out to an adviser</span></p>
+  <p>Several tests exist specifically to prove the system refuses to do something: a forged reading creates no
+  alert and sends no notification; an auto-mode device rejects manual control; a simulated message is never
+  recorded as delivered; a resident cannot read another resident's notifications. Tests that assert a refusal are
+  usually the ones worth showing.</p>
+</div>
+
+<h2 class="part"><span class="n">15</span>Coverage summary</h2>
+<p class="lede">Map each manuscript module to the tests that demonstrate it. Complete this column as you go.</p>
+
+<table>
+  <tr><th style="width:5%">#</th><th style="width:38%">Module (Table 17)</th><th style="width:32%">Tests</th><th>Result</th></tr>
+  <tr><td>1</td><td>Account Management</td><td>T1.1 – T1.9</td><td class="mid"><span class="box"></span>Pass <span class="box"></span>Fail</td></tr>
+  <tr><td>2</td><td>Dashboard &amp; Visualisation</td><td>T2.1 – T2.4</td><td class="mid"><span class="box"></span>Pass <span class="box"></span>Fail</td></tr>
+  <tr><td>3</td><td>Notification &amp; Alerts (UI)</td><td>T3.1 – T3.2</td><td class="mid"><span class="box"></span>Pass <span class="box"></span>Fail</td></tr>
+  <tr><td>4</td><td>IoT Telemetry &amp; Device Management</td><td>T4.1 – T4.8</td><td class="mid"><span class="box"></span>Pass <span class="box"></span>Fail</td></tr>
+  <tr><td>5</td><td>Smart Actuation</td><td>T5.1 – T5.6</td><td class="mid"><span class="box"></span>Pass <span class="box"></span>Fail</td></tr>
+  <tr><td>6</td><td>Flood Prediction</td><td>T6.1 – T6.2</td><td class="mid"><span class="box"></span>Pass <span class="box"></span>Fail</td></tr>
+  <tr><td>7</td><td>Automated Alert Dispatch</td><td>T7.1 – T7.6</td><td class="mid"><span class="box"></span>Pass <span class="box"></span>Fail</td></tr>
+  <tr><td>8</td><td>Reports &amp; Historical Analytics</td><td>T8.1 – T8.4</td><td class="mid"><span class="box"></span>Pass <span class="box"></span>Fail</td></tr>
+  <tr><td>9</td><td>User &amp; Access Management</td><td>T9.1 – T9.5</td><td class="mid"><span class="box"></span>Pass <span class="box"></span>Fail</td></tr>
+  <tr><td>10</td><td>System Configuration</td><td>T10.1 – T10.3</td><td class="mid"><span class="box"></span>Pass <span class="box"></span>Fail</td></tr>
+  <tr><td>11</td><td>Evacuation Center Management</td><td>T11.1 – T11.5</td><td class="mid"><span class="box"></span>Pass <span class="box"></span>Fail</td></tr>
+  <tr><td>12</td><td>Audit &amp; Compliance</td><td>T12.1 – T12.5</td><td class="mid"><span class="box"></span>Pass <span class="box"></span>Fail</td></tr>
+  <tr><td>★</td><td>Community Flood Reports</td><td>T13.1 – T13.2</td><td class="mid"><span class="box"></span>Pass <span class="box"></span>Fail</td></tr>
+  <tr><td>★</td><td>Automated regression suite</td><td>T14.1</td><td class="mid"><span class="box"></span>Pass <span class="box"></span>Fail</td></tr>
+</table>
+
+<h3 class="sub">Known limitations to declare, not hide</h3>
+<p>If an adviser asks about any of the following, these are the correct answers. Each is a stated design decision,
+not an oversight.</p>
+<table>
+  <tr><th style="width:30%">Area</th><th>Position</th></tr>
+  <tr><td>SMS delivery</td><td>Simulated by default and recorded as such. A live Philippine gateway can be enabled by configuration alone.</td></tr>
+  <tr><td>Push notifications</td><td>Not implemented in this version.</td></tr>
+  <tr><td>Prediction model</td><td>Ordinary least-squares linear regression. Confidence is goodness of fit, not forecast probability. LSTM is future work once a multi-season dataset exists.</td></tr>
+  <tr><td>Actuation</td><td>Fully implemented in software; demonstrated with low-voltage prototype hardware. Does not control municipal infrastructure.</td></tr>
+  <tr><td>Evacuation routing</td><td>A direct heading to the nearest available shelter. No road-routing engine is integrated.</td></tr>
+  <tr><td>Weather data</td><td>Simulated unless an OpenWeatherMap key is configured.</td></tr>
+  <tr><td>Field hardware</td><td>Sensor nodes are on order. The ingestion path they will use is already live and is proven by T4.2 – T4.6.</td></tr>
+</table>
+
+<div class="sign">
+  <p style="font-weight:700;color:#0b3c5d;font-size:11pt;margin-bottom:2px">Walkthrough sign-off</p>
+  <p style="font-size:8.6pt;color:#55677a;margin:0">
+    Tests completed: ______ of 67 &nbsp;·&nbsp; Passed: ______ &nbsp;·&nbsp; Failed: ______
+  </p>
+  <table style="margin-top:10px">
+    <tr>
+      <td style="width:50%;border:none;padding-right:16px">
+        <div class="sigline"></div>
+        <div class="siglabel">Student / Proponent &nbsp; · &nbsp; Date</div>
+      </td>
+      <td style="width:50%;border:none">
+        <div class="sigline"></div>
+        <div class="siglabel">Adviser &nbsp; · &nbsp; Date</div>
+      </td>
+    </tr>
+  </table>
+  <p style="font-size:8.4pt;color:#55677a;margin-top:12px">Remarks:</p>
+  <div style="border-bottom:1px solid #b9c6d1;height:20px"></div>
+  <div style="border-bottom:1px solid #b9c6d1;height:20px"></div>
+  <div style="border-bottom:1px solid #b9c6d1;height:20px"></div>
+</div>
+
+<div class="foot">
+  BahaAI — Manual Test Walkthrough &nbsp;·&nbsp; Prepared 20 September 2026 &nbsp;·&nbsp;
+  67 test cases across 12 modules &nbsp;·&nbsp; Companion to the Hardware Assembly Guide and the User Guide
+</div>
+
+</body>
+</html>

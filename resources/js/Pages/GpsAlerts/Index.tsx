@@ -22,7 +22,7 @@ interface FloodedZone {
 interface Props {
     center: { lat: number; lng: number };
     floodedZones: FloodedZone[];
-    evacuationCenter: { lat: number; lng: number; name: string };
+    evacuationCenter: { lat: number; lng: number; name: string } | null;
 }
 
 export default function Index({ center, floodedZones, evacuationCenter }: Props) {
@@ -98,7 +98,9 @@ export default function Index({ center, floodedZones, evacuationCenter }: Props)
                             </div>
                             <div className="min-w-0">
                                 <p className="text-xs font-medium text-slate-400">Evacuation Center</p>
-                                <p className="text-sm font-semibold text-navy-900">{evacuationCenter.name}</p>
+                                <p className="text-sm font-semibold text-navy-900">
+                                    {evacuationCenter?.name ?? 'None registered yet'}
+                                </p>
                             </div>
                         </div>
                     </SectionCard>

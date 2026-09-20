@@ -8,10 +8,10 @@ import { ChevronDown, HelpCircle, Mail, MessageSquare, Phone } from 'lucide-reac
 import { useState } from 'react';
 
 const FAQS = [
-    { q: 'How does BahaAI detect flooding?', a: 'BahaAI uses a network of IoT water-level and rainfall sensors that stream readings in real time. An AI model analyzes these readings alongside weather data to predict rising water levels before flooding occurs.' },
-    { q: 'How will I be notified of an alert?', a: 'You can receive alerts through in-app notifications, SMS, push notifications, and email. Manage your channels under Profile & Settings → Notification Preferences.' },
+    { q: 'How does BahaAI detect flooding?', a: 'BahaAI uses a network of IoT water-level sensors that stream readings in real time. When a reading crosses your barangay’s warning or critical threshold, an alert is raised automatically. A statistical model also fits recent readings to project how fast the water is rising.' },
+    { q: 'How will I be notified of an alert?', a: 'In-app notifications and email are delivered for real. SMS is simulated in this deployment — messages are recorded but not transmitted — and push notifications are not yet available. Manage your channels under Profile & Settings → Notification Preferences.' },
     { q: 'Why is my area not showing sensor data?', a: 'Sensor coverage depends on deployment by your Local Government Unit. If your barangay has no nearby sensor, you will still receive area-wide alerts and weather updates.' },
-    { q: 'How accurate are the AI predictions?', a: 'Predictions are generated from recent sensor trends and may vary from actual conditions. Always treat them as guidance and follow official advisories from local authorities.' },
+    { q: 'How accurate are the predictions?', a: 'Predictions extrapolate a straight-line trend from the last two hours of readings, so they assume the water keeps rising at its current rate. The confidence score reflects how closely recent readings fit that line — not how likely the forecast is to come true. Always treat predictions as guidance and follow official advisories from PAGASA and your local DRRMO.' },
     { q: 'How do I change my monitored location?', a: 'Use "Change Location" in the sidebar, or go to Profile & Settings → Update Location, to set the area you want to monitor.' },
 ];
 

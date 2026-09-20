@@ -5,7 +5,7 @@ import StatusBadge from '@/Components/StatusBadge';
 import { StatusLevel } from '@/lib/status';
 import { Paginated } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { Plus, Search, Trash2, UserCircle } from 'lucide-react';
+import { Pencil, Plus, Search, Trash2, UserCircle } from 'lucide-react';
 import { useState } from 'react';
 
 interface UserRow {
@@ -125,7 +125,14 @@ export default function Index({ users, filters }: Props) {
                                         />
                                     </td>
                                     <td className="px-5 py-4">
-                                        <div className="flex items-center justify-end">
+                                        <div className="flex items-center justify-end gap-2">
+                                            <Link
+                                                href={route('admin.users.edit', user.id)}
+                                                className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-brand-600"
+                                                aria-label="Edit user"
+                                            >
+                                                <Pencil className="h-4 w-4" />
+                                            </Link>
                                             {user.id !== auth.user.id && (
                                                 <button
                                                     onClick={() => deleteUser(user)}

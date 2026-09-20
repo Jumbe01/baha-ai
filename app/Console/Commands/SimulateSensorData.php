@@ -15,7 +15,10 @@ class SimulateSensorData extends Command
 {
     public function handle(AlertService $alertService): int
     {
-        $query = Sensor::with('floodZone')->where('status', 'active');
+        // Offline sensors are included: a simulated device reporting again is
+        // exactly what brings a real one back online, and excluding them would
+        // silently kill the simulator 30 minutes after seeding.
+        $query = Sensor::with('floodZone')->whereIn('status', ['active', 'offline']);
 
         if ($sensorId = $this->option('sensor')) {
             $query->where('id', $sensorId);
@@ -48,7 +51,10 @@ class SimulateSensorData extends Command
                 'recorded_at' => now(),
             ]);
 
-            $sensor->update(['last_reading_at' => $reading->recorded_at]);
+            $sensor->update([
+                'last_reading_at' => $reading->recorded_at,
+                'status' => 'active',
+            ]);
 
             $alert = $alertService->evaluateReading($sensor, $reading);
 

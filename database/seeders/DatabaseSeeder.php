@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             SensorSeeder::class,
             FloodIncidentSeeder::class,
             ActuatorSeeder::class,
+            EvacuationCenterSeeder::class,
         ]);
     }
 }

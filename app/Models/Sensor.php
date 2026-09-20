@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Auditable;
 use Database\Factories\SensorFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,12 +13,15 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[Fillable([
     'flood_zone_id', 'name', 'type', 'latitude', 'longitude',
-    'status', 'battery_level', 'last_reading_at',
+    'status', 'battery_level', 'last_reading_at', 'api_token',
 ])]
 class Sensor extends Model
 {
     /** @use HasFactory<SensorFactory> */
-    use HasFactory;
+    use Auditable, HasFactory;
+
+    /** @var list<string> */
+    protected $hidden = ['api_token'];
 
     protected function casts(): array
     {

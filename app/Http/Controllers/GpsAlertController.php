@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EvacuationCenter;
 use App\Models\FloodZone;
 use App\Services\RiskLevelService;
 use Inertia\Inertia;
@@ -30,6 +31,7 @@ class GpsAlertController extends Controller
             }
 
             $center = $this->centroid($zone->coordinates);
+            $shelter = $this->nearestShelter($center);
 
             return [
                 'id' => $zone->id,
@@ -38,15 +40,42 @@ class GpsAlertController extends Controller
                 'risk' => $riskService->forWaterLevel($highest, $zone)['level'],
                 'water_level' => round($highest, 2),
                 'center' => $center,
-                'evacuation_route' => $this->evacuationRoute($center),
+                'evacuation_center' => $shelter ? [
+                    'id' => $shelter->id,
+                    'name' => $shelter->name,
+                    'lat' => (float) $shelter->latitude,
+                    'lng' => (float) $shelter->longitude,
+                    'spaces_remaining' => $shelter->spaces_remaining,
+                    'distance_km' => $shelter->distanceFrom($center['lat'], $center['lng']),
+                ] : null,
+                'evacuation_route' => $this->evacuationRoute($center, $shelter),
             ];
         })->values();
+
+        $primary = EvacuationCenter::available()->first();
 
         return Inertia::render('GpsAlerts/Index', [
             'center' => ['lat' => 10.3667, 'lng' => 123.9567],
             'floodedZones' => $floodedZones,
-            'evacuationCenter' => ['lat' => 10.3760, 'lng' => 123.9540, 'name' => 'Consolacion Sports Complex'],
+            'evacuationCenter' => $primary ? [
+                'lat' => (float) $primary->latitude,
+                'lng' => (float) $primary->longitude,
+                'name' => $primary->name,
+            ] : null,
         ]);
+    }
+
+    /**
+     * The closest shelter that still has room, measured from a zone centroid.
+     *
+     * @param  array{lat: float, lng: float}  $from
+     */
+    private function nearestShelter(array $from): ?EvacuationCenter
+    {
+        return EvacuationCenter::available()
+            ->get()
+            ->sortBy(fn (EvacuationCenter $center) => $center->distanceFrom($from['lat'], $from['lng']))
+            ->first();
     }
 
     /**
@@ -71,17 +100,23 @@ class GpsAlertController extends Controller
     }
 
     /**
-     * Build a simple two-point evacuation route from a flooded zone centroid
-     * to the designated evacuation center.
+     * A direct line from the flooded zone centroid to its nearest shelter.
+     *
+     * This is a straight-line heading, not a road route — there is no routing
+     * engine behind it, and the UI labels it as a direction indicator.
      *
      * @param  array{lat: float, lng: float}  $from
      * @return array<int, array{lat: float, lng: float}>
      */
-    private function evacuationRoute(array $from): array
+    private function evacuationRoute(array $from, ?EvacuationCenter $shelter): array
     {
+        if (! $shelter) {
+            return [];
+        }
+
         return [
             $from,
-            ['lat' => 10.3760, 'lng' => 123.9540],
+            ['lat' => (float) $shelter->latitude, 'lng' => (float) $shelter->longitude],
         ];
     }
 }

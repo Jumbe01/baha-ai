@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\ActuatorController;
+use App\Http\Controllers\Admin\AuditLogController;
+use App\Http\Controllers\Admin\EvacuationCenterController as AdminEvacuationCenterController;
 use App\Http\Controllers\Admin\FloodZoneController;
 use App\Http\Controllers\Admin\SensorController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EvacuationCenterController;
 use App\Http\Controllers\FloodReportController;
 use App\Http\Controllers\GpsAlertController;
 use App\Http\Controllers\HistoricalController;
@@ -67,7 +70,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Informational / secondary pages (full parity with reference nav).
-    Route::get('/evacuation-centers', fn () => Inertia::render('EvacuationCenters/Index'))->name('evacuation.index');
+    Route::get('/evacuation-centers', [EvacuationCenterController::class, 'index'])->name('evacuation.index');
     Route::get('/historical-data', [HistoricalController::class, 'index'])->name('historical.index');
     Route::get('/help', fn () => Inertia::render('Help/Index'))->name('help.index');
     Route::get('/about', fn () => Inertia::render('About/Index'))->name('about.index');
@@ -94,7 +97,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('flood-zones', FloodZoneController::class)->except('show');
     Route::resource('sensors', SensorController::class)->except('show');
-    Route::resource('users', UserController::class)->only(['index', 'create', 'store', 'destroy']);
+    Route::resource('evacuation-centers', AdminEvacuationCenterController::class)->except('show');
+    Route::resource('users', UserController::class)->except('show');
+    Route::get('audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index');
 });
 
 require __DIR__.'/auth.php';

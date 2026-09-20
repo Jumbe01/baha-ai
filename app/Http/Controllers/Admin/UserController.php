@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreUserRequest;
+use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -60,6 +61,37 @@ class UserController extends Controller
 
         return redirect()->route('admin.users.index')
             ->with('success', 'User created successfully.');
+    }
+
+    public function edit(User $user): Response
+    {
+        return Inertia::render('Admin/Users/Edit', [
+            'user' => $user->only([
+                'id', 'name', 'email', 'role', 'mobile', 'barangay',
+            ]),
+        ]);
+    }
+
+    public function update(UpdateUserRequest $request, User $user): RedirectResponse
+    {
+        $validated = $request->validated();
+
+        // An admin demoting themselves would lock the last door behind them.
+        if ($user->id === $request->user()->id && $validated['role'] !== $user->role) {
+            return redirect()->back()->with('error', 'You cannot change your own role.');
+        }
+
+        $password = $validated['password'] ?? null;
+        unset($validated['password']);
+
+        $user->update($validated);
+
+        if ($password) {
+            $user->update(['password' => Hash::make($password)]);
+        }
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'User updated successfully.');
     }
 
     public function destroy(User $user, Request $request): RedirectResponse

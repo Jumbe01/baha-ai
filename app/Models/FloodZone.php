@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Auditable;
 use Database\Factories\FloodZoneFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class FloodZone extends Model
 {
     /** @use HasFactory<FloodZoneFactory> */
-    use HasFactory;
+    use Auditable, HasFactory;
 
     protected function casts(): array
     {
@@ -32,6 +33,11 @@ class FloodZone extends Model
     public function sensors(): HasMany
     {
         return $this->hasMany(Sensor::class);
+    }
+
+    public function actuatorDevices(): HasMany
+    {
+        return $this->hasMany(ActuatorDevice::class);
     }
 
     public function getRiskLevelForWaterLevel(float $waterLevel): string

@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BahaAI — IoT Hardware Buying Guide</title>
+<style>
+  @page { size: A4; margin: 14mm 13mm 16mm 13mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 9.6pt; line-height: 1.45; color: #16232e; margin: 0;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  h1, h2, h3, h4 { margin: 0; font-weight: 700; }
+  a { color: #0b6ea8; text-decoration: none; }
+  .page-break { page-break-before: always; }
+  .avoid-break { page-break-inside: avoid; }
+
+  /* ---------- Cover ---------- */
+  .cover {
+    background: linear-gradient(135deg, #0b3c5d 0%, #1076a8 55%, #14a3b8 100%);
+    color: #fff; padding: 20px 24px; border-radius: 10px; margin-bottom: 12px;
+    position: relative; overflow: hidden;
+  }
+  .cover h1 { font-size: 23pt; letter-spacing: -0.5px; }
+  .cover .sub { font-size: 11pt; opacity: .95; margin-top: 4px; font-weight: 600; }
+  .cover .meta { font-size: 8.4pt; opacity: .85; margin-top: 9px; }
+  .wave { position: absolute; right: -30px; bottom: -46px; opacity: .16; }
+
+  .callout {
+    border-left: 4px solid #1076a8; background: #eef7fc;
+    padding: 8px 12px; border-radius: 0 6px 6px 0; margin: 8px 0;
+    page-break-inside: avoid;
+  }
+  .callout.warn { border-left-color: #d98014; background: #fdf5e9; }
+  .callout.danger { border-left-color: #c0392b; background: #fdeeec; }
+  .callout.ok { border-left-color: #1e8a54; background: #ecf8f1; }
+  .callout p { margin: 3px 0; }
+
+  h2.section {
+    font-size: 14pt; color: #0b3c5d; margin: 20px 0 4px;
+    padding-bottom: 5px; border-bottom: 2.5px solid #14a3b8;
+  }
+  h2.section .n {
+    display: inline-block; background: #14a3b8; color: #fff;
+    width: 21px; height: 21px; line-height: 21px; text-align: center;
+    border-radius: 5px; font-size: 10pt; margin-right: 7px; vertical-align: 1px;
+  }
+  .lede { color: #4a5c6b; margin: 5px 0 12px; font-size: 9.4pt; }
+
+  /* ---------- Component cards ---------- */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+  .card {
+    border: 1px solid #d5e0e8; border-radius: 8px; padding: 7px 9px;
+    display: flex; gap: 9px; page-break-inside: avoid; background: #fff;
+  }
+  .card.hero { grid-column: 1 / -1; border-color: #14a3b8; border-width: 1.6px; background: #f7fdfe; }
+  .thumb {
+    flex: 0 0 88px; height: 66px; background: #f2f6f9; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center; border: 1px solid #e3ebf1;
+  }
+  .card.hero .thumb { flex-basis: 120px; height: 84px; }
+  .thumb svg { display: block; }
+  .info { flex: 1; min-width: 0; }
+  .cname { font-weight: 700; font-size: 9.8pt; color: #0b3c5d; line-height: 1.25; }
+  .cdesc { font-size: 8.3pt; color: #55677a; margin-top: 3px; line-height: 1.38; }
+  .crow { margin-top: 5px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .price { font-weight: 700; color: #0f7a4f; font-size: 9.6pt; }
+  .qty { font-size: 8pt; background: #eef2f5; color: #46586a; padding: 1px 6px; border-radius: 9px; }
+  .tag-must { font-size: 7.4pt; background: #c0392b; color: #fff; padding: 1px 6px; border-radius: 9px; font-weight: 700; letter-spacing: .3px; }
+  .tag-opt { font-size: 7.4pt; background: #7e8c9a; color: #fff; padding: 1px 6px; border-radius: 9px; font-weight: 700; letter-spacing: .3px; }
+  .search {
+    margin-top: 5px; font-size: 8.1pt; background: #fffbe8; border: 1px dashed #d9b83a;
+    padding: 3px 7px; border-radius: 5px; color: #6d5410;
+  }
+  .search b { color: #40320a; }
+
+  /* ---------- Tables ---------- */
+  table { width: 100%; border-collapse: collapse; font-size: 8.8pt; margin: 8px 0; }
+  th { background: #0b3c5d; color: #fff; text-align: left; padding: 6px 8px; font-size: 8.4pt; letter-spacing: .2px; }
+  td { padding: 5px 8px; border-bottom: 1px solid #e4ebf0; vertical-align: top; }
+  tr:nth-child(even) td { background: #f8fafc; }
+  td.num, th.num { text-align: right; white-space: nowrap; }
+  tr.total td { background: #e8f4ea !important; font-weight: 700; border-top: 2px solid #0f7a4f; color: #0d5c3c; }
+  tr.grand td { background: #0b3c5d !important; color: #fff; font-weight: 700; font-size: 9.6pt; }
+
+  code {
+    font-family: "Consolas", "Courier New", monospace; font-size: 8.4pt;
+    background: #eef2f5; padding: 1px 4px; border-radius: 3px; color: #14384f;
+  }
+  .store { display: flex; gap: 8px; margin: 8px 0; }
+  .store-card { flex: 1; border: 1px solid #d5e0e8; border-radius: 7px; padding: 8px 10px; page-break-inside: avoid; }
+  .store-card h4 { font-size: 9.4pt; color: #0b3c5d; }
+  .store-card .badge { font-size: 7.4pt; padding: 1px 6px; border-radius: 9px; font-weight: 700; color: #fff; }
+  .store-card p { margin: 4px 0 0; font-size: 8.2pt; color: #55677a; }
+  ul.tight { margin: 5px 0 5px 16px; padding: 0; font-size: 8.9pt; }
+  ul.tight li { margin-bottom: 3px; }
+  .foot {
+    margin-top: 16px; padding-top: 8px; border-top: 1px solid #d5e0e8;
+    font-size: 7.6pt; color: #7b8a99; text-align: center;
+  }
+  .checkbox { display: inline-block; width: 10px; height: 10px; border: 1.4px solid #7b8a99; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<div class="cover">
+  <svg class="wave" width="330" height="180" viewBox="0 0 330 180">
+    <path d="M0,90 Q40,55 80,90 T160,90 T240,90 T320,90 L320,180 L0,180 Z" fill="#fff"/>
+    <path d="M0,118 Q40,86 80,118 T160,118 T240,118 T320,118 L320,180 L0,180 Z" fill="#fff" opacity=".6"/>
+  </svg>
+  <h1>BahaAI — IoT Hardware Buying Guide</h1>
+  <div class="sub">What to buy, how much it costs, and what it looks like</div>
+  <div class="meta">
+    Flood Early-Warning System &nbsp;·&nbsp; Municipality of Consolacion, Cebu<br>
+    Prepared 8 August 2026 &nbsp;·&nbsp; Budget build: <b>2 sets — approx. ₱3,900</b>
+  </div>
+</div>
+
+<div class="callout">
+  <p><b>Read this first.</b> Prices shown were checked on <b>Circuit Rocks (Philippines)</b> on 8 August 2026 and are the <i>ceiling</i> — the same modules on Shopee usually cost 30–50% less. Prices move, so treat every figure as a budgeting estimate, not a quotation.</p>
+  <p style="margin-top:5px">Every item has a <b>yellow search box</b> with the exact words to type into Shopee or Lazada. That is the fastest way to find the part, and it keeps working after individual seller listings disappear.</p>
+</div>
+
+<div class="callout warn">
+  <p><b>About the pictures.</b> These are hand-drawn illustrations, not photographs of specific products. They show each part's recognisable shape and colour so you can spot it in a listing. Real items vary in silkscreen colour and board layout — <b>match the part number in the search box, not the picture.</b></p>
+</div>
+
+<h2 class="section"><span class="n">1</span>What the software expects from your hardware</h2>
+<p class="lede">Your device only has to do one thing: send a small JSON message to the BahaAI server. Everything else — alerts, predictions, maps, notifications — already works.</p>
+
+<table>
+  <tr><th style="width:26%">Field</th><th style="width:26%">Rule</th><th>What it means for your hardware</th></tr>
+  <tr><td><code>water_level</code></td><td><b>Required</b> · number ≥ 0</td><td>Water height in <b>metres</b>. This is the only field you must send. It comes from the ultrasonic sensor.</td></tr>
+  <tr><td><code>rainfall</code></td><td>Optional · number ≥ 0</td><td>Millimetres of rain. See the honest warning in Section 4.</td></tr>
+  <tr><td><code>temperature</code></td><td>Optional · number</td><td>Degrees Celsius — from the DHT22.</td></tr>
+  <tr><td><code>humidity</code></td><td>Optional · 0 to 100</td><td>Percent — from the same DHT22.</td></tr>
+  <tr><td><code>recorded_at</code></td><td>Optional · date</td><td>Leave blank and the server timestamps it on arrival.</td></tr>
+</table>
+
+<div class="callout danger">
+  <p><b>Four rules that decide what you buy — do not skip these.</b></p>
+  <p><b>1. The sensor measures DOWN, the app wants UP.</b> An ultrasonic sensor on a post reports the <i>distance to the water</i>. The app wants the <i>water level</i>. Your code must do <code>level = mount_height − measured_distance</code>. Get this backwards and every alert fires inverted.</p>
+  <p><b>2. Minimum range is 25 cm.</b> The waterproof ultrasonic sensor is blind closer than 25 cm. You cannot mount it just above the water — leave at least 25 cm of air above the highest water you expect. Design your test tank around this.</p>
+  <p><b>3. Send a reading at least every 10 minutes.</b> The system marks a sensor "offline" after 30 minutes of silence and raises a fault alert. Use a <b>5-minute interval</b>.</p>
+  <p><b>4. The prediction needs at least 3 readings within 2 hours.</b> At 5-minute intervals you get 24 readings — comfortable. Any slower and the AI prediction silently returns nothing.</p>
+</div>
+
+<div class="callout ok">
+  <p><b>You only need ONE working sensor.</b> The system handles 7 flood zones, but each is independent. One real device plus the built-in simulator (<code>php artisan sensors:simulate</code>) demonstrates the entire system. Do not buy seven of everything.</p>
+</div>
+
+<!-- ============ PAGE 2 — SET A ============ -->
+<div class="page-break"></div>
+
+<h2 class="section"><span class="n">2</span>Set A — Bench &amp; Testing Kit</h2>
+<p class="lede">For the desk, indoors, on a breadboard. This is where students write and debug the firmware before anything gets soldered or gets wet. <b>Subtotal ≈ ₱1,444</b> (₱1,794 with the multimeter).</p>
+
+<div class="grid">
+
+  <div class="card hero">
+    <div class="thumb">
+      <svg width="118" height="86" viewBox="0 0 118 86">
+        <rect x="26" y="6" width="66" height="74" rx="3" fill="#1c2833"/>
+        <rect x="34" y="24" width="50" height="30" rx="2" fill="#c8ccd0" stroke="#8b9095"/>
+        <rect x="38" y="28" width="42" height="22" rx="1" fill="#dde1e4"/>
+        <path d="M46,10 h26 v5 h-5 v-3 h-4 v3 h-4 v-3 h-4 v3 h-5 z" fill="#d4a017"/>
+        <rect x="26" y="12" width="7" height="62" fill="#2c3e50"/>
+        <rect x="85" y="12" width="7" height="62" fill="#2c3e50"/>
+        <g fill="#e8b923">
+          <circle cx="29.5" cy="17" r="1.9"/><circle cx="29.5" cy="25" r="1.9"/><circle cx="29.5" cy="33" r="1.9"/><circle cx="29.5" cy="41" r="1.9"/><circle cx="29.5" cy="49" r="1.9"/><circle cx="29.5" cy="57" r="1.9"/><circle cx="29.5" cy="65" r="1.9"/>
+          <circle cx="88.5" cy="17" r="1.9"/><circle cx="88.5" cy="25" r="1.9"/><circle cx="88.5" cy="33" r="1.9"/><circle cx="88.5" cy="41" r="1.9"/><circle cx="88.5" cy="49" r="1.9"/><circle cx="88.5" cy="57" r="1.9"/><circle cx="88.5" cy="65" r="1.9"/>
+        </g>
+        <rect x="48" y="58" width="22" height="8" rx="1.5" fill="#9aa3aa"/>
+        <rect x="50" y="74" width="18" height="8" rx="2" fill="#7f8c8d"/>
+        <rect x="52" y="76" width="14" height="4" rx="1" fill="#4d5656"/>
+        <circle cx="78" cy="62" r="2.6" fill="#e74c3c"/>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="cname">ESP32 Development Board (30-pin, WROOM-32) <span class="tag-must">MUST HAVE</span></div>
+      <div class="cdesc">The brain. Reads the sensors, connects to Wi-Fi, and posts readings to BahaAI. Recognise it by the <b>silver metal shield can</b> and the <b>zigzag gold antenna</b> at one end. <b>Do not buy an Arduino Uno</b> — it has no Wi-Fi and cannot talk to the server.</div>
+      <div class="crow"><span class="price">₱178 – ₱355</span><span class="qty">Qty 1 per set</span></div>
+      <div class="search">Search: <b>"ESP32 development board 30 pin"</b> or <b>"ESP32 WROOM-32 devkit"</b></div>
+    </div>
+  </div>
+
+  <div class="card hero">
+    <div class="thumb">
+      <svg width="126" height="86" viewBox="0 0 126 86">
+        <rect x="4" y="26" width="46" height="34" rx="3" fill="#1a6ea8"/>
+        <rect x="9" y="32" width="15" height="10" rx="1" fill="#0d3d5c"/>
+        <rect x="27" y="32" width="9" height="7" rx="1" fill="#c0c5c9"/>
+        <g fill="#e8b923"><circle cx="12" cy="53" r="2.2"/><circle cx="20" cy="53" r="2.2"/><circle cx="28" cy="53" r="2.2"/><circle cx="36" cy="53" r="2.2"/></g>
+        <path d="M50,43 C66,43 68,30 84,30" stroke="#2c3e50" stroke-width="4" fill="none"/>
+        <rect x="82" y="16" width="34" height="30" rx="15" fill="#aeb6bc" stroke="#7c858c" stroke-width="1.5"/>
+        <ellipse cx="99" cy="31" rx="12" ry="11" fill="#8d969d"/>
+        <ellipse cx="99" cy="31" rx="7.5" ry="7" fill="#5d666d"/>
+        <g stroke="#14a3b8" stroke-width="1.8" fill="none" opacity=".85">
+          <path d="M92,52 q7,5 14,0"/><path d="M88,60 q11,7 22,0"/><path d="M84,68 q15,9 30,0"/>
+        </g>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="cname">JSN-SR04T v2.0 Waterproof Ultrasonic Sensor <span class="tag-must">MUST HAVE</span></div>
+      <div class="cdesc">Measures the water surface from above. <b>This is the single most important part — do not substitute a cheaper non-waterproof one for the real build.</b> Recognise it by the small blue board with a <b>separate silver cylinder on a cable</b>. Range 25 cm to 4.5 m.</div>
+      <div class="crow"><span class="price">₱250 – ₱557</span><span class="qty">Qty 1 per set</span></div>
+      <div class="search">Search <b>"JSN-SR04T"</b> — <b>also try "AJ-SR04M"</b>, the identical module under another name, often half the price.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <svg width="92" height="62" viewBox="0 0 92 62">
+        <rect x="6" y="14" width="80" height="34" rx="3" fill="#1a6ea8"/>
+        <circle cx="26" cy="29" r="12.5" fill="#b9c0c6" stroke="#7c858c" stroke-width="1.4"/>
+        <circle cx="26" cy="29" r="8" fill="#6e767d"/>
+        <circle cx="66" cy="29" r="12.5" fill="#b9c0c6" stroke="#7c858c" stroke-width="1.4"/>
+        <circle cx="66" cy="29" r="8" fill="#6e767d"/>
+        <rect x="41" y="22" width="10" height="7" rx="1" fill="#c9ced2"/>
+        <g fill="#e8b923"><circle cx="36" cy="44" r="2"/><circle cx="43" cy="44" r="2"/><circle cx="50" cy="44" r="2"/><circle cx="57" cy="44" r="2"/></g>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="cname">HC-SR04 Ultrasonic (non-waterproof)</div>
+      <div class="cdesc">The cheap practice version — two silver "eyes" on a blue board. Use it to get the code working before you risk the expensive waterproof one. Buy two; they are almost free.</div>
+      <div class="crow"><span class="price">₱25</span><span class="qty">Qty 2</span></div>
+      <div class="search">Search: <b>"HC-SR04 ultrasonic sensor"</b></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <svg width="92" height="62" viewBox="0 0 92 62">
+        <rect x="30" y="7" width="32" height="38" rx="3" fill="#f4f6f7" stroke="#b9c0c6" stroke-width="1.4"/>
+        <g fill="#c3cad0">
+          <rect x="34" y="12" width="24" height="2.6" rx="1.3"/><rect x="34" y="17" width="24" height="2.6" rx="1.3"/>
+          <rect x="34" y="22" width="24" height="2.6" rx="1.3"/><rect x="34" y="27" width="24" height="2.6" rx="1.3"/>
+          <rect x="34" y="32" width="24" height="2.6" rx="1.3"/><rect x="34" y="37" width="24" height="2.6" rx="1.3"/>
+        </g>
+        <g stroke="#9aa3aa" stroke-width="2">
+          <line x1="37" y1="45" x2="37" y2="56"/><line x1="45" y1="45" x2="45" y2="56"/>
+          <line x1="53" y1="45" x2="53" y2="56"/><line x1="60" y1="45" x2="60" y2="56"/>
+        </g>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="cname">DHT22 Temperature &amp; Humidity Sensor</div>
+      <div class="cdesc">Small <b>white plastic box with a grille</b> and 4 legs. Fills the <code>temperature</code> and <code>humidity</code> fields. The blue DHT11 (₱55) also works with slightly less accuracy.</div>
+      <div class="crow"><span class="price">₱109</span><span class="qty">Qty 1</span></div>
+      <div class="search">Search: <b>"DHT22 AM2302 sensor module"</b></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <svg width="92" height="62" viewBox="0 0 92 62">
+        <rect x="10" y="8" width="42" height="46" rx="2" fill="#1e7d47"/>
+        <g stroke="#e8b923" stroke-width="2.4">
+          <line x1="15" y1="13" x2="15" y2="49"/><line x1="21" y1="13" x2="21" y2="49"/>
+          <line x1="27" y1="13" x2="27" y2="49"/><line x1="33" y1="13" x2="33" y2="49"/>
+          <line x1="39" y1="13" x2="39" y2="49"/><line x1="45" y1="13" x2="45" y2="49"/>
+        </g>
+        <g fill="#5bc0eb" opacity=".8">
+          <ellipse cx="22" cy="20" rx="3.4" ry="4.2"/><ellipse cx="36" cy="33" rx="3" ry="3.8"/><ellipse cx="26" cy="43" rx="2.6" ry="3.4"/>
+        </g>
+        <rect x="58" y="20" width="26" height="20" rx="2" fill="#1a6ea8"/>
+        <rect x="62" y="25" width="9" height="7" rx="1" fill="#0d3d5c"/>
+        <line x1="52" y1="26" x2="58" y2="26" stroke="#2c3e50" stroke-width="1.6"/>
+        <line x1="52" y1="33" x2="58" y2="33" stroke="#2c3e50" stroke-width="1.6"/>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="cname">Rain / Steam Detection Module <span class="tag-opt">READ SEC. 4</span></div>
+      <div class="cdesc">Green board with comb-shaped copper tracks plus a small blue driver board. <b>It only tells you wet or dry — it cannot measure millimetres.</b> See the warning in Section 4 before relying on it.</div>
+      <div class="crow"><span class="price">₱75</span><span class="qty">Qty 1</span></div>
+      <div class="search">Search: <b>"rain sensor module arduino"</b></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <svg width="92" height="62" viewBox="0 0 92 62">
+        <rect x="8" y="9" width="76" height="44" rx="3" fill="#f7f9fa" stroke="#c3cad0" stroke-width="1.4"/>
+        <rect x="8" y="28" width="76" height="6" fill="#eceff1"/>
+        <g fill="#b9c0c6">
+          <rect x="14" y="13" width="2" height="2"/><rect x="20" y="13" width="2" height="2"/><rect x="26" y="13" width="2" height="2"/><rect x="32" y="13" width="2" height="2"/><rect x="38" y="13" width="2" height="2"/><rect x="44" y="13" width="2" height="2"/><rect x="50" y="13" width="2" height="2"/><rect x="56" y="13" width="2" height="2"/><rect x="62" y="13" width="2" height="2"/><rect x="68" y="13" width="2" height="2"/><rect x="74" y="13" width="2" height="2"/>
+          <rect x="14" y="18" width="2" height="2"/><rect x="20" y="18" width="2" height="2"/><rect x="26" y="18" width="2" height="2"/><rect x="32" y="18" width="2" height="2"/><rect x="38" y="18" width="2" height="2"/><rect x="44" y="18" width="2" height="2"/><rect x="50" y="18" width="2" height="2"/><rect x="56" y="18" width="2" height="2"/><rect x="62" y="18" width="2" height="2"/><rect x="68" y="18" width="2" height="2"/><rect x="74" y="18" width="2" height="2"/>
+          <rect x="14" y="23" width="2" height="2"/><rect x="20" y="23" width="2" height="2"/><rect x="26" y="23" width="2" height="2"/><rect x="32" y="23" width="2" height="2"/><rect x="38" y="23" width="2" height="2"/><rect x="44" y="23" width="2" height="2"/><rect x="50" y="23" width="2" height="2"/><rect x="56" y="23" width="2" height="2"/><rect x="62" y="23" width="2" height="2"/><rect x="68" y="23" width="2" height="2"/><rect x="74" y="23" width="2" height="2"/>
+          <rect x="14" y="39" width="2" height="2"/><rect x="20" y="39" width="2" height="2"/><rect x="26" y="39" width="2" height="2"/><rect x="32" y="39" width="2" height="2"/><rect x="38" y="39" width="2" height="2"/><rect x="44" y="39" width="2" height="2"/><rect x="50" y="39" width="2" height="2"/><rect x="56" y="39" width="2" height="2"/><rect x="62" y="39" width="2" height="2"/><rect x="68" y="39" width="2" height="2"/><rect x="74" y="39" width="2" height="2"/>
+          <rect x="14" y="44" width="2" height="2"/><rect x="20" y="44" width="2" height="2"/><rect x="26" y="44" width="2" height="2"/><rect x="32" y="44" width="2" height="2"/><rect x="38" y="44" width="2" height="2"/><rect x="44" y="44" width="2" height="2"/><rect x="50" y="44" width="2" height="2"/><rect x="56" y="44" width="2" height="2"/><rect x="62" y="44" width="2" height="2"/><rect x="68" y="44" width="2" height="2"/><rect x="74" y="44" width="2" height="2"/>
+        </g>
+        <line x1="10" y1="11" x2="82" y2="11" stroke="#e74c3c" stroke-width="1"/>
+        <line x1="10" y1="51" x2="82" y2="51" stroke="#3498db" stroke-width="1"/>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="cname">Breadboard, 830 tie-point</div>
+      <div class="cdesc">White plastic board full of holes with red and blue rails. Lets students wire everything without soldering, then pull it apart and try again.</div>
+      <div class="crow"><span class="price">₱120</span><span class="qty">Qty 1</span></div>
+      <div class="search">Search: <b>"breadboard 830 point MB-102"</b></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <svg width="92" height="62" viewBox="0 0 92 62">
+        <g fill="none" stroke-width="3.2" stroke-linecap="round">
+          <path d="M12,16 C34,10 58,22 80,15" stroke="#e74c3c"/>
+          <path d="M12,23 C34,17 58,29 80,22" stroke="#e67e22"/>
+          <path d="M12,30 C34,24 58,36 80,29" stroke="#f1c40f"/>
+          <path d="M12,37 C34,31 58,43 80,36" stroke="#27ae60"/>
+          <path d="M12,44 C34,38 58,50 80,43" stroke="#2980b9"/>
+        </g>
+        <rect x="6" y="12" width="8" height="36" rx="2" fill="#2c3e50"/>
+        <rect x="78" y="11" width="8" height="36" rx="2" fill="#2c3e50"/>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="cname">Jumper Wire Set (Male-Male, Male-Female, Female-Female)</div>
+      <div class="cdesc">Ribbons of coloured wires with plastic-shrouded pins. <b>Buy all three types</b> — running out of one kind mid-build is the most common way to lose an afternoon.</div>
+      <div class="crow"><span class="price">₱45 each</span><span class="qty">Qty 3 sets</span></div>
+      <div class="search">Search: <b>"dupont jumper wires 40pcs male female"</b></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <svg width="92" height="62" viewBox="0 0 92 62">
+        <rect x="14" y="12" width="34" height="38" rx="5" fill="#f2f4f5" stroke="#c3cad0" stroke-width="1.4"/>
+        <rect x="20" y="18" width="22" height="13" rx="2" fill="#dfe4e7"/>
+        <rect x="26" y="36" width="11" height="8" rx="1.5" fill="#4a5c6b"/>
+        <g stroke="#9aa3aa" stroke-width="2.6"><line x1="24" y1="12" x2="24" y2="5"/><line x1="38" y1="12" x2="38" y2="5"/></g>
+        <path d="M48,42 C62,42 62,26 76,26" stroke="#2c3e50" stroke-width="3.4" fill="none"/>
+        <rect x="74" y="20" width="12" height="10" rx="2" fill="#95a5a6"/>
+        <text x="31" y="28" font-size="7" fill="#7b8a99" text-anchor="middle" font-family="Arial">5V</text>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="cname">5V 2A USB Power Adapter + Micro-USB Cable</div>
+      <div class="cdesc"><b>Buy a proper 2A adapter.</b> An underpowered charger or a thin "charge-only" cable causes random ESP32 reboots that students will waste days blaming on their code.</div>
+      <div class="crow"><span class="price">₱180</span><span class="qty">Qty 1</span></div>
+      <div class="search">Search: <b>"5V 2A USB adapter"</b> + <b>"micro USB data cable"</b></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <svg width="92" height="62" viewBox="0 0 92 62">
+        <rect x="10" y="12" width="30" height="38" rx="2" fill="#f7f9fa" stroke="#c3cad0"/>
+        <g fill="#e74c3c"><rect x="14" y="17" width="6" height="2.6" rx="1"/><rect x="14" y="24" width="6" height="2.6" rx="1"/><rect x="14" y="31" width="6" height="2.6" rx="1"/></g>
+        <g fill="#f1c40f"><rect x="24" y="17" width="6" height="2.6" rx="1"/><rect x="24" y="24" width="6" height="2.6" rx="1"/></g>
+        <g fill="#27ae60"><rect x="24" y="31" width="6" height="2.6" rx="1"/><rect x="14" y="38" width="6" height="2.6" rx="1"/></g>
+        <circle cx="56" cy="20" r="5" fill="#e74c3c"/><circle cx="56" cy="20" r="2.4" fill="#fff" opacity=".7"/>
+        <circle cx="70" cy="20" r="5" fill="#3498db"/><circle cx="70" cy="20" r="2.4" fill="#fff" opacity=".7"/>
+        <rect x="50" y="34" width="12" height="7" rx="1" fill="#95a5a6"/>
+        <rect x="66" y="34" width="12" height="7" rx="1" fill="#95a5a6"/>
+        <circle cx="58" cy="50" r="3.4" fill="#2c3e50"/>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="cname">Resistor / LED / Button Assortment Kit</div>
+      <div class="cdesc">Consumables for pull-up resistors, status LEDs and reset buttons. You will use these constantly and they are cheaper in a kit than singly.</div>
+      <div class="crow"><span class="price">₱125</span><span class="qty">Qty 1</span></div>
+      <div class="search">Search: <b>"resistor LED button breadboard kit"</b></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <svg width="92" height="62" viewBox="0 0 92 62">
+        <rect x="20" y="6" width="40" height="50" rx="4" fill="#e8a33d" stroke="#b8791f" stroke-width="1.4"/>
+        <rect x="25" y="11" width="30" height="14" rx="2" fill="#1c2833"/>
+        <text x="40" y="21" font-size="8" fill="#5bc0eb" text-anchor="middle" font-family="Consolas">1.24</text>
+        <circle cx="40" cy="38" r="9.5" fill="#2c3e50"/>
+        <circle cx="40" cy="38" r="7" fill="#4a5c6b"/>
+        <line x1="40" y1="38" x2="40" y2="32" stroke="#f7f9fa" stroke-width="2"/>
+        <circle cx="30" cy="51" r="2.6" fill="#c0392b"/><circle cx="50" cy="51" r="2.6" fill="#1c2833"/>
+        <path d="M50,51 C68,51 66,30 78,26" stroke="#c0392b" stroke-width="2.2" fill="none"/>
+        <path d="M30,51 C14,51 16,32 8,28" stroke="#1c2833" stroke-width="2.2" fill="none"/>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="cname">Digital Multimeter <span class="tag-opt">OPTIONAL</span></div>
+      <div class="cdesc">Strongly recommended anyway. Without it, "is this wire actually connected?" and "is this pin really at 3.3 V?" become guesswork.</div>
+      <div class="crow"><span class="price">₱350</span><span class="qty">Qty 1</span></div>
+      <div class="search">Search: <b>"digital multimeter DT830B"</b></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ PAGE 3 — SET B ============ -->
+<div class="page-break"></div>
+
+<h2 class="section"><span class="n">3</span>Set B — Prototype &amp; Demo Kit</h2>
+<p class="lede">The presentable build: soldered, boxed, and able to physically pump water and sound an alarm in front of the panel. Includes a second ESP32 and ultrasonic so Set A stays intact for debugging. <b>Subtotal ≈ ₱2,435</b>.</p>
+
+<div class="callout">
+  <p><b>Set B repeats four items from Set A</b> — ESP32 (₱250), JSN-SR04T (₱400), DHT22 (₱109) and rain module (₱75). That is intentional: you do not want to dismantle a working demo every time someone needs to test a code change. Those four are listed in the cost table but not drawn again below.</p>
+</div>
+
+<div class="grid">
+
+  <div class="card">
+    <div class="thumb">
+      <svg width="92" height="62" viewBox="0 0 92 62">
+        <rect x="6" y="14" width="80" height="36" rx="3" fill="#1a6ea8"/>
+        <rect x="11" y="19" width="15" height="17" rx="1.5" fill="#2b6cb0" stroke="#1a4971"/>
+        <rect x="29" y="19" width="15" height="17" rx="1.5" fill="#2b6cb0" stroke="#1a4971"/>
+        <rect x="47" y="19" width="15" height="17" rx="1.5" fill="#2b6cb0" stroke="#1a4971"/>
+        <rect x="65" y="19" width="15" height="17" rx="1.5" fill="#2b6cb0" stroke="#1a4971"/>
+        <g fill="#27ae60"><circle cx="18" cy="42" r="2"/><circle cx="36" cy="42" r="2"/><circle cx="54" cy="42" r="2"/><circle cx="72" cy="42" r="2"/></g>
+        <g fill="#4a5c6b"><rect x="12" y="7" width="13" height="7" rx="1"/><rect x="30" y="7" width="13" height="7" rx="1"/><rect x="48" y="7" width="13" height="7" rx="1"/><rect x="66" y="7" width="13" height="7" rx="1"/></g>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="cname">4-Channel Relay Module, 5V <span class="tag-must">MUST HAVE</span></div>
+      <div class="cdesc">Blue board with four blue cube-shaped relays. This is what lets the ESP32 switch the pump, siren and floodgate — the <b>Smart Actuation</b> screen in the app drives exactly these four channels.</div>
+      <div class="crow"><span class="price">₱150 – ₱316</span><span class="qty">Qty 1</span></div>
+      <div class="search">Search: <b>"4 channel relay module 5V optocoupler"</b></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <svg width="92" height="62" viewBox="0 0 92 62">
+        <rect x="26" y="18" width="30" height="30" rx="4" fill="#1f4e79"/>
+        <rect x="30" y="22" width="22" height="22" rx="3" fill="#2b6cb0"/>
+        <circle cx="41" cy="33" r="7" fill="#16324a"/>
+        <circle cx="41" cy="33" r="3.4" fill="#0d2233"/>
+        <rect x="56" y="26" width="16" height="9" rx="2" fill="#4a5c6b"/>
+        <path d="M72,30.5 h10" stroke="#5bc0eb" stroke-width="5" stroke-linecap="round"/>
+        <g stroke="#2c3e50" stroke-width="2"><line x1="34" y1="18" x2="34" y2="9"/><line x1="46" y1="18" x2="46" y2="9"/></g>
+        <circle cx="34" cy="8" r="2" fill="#e74c3c"/><circle cx="46" cy="8" r="2" fill="#1c2833"/>
+        <g stroke="#14a3b8" stroke-width="1.6" fill="none" opacity=".7"><path d="M20,52 q10,5 20,0"/><path d="M46,52 q10,5 20,0"/></g>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="cname">Mini Submersible Water Pump, 3–6V</div>
+      <div class="cdesc">Small plastic cylinder with a spout, sits in water. Represents the <b>drainage pump</b> actuator. At ₱41 it is the cheapest impressive thing in this entire list — it visibly moves water when an alert fires.</div>
+      <div class="crow"><span class="price">₱41</span><span class="qty">Qty 1</span></div>
+      <div class="search">Search: <b>"mini submersible water pump 3-6V"</b></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <svg width="92" height="62" viewBox="0 0 92 62">
+        <ellipse cx="46" cy="22" rx="16" ry="5" fill="#1c2833"/>
+        <rect x="30" y="22" width="32" height="18" fill="#2c3e50"/>
+        <ellipse cx="46" cy="40" rx="16" ry="5" fill="#34495e"/>
+        <circle cx="46" cy="22" r="3.4" fill="#7b8a99"/>
+        <g stroke="#2c3e50" stroke-width="2"><line x1="40" y1="44" x2="40" y2="54"/><line x1="52" y1="44" x2="52" y2="54"/></g>
+        <g stroke="#e74c3c" stroke-width="2" fill="none" opacity=".8">
+          <path d="M66,14 q7,8 0,16"/><path d="M74,9 q11,13 0,26"/>
+          <path d="M26,14 q-7,8 0,16"/><path d="M18,9 q-11,13 0,26"/>
+        </g>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="cname">Active Buzzer / Piezo Siren, 5V</div>
+      <div class="cdesc">Small black cylinder. Represents the <b>warning siren</b> actuator. Get the "active" type — it beeps from plain DC power with no extra code.</div>
+      <div class="crow"><span class="price">₱30</span><span class="qty">Qty 1</span></div>
+      <div class="search">Search: <b>"active buzzer 5V arduino"</b></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <svg width="92" height="62" viewBox="0 0 92 62">
+        <rect x="24" y="18" width="34" height="30" rx="2" fill="#2b6cb0"/>
+        <rect x="20" y="24" width="42" height="6" rx="1.5" fill="#3d7fc4"/>
+        <circle cx="41" cy="16" r="5.6" fill="#e8eef3" stroke="#b9c0c6"/>
+        <circle cx="41" cy="16" r="2" fill="#7b8a99"/>
+        <rect x="39" y="4" width="4" height="12" rx="2" fill="#f2f4f5" stroke="#c3cad0"/>
+        <rect x="31" y="8" width="20" height="3.4" rx="1.7" fill="#f2f4f5" stroke="#c3cad0"/>
+        <g stroke-width="2.4" stroke-linecap="round">
+          <line x1="58" y1="30" x2="70" y2="26" stroke="#e67e22"/>
+          <line x1="58" y1="34" x2="70" y2="33" stroke="#e74c3c"/>
+          <line x1="58" y1="38" x2="70" y2="40" stroke="#8b5a2b"/>
+        </g>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="cname">SG90 Micro Servo Motor</div>
+      <div class="cdesc">Small blue box with a white plastic arm. Represents the <b>floodgate / control valve</b> actuator — it physically swings a miniature gate open and shut on command.</div>
+      <div class="crow"><span class="price">₱120</span><span class="qty">Qty 1</span></div>
+      <div class="search">Search: <b>"SG90 micro servo motor 9g"</b></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <svg width="92" height="62" viewBox="0 0 92 62">
+        <rect x="6" y="20" width="30" height="20" rx="2" fill="#1a6ea8"/>
+        <rect x="9" y="25" width="8" height="6" rx="1" fill="#4a5c6b"/>
+        <circle cx="26" cy="27" r="2" fill="#e74c3c"/><circle cx="32" cy="27" r="2" fill="#27ae60"/>
+        <rect x="42" y="18" width="44" height="24" rx="4" fill="#2c3e50"/>
+        <rect x="46" y="21" width="36" height="18" rx="2" fill="#1a6ea8"/>
+        <rect x="40" y="26" width="3" height="8" rx="1" fill="#95a5a6"/>
+        <rect x="85" y="26" width="3" height="8" rx="1" fill="#95a5a6"/>
+        <text x="64" y="33" font-size="6.5" fill="#cfe3f0" text-anchor="middle" font-family="Arial">18650</text>
+        <line x1="36" y1="30" x2="42" y2="30" stroke="#e74c3c" stroke-width="1.8"/>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="cname">TP4056 Charger + 18650 Cell + Holder</div>
+      <div class="cdesc">Battery backup so the node keeps reporting during a brownout — a genuinely defensible design point for a flood system in the Philippines. Small blue charging board plus a AA-looking-but-larger cell.</div>
+      <div class="crow"><span class="price">₱280</span><span class="qty">Qty 1 set</span></div>
+      <div class="search">Search: <b>"TP4056 charging module"</b> + <b>"18650 battery holder"</b></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <svg width="92" height="62" viewBox="0 0 92 62">
+        <rect x="16" y="10" width="60" height="42" rx="4" fill="#d9dee2" stroke="#a8b1b8" stroke-width="1.6"/>
+        <rect x="21" y="15" width="50" height="32" rx="2" fill="#c8ced3"/>
+        <g fill="#8b9399"><circle cx="24" cy="18" r="2.4"/><circle cx="68" cy="18" r="2.4"/><circle cx="24" cy="44" r="2.4"/><circle cx="68" cy="44" r="2.4"/></g>
+        <rect x="34" y="26" width="24" height="11" rx="2" fill="#b3bac0"/>
+        <text x="46" y="34" font-size="6.5" fill="#5f6a72" text-anchor="middle" font-family="Arial">IP65</text>
+        <rect x="8" y="27" width="9" height="8" rx="2" fill="#8b9399"/>
+        <rect x="75" y="27" width="9" height="8" rx="2" fill="#8b9399"/>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="cname">IP65 Weatherproof Junction Box</div>
+      <div class="cdesc">Grey sealed box with corner screws. <b>Buy this at a hardware store, not an electronics shop</b> — Ace, Wilcon or your local hardware will be roughly half the price for the identical item.</div>
+      <div class="crow"><span class="price">₱250</span><span class="qty">Qty 1</span></div>
+      <div class="search">Search: <b>"IP65 junction box outdoor electrical"</b></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <svg width="92" height="62" viewBox="0 0 92 62">
+        <rect x="12" y="10" width="46" height="42" rx="2" fill="#1e7d47"/>
+        <g fill="#0f5c31">
+          <circle cx="18" cy="16" r="1.5"/><circle cx="25" cy="16" r="1.5"/><circle cx="32" cy="16" r="1.5"/><circle cx="39" cy="16" r="1.5"/><circle cx="46" cy="16" r="1.5"/><circle cx="53" cy="16" r="1.5"/>
+          <circle cx="18" cy="24" r="1.5"/><circle cx="25" cy="24" r="1.5"/><circle cx="32" cy="24" r="1.5"/><circle cx="39" cy="24" r="1.5"/><circle cx="46" cy="24" r="1.5"/><circle cx="53" cy="24" r="1.5"/>
+          <circle cx="18" cy="32" r="1.5"/><circle cx="25" cy="32" r="1.5"/><circle cx="32" cy="32" r="1.5"/><circle cx="39" cy="32" r="1.5"/><circle cx="46" cy="32" r="1.5"/><circle cx="53" cy="32" r="1.5"/>
+          <circle cx="18" cy="40" r="1.5"/><circle cx="25" cy="40" r="1.5"/><circle cx="32" cy="40" r="1.5"/><circle cx="39" cy="40" r="1.5"/><circle cx="46" cy="40" r="1.5"/><circle cx="53" cy="40" r="1.5"/>
+          <circle cx="18" cy="47" r="1.5"/><circle cx="25" cy="47" r="1.5"/><circle cx="32" cy="47" r="1.5"/><circle cx="39" cy="47" r="1.5"/><circle cx="46" cy="47" r="1.5"/><circle cx="53" cy="47" r="1.5"/>
+        </g>
+        <rect x="64" y="14" width="6" height="34" rx="1" fill="#1c2833"/>
+        <g fill="#e8b923"><rect x="65.5" y="17" width="3" height="3"/><rect x="65.5" y="24" width="3" height="3"/><rect x="65.5" y="31" width="3" height="3"/><rect x="65.5" y="38" width="3" height="3"/></g>
+        <path d="M76,20 l8,4 -8,4" fill="none" stroke="#95a5a6" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="cname">Perfboard + Pin Headers + Solder</div>
+      <div class="cdesc">Once the breadboard version works, transfer it to perfboard so the demo does not fall apart when someone bumps the table. Green board of holes plus black header strips.</div>
+      <div class="crow"><span class="price">₱200</span><span class="qty">Qty 1 set</span></div>
+      <div class="search">Search: <b>"perfboard prototype PCB"</b> + <b>"male pin header 40 pin"</b></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <svg width="92" height="62" viewBox="0 0 92 62">
+        <path d="M22,10 L26,52 L64,52 L68,10 Z" fill="#e8f4fa" stroke="#a8c4d4" stroke-width="1.6"/>
+        <path d="M24.5,32 L26,52 L64,52 L65.5,32 Z" fill="#5bc0eb" opacity=".55"/>
+        <path d="M24.5,32 q10,-3 20,0 t20,0" fill="none" stroke="#1a6ea8" stroke-width="1.6"/>
+        <line x1="70" y1="12" x2="70" y2="52" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <g fill="#c0392b" font-size="5.5" font-family="Arial">
+          <text x="72" y="21">crit</text><text x="72" y="34">warn</text>
+        </g>
+        <rect x="38" y="2" width="16" height="7" rx="1.5" fill="#1a6ea8"/>
+        <circle cx="46" cy="11" r="3" fill="#8d969d"/>
+        <g stroke="#14a3b8" stroke-width="1" fill="none" opacity=".7"><path d="M41,16 q5,3 10,0"/><path d="M38,21 q8,4 16,0"/></g>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="cname">Test Tank — Clear Container / PVC Pipe + Tubing</div>
+      <div class="cdesc">Your artificial river. A tall transparent container lets the panel <b>see</b> the water rise past the warning and critical lines while the dashboard reacts. Remember the 25 cm minimum sensor gap.</div>
+      <div class="crow"><span class="price">₱350</span><span class="qty">Qty 1</span></div>
+      <div class="search">Hardware store: tall clear acrylic/plastic container, 4″ PVC pipe, 6 mm silicone tubing</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ PAGE 4 — RAINFALL + COSTS ============ -->
+<div class="page-break"></div>
+
+<h2 class="section"><span class="n">4</span>The one honest compromise — rainfall</h2>
+<p class="lede">Rainfall is the only field where the cheap part cannot do the real job. Decide this deliberately and write your decision into the paper.</p>
+
+<div class="callout danger">
+  <p><b>The ₱75 rain module cannot measure millimetres.</b> It detects whether its surface is <i>wet or dry</i>. If you feed its output into the <code>rainfall</code> field, you are publishing an invented number — and a panel member who knows sensors will ask. Use it only as a "raining right now" indicator, and say so explicitly.</p>
+</div>
+
+<table>
+  <tr><th style="width:22%">Option</th><th class="num" style="width:13%">Cost</th><th>Trade-off</th></tr>
+  <tr>
+    <td><b>A. Use the weather API</b><br><span style="color:#7b8a99;font-size:8pt">Recommended</span></td>
+    <td class="num"><b>₱0</b></td>
+    <td>BahaAI already pulls rainfall for Consolacion from OpenWeatherMap. Leave <code>rainfall</code> empty on the device and let the weather service supply it. Defend it as deliberate separation of data sources — water level from your sensor, meteorology from a meteorological service. <b>Costs nothing and is fully honest.</b></td>
+  </tr>
+  <tr>
+    <td><b>B. Build a tipping bucket</b><br><span style="color:#7b8a99;font-size:8pt">Best for marks</span></td>
+    <td class="num"><b>≈ ₱150</b></td>
+    <td>A reed switch (₱30) plus a magnet and a small see-saw bucket you 3D-print or cut from a bottle. Calibrate by pouring a measured volume and counting tips. Real millimetres, and it is an original contribution you can write a whole chapter about.</td>
+  </tr>
+  <tr>
+    <td><b>C. Buy a tipping bucket</b></td>
+    <td class="num">₱1,200 – 2,500</td>
+    <td>Accurate and finished, but it is the most expensive single item on this list — for a field you marked optional. Only justified if the study is specifically <i>about</i> rainfall measurement.</td>
+  </tr>
+  <tr>
+    <td><b>D. ₱75 wet/dry module</b></td>
+    <td class="num">₱75</td>
+    <td><b>Indicator only.</b> Fine as a supplementary "it is raining" flag. Never send it as a millimetre value.</td>
+  </tr>
+</table>
+
+<h2 class="section"><span class="n">5</span>Complete cost summary</h2>
+
+<table>
+  <tr><th style="width:44%">Item</th><th class="num">Set A</th><th class="num">Set B</th><th class="num">Unit ₱</th><th class="num">Total ₱</th></tr>
+  <tr><td>ESP32 Development Board</td><td class="num">1</td><td class="num">1</td><td class="num">250</td><td class="num">500</td></tr>
+  <tr><td>JSN-SR04T Waterproof Ultrasonic</td><td class="num">1</td><td class="num">1</td><td class="num">400</td><td class="num">800</td></tr>
+  <tr><td>HC-SR04 Ultrasonic (practice)</td><td class="num">2</td><td class="num">—</td><td class="num">25</td><td class="num">50</td></tr>
+  <tr><td>DHT22 Temp/Humidity Sensor</td><td class="num">1</td><td class="num">1</td><td class="num">109</td><td class="num">218</td></tr>
+  <tr><td>Rain / Steam Module</td><td class="num">1</td><td class="num">1</td><td class="num">75</td><td class="num">150</td></tr>
+  <tr><td>Breadboard 830-point</td><td class="num">1</td><td class="num">—</td><td class="num">120</td><td class="num">120</td></tr>
+  <tr><td>Jumper wire sets (3 types)</td><td class="num">3</td><td class="num">—</td><td class="num">45</td><td class="num">135</td></tr>
+  <tr><td>5V 2A adapter + micro-USB cable</td><td class="num">1</td><td class="num">1</td><td class="num">180</td><td class="num">360</td></tr>
+  <tr><td>Resistor / LED / button kit</td><td class="num">1</td><td class="num">—</td><td class="num">125</td><td class="num">125</td></tr>
+  <tr><td>4-Channel Relay Module 5V</td><td class="num">—</td><td class="num">1</td><td class="num">150</td><td class="num">150</td></tr>
+  <tr><td>Mini submersible pump 3–6V</td><td class="num">—</td><td class="num">1</td><td class="num">41</td><td class="num">41</td></tr>
+  <tr><td>Active buzzer / siren 5V</td><td class="num">—</td><td class="num">1</td><td class="num">30</td><td class="num">30</td></tr>
+  <tr><td>SG90 micro servo</td><td class="num">—</td><td class="num">1</td><td class="num">120</td><td class="num">120</td></tr>
+  <tr><td>TP4056 + 18650 cell + holder</td><td class="num">—</td><td class="num">1</td><td class="num">280</td><td class="num">280</td></tr>
+  <tr><td>IP65 junction box</td><td class="num">—</td><td class="num">1</td><td class="num">250</td><td class="num">250</td></tr>
+  <tr><td>Perfboard + headers + solder</td><td class="num">—</td><td class="num">1</td><td class="num">200</td><td class="num">200</td></tr>
+  <tr><td>Test tank + tubing</td><td class="num">—</td><td class="num">1</td><td class="num">350</td><td class="num">350</td></tr>
+  <tr class="total"><td>Core subtotal — both sets</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">3,879</td></tr>
+  <tr><td>Digital multimeter <i>(optional but advised)</i></td><td class="num">1</td><td class="num">—</td><td class="num">350</td><td class="num">350</td></tr>
+  <tr><td>Spares — 1 extra ESP32 + jumpers <i>(advised)</i></td><td class="num">—</td><td class="num">—</td><td class="num">300</td><td class="num">300</td></tr>
+  <tr><td>DIY tipping bucket rain gauge <i>(Option B)</i></td><td class="num">—</td><td class="num">1</td><td class="num">150</td><td class="num">150</td></tr>
+  <tr class="grand"><td>RECOMMENDED TOTAL</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">₱4,679</td></tr>
+</table>
+
+<div class="callout ok">
+  <p><b>Absolute minimum viable build: ₱1,444</b> — Set A alone with one ESP32 and one waterproof ultrasonic proves the entire data path end to end. Everything in Set B makes the defense more convincing; none of it is required for the system to work.</p>
+</div>
+
+<h2 class="section"><span class="n">6</span>What you do NOT need to buy</h2>
+<table>
+  <tr><th style="width:30%">Item</th><th class="num" style="width:14%">Money saved</th><th>Why you can skip it</th></tr>
+  <tr><td>GSM / SIM800L module</td><td class="num">₱500+</td><td>The demo runs on a phone hotspot. Mention cellular as future work for genuine field deployment.</td></tr>
+  <tr><td>Paid SMS gateway credits</td><td class="num">₱500+</td><td>The system already logs SMS as simulated while sending real email. If your panel insists, Semaphore PH is about ₱0.50 per message.</td></tr>
+  <tr><td>Raspberry Pi</td><td class="num">₱2,500+</td><td>Five times the price of an ESP32 and heavy overkill for reading three sensors.</td></tr>
+  <tr><td>A second complete sensor node</td><td class="num">₱1,700</td><td>Two nodes demonstrate nothing that one node plus the built-in simulator does not already show.</td></tr>
+  <tr><td>Solar panel</td><td class="num">₱785+</td><td>Nice story, poor value for a demo. The 18650 battery already covers the "keeps running in a blackout" narrative.</td></tr>
+</table>
+
+<!-- ============ PAGE 5 — WHERE TO BUY + CHECKLIST ============ -->
+<div class="page-break"></div>
+
+<h2 class="section"><span class="n">7</span>Where to buy</h2>
+
+<div class="store">
+  <div class="store-card">
+    <h4>Circuit Rocks <span class="badge" style="background:#1e8a54">VERIFIED</span></h4>
+    <p><b>circuit.rocks</b><br>Manila-based, same-day delivery in Metro Manila. Every peso price in this guide was checked here on 8 Aug 2026. Higher prices than Shopee but you get the right part, quickly.</p>
+    <p style="margin-top:5px"><b>Best for:</b> the JSN-SR04T when you cannot afford a wrong order.</p>
+  </div>
+  <div class="store-card">
+    <h4>Shopee PH <span class="badge" style="background:#d98014">CHEAPEST</span></h4>
+    <p><b>shopee.ph</b><br>Typically 30–50% cheaper for identical clone modules. Delivery 3–7 days. Check seller ratings and that the shop is <b>Philippines-based</b>, not an overseas listing.</p>
+    <p style="margin-top:5px"><b>Best for:</b> everything except parts you need this week.</p>
+  </div>
+  <div class="store-card">
+    <h4>Lazada PH <span class="badge" style="background:#7e8c9a">BACKUP</span></h4>
+    <p><b>lazada.com.ph</b><br>Similar pricing to Shopee, sometimes better stock on relays and power supplies. Use LazMall sellers for faster, more reliable shipping.</p>
+    <p style="margin-top:5px"><b>Best for:</b> when Shopee is out of stock.</p>
+  </div>
+</div>
+
+<div class="store">
+  <div class="store-card">
+    <h4>Makerlab Electronics</h4>
+    <p><b>makerlab.ph</b> — one-year local warranty and real technical support. Higher prices, but the place to go for the tipping-bucket rain gauge if you choose Option C.</p>
+  </div>
+  <div class="store-card">
+    <h4>e-Gizmo Mechatronix</h4>
+    <p><b>Sta. Mesa, Manila — walk-in.</b> If students are in Metro Manila, one afternoon here beats a week of waiting for deliveries. Bring this printout.</p>
+  </div>
+  <div class="store-card">
+    <h4>Local hardware store</h4>
+    <p>For the <b>junction box, container, PVC pipe and tubing</b>. Roughly half the price of the same items from an electronics shop.</p>
+  </div>
+</div>
+
+<div class="callout warn">
+  <p><b>Avoid Temu for this project.</b> Lead times run two to four weeks and you cannot return a dead sensor in time for a defense deadline. The saving is not worth the schedule risk.</p>
+  <p style="margin-top:5px"><b>Two buying tips.</b> Always search <b>"AJ-SR04M"</b> as well as <b>"JSN-SR04T"</b> — same module, different name, often half the price. And check the seller is shipping from within the Philippines; overseas listings on Shopee quietly add two weeks.</p>
+</div>
+
+<h2 class="section"><span class="n">8</span>Printable shopping checklist</h2>
+<p class="lede">Tick items as they arrive. Test each part the day it arrives — a dead module discovered three weeks later cannot be returned.</p>
+
+<table>
+  <tr><th style="width:6%"></th><th style="width:46%">Item</th><th style="width:10%" class="num">Qty</th><th style="width:14%" class="num">Budget ₱</th><th>Received / tested</th></tr>
+  <tr><td><span class="checkbox"></span></td><td>ESP32 development board</td><td class="num">2</td><td class="num">500</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>JSN-SR04T / AJ-SR04M waterproof ultrasonic</td><td class="num">2</td><td class="num">800</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>HC-SR04 ultrasonic (practice)</td><td class="num">2</td><td class="num">50</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>DHT22 temperature / humidity sensor</td><td class="num">2</td><td class="num">218</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>Rain / steam module</td><td class="num">2</td><td class="num">150</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>Breadboard 830-point</td><td class="num">1</td><td class="num">120</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>Jumper wires — M-M, M-F, F-F</td><td class="num">3</td><td class="num">135</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>5V 2A adapter + micro-USB data cable</td><td class="num">2</td><td class="num">360</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>Resistor / LED / button kit</td><td class="num">1</td><td class="num">125</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>4-channel relay module 5V</td><td class="num">1</td><td class="num">150</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>Mini submersible pump 3–6V</td><td class="num">1</td><td class="num">41</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>Active buzzer 5V</td><td class="num">1</td><td class="num">30</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>SG90 micro servo</td><td class="num">1</td><td class="num">120</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>TP4056 + 18650 cell + holder</td><td class="num">1</td><td class="num">280</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>IP65 junction box</td><td class="num">1</td><td class="num">250</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>Perfboard + headers + solder</td><td class="num">1</td><td class="num">200</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>Test tank + tubing</td><td class="num">1</td><td class="num">350</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>Digital multimeter <i>(optional)</i></td><td class="num">1</td><td class="num">350</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>Spare ESP32 + jumpers <i>(advised)</i></td><td class="num">1</td><td class="num">300</td><td></td></tr>
+  <tr><td><span class="checkbox"></span></td><td>DIY tipping bucket parts <i>(optional)</i></td><td class="num">1</td><td class="num">150</td><td></td></tr>
+  <tr class="grand"><td></td><td>TOTAL</td><td class="num"></td><td class="num">₱4,679</td><td></td></tr>
+</table>
+
+<h2 class="section"><span class="n">9</span>Two software changes needed before hardware works</h2>
+<div class="callout danger">
+  <p><b>1. The reading endpoint has no authentication.</b> <code>POST /api/sensors/{id}/readings</code> is currently open — anyone who knows the address can inject fake readings and trigger real alerts to real residents. Acceptable on a closed bench network; <b>add a Sanctum API token before this touches a public network</b>, and document the mitigation in the paper.</p>
+  <p style="margin-top:5px"><b>2. Devices cannot report their battery level.</b> The <code>sensors</code> table has a <code>battery_level</code> column and the dashboard displays it, but it is not accepted by the reading endpoint — so a real node has no way to send it. If you want that panel to show live data, add <code>battery_level</code> to the request validation rules and to the API controller.</p>
+</div>
+
+<div class="foot">
+  BahaAI IoT Hardware Buying Guide &nbsp;·&nbsp; Prepared 8 August 2026 &nbsp;·&nbsp; Prices verified at circuit.rocks, 8 Aug 2026<br>
+  Illustrations are schematic representations, not photographs. Match part numbers, not pictures. Prices are estimates and will change.
+</div>
+
+</body>
+</html>

@@ -15,7 +15,7 @@ interface FloodedZone {
 interface EvacuationMapProps {
     center: { lat: number; lng: number };
     floodedZones: FloodedZone[];
-    evacuationCenter: { lat: number; lng: number; name: string };
+    evacuationCenter: { lat: number; lng: number; name: string } | null;
 }
 
 export default function EvacuationMap({ center, floodedZones, evacuationCenter }: EvacuationMapProps) {
@@ -95,20 +95,22 @@ export default function EvacuationMap({ center, floodedZones, evacuationCenter }
                     .addTo(map);
             });
 
-            // Evacuation center marker (green)
-            const evacEl = document.createElement('div');
-            evacEl.style.cssText = 'width:22px;height:22px;border-radius:4px;background:#16a34a;border:3px solid white;box-shadow:0 0 0 2px #16a34a;';
-            new maplibregl.Marker({ element: evacEl })
-                .setLngLat([evacuationCenter.lng, evacuationCenter.lat])
-                .setPopup(
-                    new maplibregl.Popup().setHTML(`
-                        <div style="font-family: system-ui;">
-                            <div style="font-weight:600;font-size:13px;">🏛️ Evacuation Center</div>
-                            <div style="font-size:11px;color:#6b7280;">${evacuationCenter.name}</div>
-                        </div>
-                    `)
-                )
-                .addTo(map);
+            // Evacuation center marker (green) — omitted when none is registered
+            if (evacuationCenter) {
+                const evacEl = document.createElement('div');
+                evacEl.style.cssText = 'width:22px;height:22px;border-radius:4px;background:#16a34a;border:3px solid white;box-shadow:0 0 0 2px #16a34a;';
+                new maplibregl.Marker({ element: evacEl })
+                    .setLngLat([evacuationCenter.lng, evacuationCenter.lat])
+                    .setPopup(
+                        new maplibregl.Popup().setHTML(`
+                            <div style="font-family: system-ui;">
+                                <div style="font-weight:600;font-size:13px;">🏛️ Evacuation Center</div>
+                                <div style="font-size:11px;color:#6b7280;">${evacuationCenter.name}</div>
+                            </div>
+                        `)
+                    )
+                    .addTo(map);
+            }
         });
 
         return () => {

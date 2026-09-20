@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Auditable;
 use Database\Factories\ActuatorDeviceFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class ActuatorDevice extends Model
 {
     /** @use HasFactory<ActuatorDeviceFactory> */
-    use HasFactory;
+    use Auditable, HasFactory;
 
     protected function casts(): array
     {

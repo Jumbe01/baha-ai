@@ -3,14 +3,17 @@
 namespace App\Services;
 
 use App\Models\Alert;
+use App\Models\FloodIncident;
 use App\Models\Sensor;
 use App\Models\SensorReading;
+use App\Models\User;
 
 class AlertService
 {
     public function __construct(
         private RiskLevelService $riskService,
         private NotificationDispatcher $dispatcher,
+        private ActuatorSimulationService $actuators,
     ) {}
 
     /**
@@ -22,6 +25,12 @@ class AlertService
     {
         $zone = $sensor->floodZone;
         $assessment = $this->riskService->forWaterLevel($reading->water_level, $zone);
+
+        // Drive auto-mode hardware on every reading, including safe ones —
+        // that is what releases pumps and sirens once the water recedes.
+        // Keyed off the whole zone, not this one sensor, so a safe reading
+        // cannot switch off hardware another sensor still needs engaged.
+        $this->actuators->evaluateZone($zone, $this->riskService->highestForZone($zone));
 
         if ($assessment['level'] === 'safe') {
             return null;
@@ -85,6 +94,10 @@ class AlertService
                 continue;
             }
 
+            // Reflect reachability on the device itself, so the sensor list
+            // shows live state rather than only its configured status.
+            $sensor->update(['status' => 'offline']);
+
             $alreadyFlagged = Alert::active()
                 ->where('sensor_id', $sensor->id)
                 ->where('title', 'like', 'Sensor offline%')
@@ -130,6 +143,60 @@ class AlertService
             'resolved_by' => $userId,
         ]);
 
+        $this->recordIncident($alert);
+
         return $alert;
+    }
+
+    /**
+     * Turn a resolved threshold alert into a historical flood incident,
+     * deriving its figures from the readings actually recorded while the
+     * alert was active. This is what makes analytics and the CSV/PDF exports
+     * reflect real events rather than seeded sample data.
+     */
+    public function recordIncident(Alert $alert): ?FloodIncident
+    {
+        // Offline-sensor alerts carry no water level and are not flood events.
+        if (! $alert->sensor_id || $alert->water_level === null) {
+            return null;
+        }
+
+        if (FloodIncident::where('alert_id', $alert->id)->exists()) {
+            return null;
+        }
+
+        $from = $alert->created_at;
+        $to = $alert->resolved_at ?? now();
+
+        $readings = SensorReading::where('sensor_id', $alert->sensor_id)
+            ->whereBetween('recorded_at', [$from, $to])
+            ->get(['water_level', 'rainfall']);
+
+        $peak = $readings->max('water_level') ?? $alert->water_level;
+        $rainfall = $readings->sum('rainfall');
+
+        $zone = $alert->floodZone;
+
+        $affected = $zone
+            ? User::where('barangay', $zone->barangay)->where('role', 'resident')->count()
+            : 0;
+
+        return FloodIncident::create([
+            'flood_zone_id' => $alert->flood_zone_id,
+            'alert_id' => $alert->id,
+            'severity' => $alert->severity,
+            'peak_water_level' => round((float) $peak, 2),
+            'total_rainfall' => round((float) $rainfall, 2),
+            'duration_minutes' => (int) round($from->diffInMinutes($to)),
+            'affected_residents' => $affected,
+            'description' => sprintf(
+                'Recorded from alert #%d — %s water level peaked at %.2fm in %s.',
+                $alert->id,
+                $alert->severity,
+                $peak,
+                $zone?->name ?? 'unknown zone',
+            ),
+            'occurred_at' => $from,
+        ]);
     }
 }

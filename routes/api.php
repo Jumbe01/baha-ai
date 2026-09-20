@@ -10,6 +10,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('/sensors/{sensor}/readings', [SensorDataController::class, 'store'])
+    ->middleware('sensor.token')
     ->name('api.sensor-readings.store');
 
 Route::get('/map/geojson', [MapDataController::class, 'geojson'])->name('api.map.geojson');

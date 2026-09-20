@@ -18,6 +18,7 @@ import {
     Menu,
     Navigation,
     Radio,
+    ScrollText,
     Settings,
     SlidersHorizontal,
     Users,
@@ -251,7 +252,9 @@ function getNavigation(role: string, unread: number) {
     const adminItems: NavItem[] = [
         { name: 'Flood Zones', href: route('admin.flood-zones.index'), icon: MapPin, active: route().current('admin.flood-zones.*'), roles: ['admin'] },
         { name: 'Sensors', href: route('admin.sensors.index'), icon: Activity, active: route().current('admin.sensors.*'), roles: ['admin'] },
+        { name: 'Evac. Centers', href: route('admin.evacuation-centers.index'), icon: Home, active: route().current('admin.evacuation-centers.*'), roles: ['admin'] },
         { name: 'Users', href: route('admin.users.index'), icon: Users, active: route().current('admin.users.*'), roles: ['admin'] },
+        { name: 'Audit Log', href: route('admin.audit-logs.index'), icon: ScrollText, active: route().current('admin.audit-logs.*'), roles: ['admin'] },
     ];
 
     return {

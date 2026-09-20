@@ -1,0 +1,1392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BahaAI — IoT Hardware Assembly &amp; Integration Guide</title>
+<style>
+  @page { size: A4; margin: 14mm 13mm 16mm 13mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 9.6pt; line-height: 1.45; color: #16232e; margin: 0;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  h1, h2, h3, h4 { margin: 0; font-weight: 700; }
+  a { color: #0b6ea8; text-decoration: none; }
+  .page-break { page-break-before: always; }
+  .avoid-break { page-break-inside: avoid; }
+
+  /* ---------- Cover ---------- */
+  .cover {
+    background: linear-gradient(135deg, #0b3c5d 0%, #1076a8 55%, #14a3b8 100%);
+    color: #fff; padding: 20px 24px; border-radius: 10px; margin-bottom: 12px;
+    position: relative; overflow: hidden;
+  }
+  .cover h1 { font-size: 23pt; letter-spacing: -0.5px; }
+  .cover .sub { font-size: 11pt; opacity: .95; margin-top: 4px; font-weight: 600; }
+  .cover .meta { font-size: 8.4pt; opacity: .85; margin-top: 9px; }
+  .wave { position: absolute; right: -30px; bottom: -46px; opacity: .16; }
+
+  /* ---------- Callouts ---------- */
+  .callout {
+    border-left: 4px solid #1076a8; background: #eef7fc;
+    padding: 8px 12px; border-radius: 0 6px 6px 0; margin: 8px 0;
+    page-break-inside: avoid;
+  }
+  .callout.warn   { border-left-color: #d98014; background: #fdf5e9; }
+  .callout.danger { border-left-color: #c0392b; background: #fdeeec; }
+  .callout.ok     { border-left-color: #1e8a54; background: #ecf8f1; }
+  .callout p { margin: 3px 0; }
+  .callout .label { font-weight: 700; letter-spacing: .3px; font-size: 8.4pt; text-transform: uppercase; }
+  .callout .label.w { color: #a5620a; }
+  .callout .label.d { color: #9d2c20; }
+  .callout .label.o { color: #156b41; }
+  .callout .label.i { color: #0b5f8f; }
+
+  /* ---------- Sections ---------- */
+  h2.section {
+    font-size: 14pt; color: #0b3c5d; margin: 20px 0 4px;
+    padding-bottom: 5px; border-bottom: 2.5px solid #14a3b8;
+  }
+  h2.section .n {
+    display: inline-block; background: #14a3b8; color: #fff;
+    width: 21px; height: 21px; line-height: 21px; text-align: center;
+    border-radius: 5px; font-size: 10pt; margin-right: 7px; vertical-align: 1px;
+  }
+  h3.sub { font-size: 10.6pt; color: #0b3c5d; margin: 13px 0 3px; }
+  h3.sub .tag {
+    font-size: 7.4pt; background: #14a3b8; color: #fff; padding: 1px 6px;
+    border-radius: 9px; font-weight: 700; letter-spacing: .3px; vertical-align: 2px; margin-left: 6px;
+  }
+  .lede { color: #4a5c6b; margin: 5px 0 12px; font-size: 9.4pt; }
+
+  /* ---------- Tables ---------- */
+  table { width: 100%; border-collapse: collapse; font-size: 8.8pt; margin: 8px 0; }
+  th { background: #0b3c5d; color: #fff; text-align: left; padding: 6px 8px; font-size: 8.4pt; letter-spacing: .2px; }
+  td { padding: 5px 8px; border-bottom: 1px solid #e4ebf0; vertical-align: top; }
+  tr:nth-child(even) td { background: #f8fafc; }
+  td.num, th.num { text-align: right; white-space: nowrap; }
+  td.mid { text-align: center; }
+  td.pin { font-family: "Consolas", monospace; font-weight: 700; color: #0b3c5d; white-space: nowrap; }
+
+  /* ---------- Code ---------- */
+  code {
+    font-family: "Consolas", "Courier New", monospace; font-size: 8.4pt;
+    background: #eef2f5; padding: 1px 4px; border-radius: 3px; color: #14384f;
+  }
+  pre {
+    font-family: "Consolas", "Courier New", monospace; font-size: 7.9pt;
+    line-height: 1.4; background: #0f2231; color: #d6e6f2;
+    padding: 9px 11px; border-radius: 6px; margin: 6px 0;
+    white-space: pre-wrap; word-wrap: break-word; page-break-inside: avoid;
+  }
+  pre.sh { background: #14384f; }
+  .filepath {
+    font-family: "Consolas", "Courier New", monospace; font-size: 8pt;
+    background: #0b3c5d; color: #b9dcef; display: inline-block;
+    padding: 2px 8px; border-radius: 5px 5px 0 0; margin: 9px 0 -6px; font-weight: 700;
+  }
+  .filepath.new::after  { content: " — NEW FILE"; color: #7fe3b0; }
+  .filepath.edit::after { content: " — EDIT";     color: #ffd07a; }
+
+  /* ---------- Steps & gates ---------- */
+  .step { display: flex; gap: 9px; margin: 9px 0; page-break-inside: avoid; }
+  .step .sn {
+    flex: 0 0 21px; height: 21px; background: #0b3c5d; color: #fff;
+    border-radius: 50%; text-align: center; line-height: 21px;
+    font-weight: 700; font-size: 9pt;
+  }
+  .step .sb { flex: 1; min-width: 0; }
+  .step .sb p { margin: 0 0 4px; }
+  .step .sb .st { font-weight: 700; color: #0b3c5d; }
+
+  .gate {
+    border: 1.5px solid #14a3b8; border-radius: 8px; margin: 11px 0;
+    page-break-inside: avoid; overflow: hidden; background: #fff;
+  }
+  .gate .gh { background: #eaf7fb; padding: 6px 11px; border-bottom: 1px solid #cbe7f0; }
+  .gate .gh .gn {
+    display: inline-block; background: #0b3c5d; color: #fff; font-size: 7.6pt;
+    padding: 1px 7px; border-radius: 9px; font-weight: 700; letter-spacing: .4px; margin-right: 7px;
+  }
+  .gate .gh .gt { font-weight: 700; color: #0b3c5d; font-size: 10pt; }
+  .gate .gb { padding: 8px 11px; }
+  .gate .gb > *:first-child { margin-top: 0; }
+  .pass {
+    background: #ecf8f1; border-top: 1px solid #c8e8d7; padding: 6px 11px;
+    font-size: 8.8pt; color: #156b41;
+  }
+  .pass b { color: #0d5c3c; }
+
+  /* ---------- Misc ---------- */
+  ul.tight, ol.tight { margin: 5px 0 5px 16px; padding: 0; font-size: 9pt; }
+  ul.tight li, ol.tight li { margin-bottom: 3px; }
+  .fig { text-align: center; margin: 10px 0; page-break-inside: avoid; }
+  .fig svg { display: block; margin: 0 auto; }
+  .figcap { font-size: 8pt; color: #6b7d8d; margin-top: 4px; font-style: italic; }
+  .checkbox { display: inline-block; width: 10px; height: 10px; border: 1.4px solid #7b8a99; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+  .foot {
+    margin-top: 16px; padding-top: 8px; border-top: 1px solid #d5e0e8;
+    font-size: 7.6pt; color: #7b8a99; text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <svg class="wave" width="300" height="150" viewBox="0 0 300 150" fill="none">
+    <path d="M0 90 Q37 60 75 90 T150 90 T225 90 T300 90 V150 H0 Z" fill="#fff"/>
+    <path d="M0 112 Q37 82 75 112 T150 112 T225 112 T300 112 V150 H0 Z" fill="#fff" opacity=".6"/>
+  </svg>
+  <h1>BahaAI — IoT Hardware Assembly Guide</h1>
+  <div class="sub">From loose components to live readings on the dashboard</div>
+  <div class="meta">
+    Flood Early-Warning System &nbsp;·&nbsp; Municipality of Consolacion, Cebu<br>
+    Companion to the <b>IoT Hardware Buying Guide</b> &nbsp;·&nbsp; Prepared 13 September 2026
+  </div>
+</div>
+
+<div class="callout">
+  <p><span class="label i">Start here</span></p>
+  <p>This guide assumes your parts have arrived and the BahaAI web app already runs (<code>docker compose up</code> → <code>http://localhost:8000</code>). It takes you from an empty breadboard to a physical sensor that makes the dashboard react.</p>
+  <p><b>Work in order.</b> Sections 2 to 4 form a chain of test gates. Each gate proves one thing works before the next is added. Wiring everything at once and powering up is how students lose days guessing which of nine new things is broken.</p>
+</div>
+
+<div class="callout danger">
+  <p><span class="label d">The one mistake that ruins everything</span></p>
+  <p>The ultrasonic sensor measures <b>downward</b> — the air gap between itself and the water surface. The app wants <b>water level</b>, measured upward from the channel bed. Your firmware must convert between them:</p>
+  <p style="text-align:center;font-size:11.5pt;margin:7px 0"><code style="font-size:11.5pt;background:#fff;padding:4px 10px">water_level = MOUNT_HEIGHT − measured_distance</code></p>
+  <p>Get this backwards and every alert fires inverted: the dashboard reports a critical flood when the channel is dry, and reports safe as water reaches the sensor. Section 6 covers measuring <code>MOUNT_HEIGHT</code> correctly.</p>
+</div>
+
+<h2 class="section"><span class="n">1</span>Before you start</h2>
+<p class="lede">Fifteen minutes of setup now saves a day of confusion later.</p>
+
+<h3 class="sub">1.1 Parts needed for this stage</h3>
+<p>Only <b>Set A</b> from the buying guide is needed to reach a live reading. Set B parts (relay, pump, servo, enclosure) are not touched until Section 7.</p>
+<ul class="tight">
+  <li>ESP32 development board (30-pin WROOM-32) and a USB <b>data</b> cable matching its socket — <b>USB-C</b> on current devkits, micro-USB on older ones. Check the board before buying</li>
+  <li>HC-SR04 ultrasonic for bench work; JSN-SR04T / AJ-SR04M for the real build</li>
+  <li>DHT22 temperature and humidity sensor</li>
+  <li>830-point breadboard, jumper wires (male-male and male-female)</li>
+  <li>Resistors: 1 × 1 kΩ, 1 × 2 kΩ, 1 × 10 kΩ — from the assortment kit</li>
+  <li>5 V 2 A USB adapter</li>
+</ul>
+
+<div class="callout warn">
+  <p><span class="label w">Cable warning — the single most common failure</span></p>
+  <p>Many USB cables are <b>charge-only</b>: they carry power (VBUS, GND) but not data (D+, D−). The ESP32's red PWR LED lights normally and the board looks alive, yet it never appears as a COM port and the IDE's Port menu stays greyed out. Cables bundled with <b>chargers, power banks and LED lights</b> are the usual offenders; phone sync cables are almost always fine.</p>
+  <p><b>A lit LED does not clear the cable</b> — power and data are separate wires in the same jacket. Test a cable independently by plugging it into a phone: if the PC offers file transfer, the data lines work.</p>
+</div>
+
+<div class="callout danger">
+  <p><span class="label d">USB-C boards: use an A-to-C cable, not C-to-C</span></p>
+  <p>Many ESP32 devkits with a USB-C socket omit the two 5.1 kΩ <b>CC pull-down resistors</b> the USB-C specification requires. A USB-C host then cannot detect the board as a sink, so a <b>C-to-C cable may deliver nothing at all</b> — no power, no enumeration — while the identical board works perfectly on a <b>USB-A to USB-C</b> cable, which uses legacy signalling and ignores CC entirely.</p>
+  <p>Buy <b>USB-A to USB-C</b> and plug into a normal rectangular USB-A port. If your laptop has only USB-C ports, use a powered USB-A hub or dock rather than fighting this.</p>
+</div>
+
+<h3 class="sub">1.2 Software to install on the laptop</h3>
+
+<div class="step"><div class="sn">1</div><div class="sb">
+  <p><span class="st">Arduino IDE 2.x</span> — download from <code>arduino.cc/en/software</code> and install.</p>
+</div></div>
+
+<div class="step"><div class="sn">2</div><div class="sb">
+  <p><span class="st">ESP32 board support.</span> Open <b>File → Preferences</b>. In <i>Additional boards manager URLs</i>, paste:</p>
+  <pre class="sh">https://espressif.github.io/arduino-esp32/package_esp32_index.json</pre>
+  <p>Then <b>Tools → Board → Boards Manager</b>, search <code>esp32</code>, and install <b>esp32 by Espressif Systems</b>. It is a large download — let it finish completely.</p>
+</div></div>
+
+<div class="step"><div class="sn">3</div><div class="sb">
+  <p><span class="st">Libraries.</span> <b>Tools → Manage Libraries</b>, then install <b>DHT sensor library</b> by Adafruit. When the IDE offers to also install <b>Adafruit Unified Sensor</b> as a dependency, accept.</p>
+  <p>No JSON library is required — the firmware in Section 5 builds its payload as a plain string.</p>
+</div></div>
+
+<div class="step"><div class="sn">4</div><div class="sb">
+  <p><span class="st">USB-to-serial driver.</span> Windows 11 does <b>not</b> reliably ship the WCH drivers, despite what many tutorials claim. Install both from <code>wch-ic.com</code> — they cover different chips and do not conflict:</p>
+  <ul class="tight">
+    <li><b>CH341SER</b> — CH340 / CH341</li>
+    <li><b>CH343SER</b> — CH9102 / CH343, common on current devkits</li>
+  </ul>
+  <p>Extract the archive first, then <b>right-click → Run as administrator</b>. Run from inside the zip or without admin and the installer reports success while staging nothing. These pre-stage into the driver store, so installing with no board attached is fine — Windows binds automatically when a matching chip appears.</p>
+</div></div>
+
+<div class="callout danger">
+  <p><span class="label d">If no COM port appears, answer this question before touching drivers</span></p>
+  <p>Ask first: <b>does Windows see the device at all?</b> The two failure modes look identical in the Arduino IDE — a greyed-out Port menu — but have completely different fixes.</p>
+  <table style="margin-top:6px">
+    <tr><th style="width:38%">In Device Manager</th><th>Meaning</th></tr>
+    <tr><td>Device listed with a <b>yellow triangle</b>, <code>VID_1A86</code> or <code>VID_10C4</code> visible</td><td><b>Driver missing.</b> Install the package above.</td></tr>
+    <tr><td><b>Nothing appears at all</b> when you plug in</td><td><b>Not a driver problem.</b> A device with no driver still enumerates — Windows reads its VID/PID before any driver loads. Total silence means the USB data lines are not connected: charge-only cable, dead port, or faulty board.</td></tr>
+  </table>
+  <p>A lit red PWR LED does not clear the cable. USB power (VBUS/GND) and USB data (D+/D−) are separate wires; a charge-only cable lights the board and enumerates nothing. <b>Charger-bundled cables are the usual culprit.</b> Test a cable independently by plugging it into a phone — if the PC does not offer file transfer, that cable can never program an ESP32.</p>
+</div>
+
+<div class="step"><div class="sn">5</div><div class="sb">
+  <p><span class="st">Board settings.</span> Plug in the ESP32, then set <b>Tools → Board → ESP32 Arduino → ESP32 Dev Module</b> and <b>Tools → Port →</b> the COM port that appeared.</p>
+</div></div>
+
+<h3 class="sub">1.3 Network requirements — read carefully</h3>
+<table>
+  <tr><th style="width:30%">Requirement</th><th>Why it matters</th></tr>
+  <tr><td><b>2.4 GHz Wi-Fi only</b></td><td>The ESP32 has no 5 GHz radio. If your router broadcasts one name for both bands, the ESP32 may never associate. Use a dedicated 2.4 GHz SSID, or a phone hotspot set to 2.4 GHz.</td></tr>
+  <tr><td><b>Same network as the laptop</b></td><td>The ESP32 posts directly to your laptop. Both must be on the same subnet. A phone hotspot with both devices joined is the most reliable setup for a defense.</td></tr>
+  <tr><td><b>Never <code>localhost</code></b></td><td><code>http://localhost:8000</code> means "this device" — to the ESP32, that is the ESP32 itself. You must use the laptop's LAN IP, for example <code>http://192.168.1.14:8000</code>. Gate 5 covers finding it.</td></tr>
+  <tr><td><b>Firewall opened</b></td><td>Windows blocks inbound port 8000 by default, so the app is reachable from the laptop but invisible to the ESP32. Gate 5 covers opening it.</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<h2 class="section"><span class="n">2</span>Server preparation — do this first</h2>
+<p class="lede">Three changes to the Laravel app. The first is a security fix you cannot skip; the other two unlock hardware features the database already supports.</p>
+
+<div class="callout warn">
+  <p><span class="label w">Why this comes before the wiring</span></p>
+  <p>Change 2.1 adds a device token. Your firmware needs that token baked in, so mint it now — otherwise you will write the firmware twice.</p>
+</div>
+
+<h3 class="sub">2.1 Authenticate the reading endpoint <span class="tag">REQUIRED</span></h3>
+<p>Today <code>POST /api/sensors/{sensor}/readings</code> has no middleware at all. Anyone who can reach the address can inject a fake three-metre reading and fire genuine critical alerts at genuine residents. This is acceptable on an isolated bench network and indefensible anywhere else.</p>
+<p>The approach below gives <b>each sensor its own token</b>, so a compromised node can only post as itself — stronger than one shared key, and a good paragraph for your paper.</p>
+
+<div class="filepath new">database/migrations/2026_09_13_000001_add_api_token_to_sensors_table.php</div>
+<pre>&lt;?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('sensors', function (Blueprint $table) {
+            $table-&gt;string('api_token', 64)-&gt;nullable()-&gt;unique()-&gt;after('status');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('sensors', function (Blueprint $table) {
+            $table-&gt;dropColumn('api_token');
+        });
+    }
+};</pre>
+
+<p>Add <code>api_token</code> to the model's fillable list, and hide it so it never leaks into an Inertia page prop:</p>
+
+<div class="filepath edit">app/Models/Sensor.php</div>
+<pre>#[Fillable([
+    'flood_zone_id', 'name', 'type', 'latitude', 'longitude',
+    'status', 'battery_level', 'last_reading_at', 'api_token',
+])]
+class Sensor extends Model
+{
+    /** @use HasFactory&lt;SensorFactory&gt; */
+    use HasFactory;
+
+    protected $hidden = ['api_token'];</pre>
+
+<p>The middleware compares the presented bearer token against the hash stored for the sensor in the URL. <code>hash_equals</code> is used rather than <code>===</code> to avoid leaking information through response timing.</p>
+
+<div class="filepath new">app/Http/Middleware/EnsureSensorToken.php</div>
+<pre>&lt;?php
+
+namespace App\Http\Middleware;
+
+use App\Models\Sensor;
+use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+class EnsureSensorToken
+{
+    public function handle(Request $request, Closure $next): Response
+    {
+        $sensor = $request-&gt;route('sensor');
+
+        if (! $sensor instanceof Sensor) {
+            $sensor = Sensor::find($sensor);
+        }
+
+        $presented = $request-&gt;bearerToken();
+
+        if (! $sensor || ! $sensor-&gt;api_token || ! $presented
+            || ! hash_equals($sensor-&gt;api_token, hash('sha256', $presented))) {
+            abort(401, 'Invalid or missing device token.');
+        }
+
+        return $next($request);
+    }
+}</pre>
+
+<p>Register the alias alongside the two that already exist:</p>
+
+<div class="filepath edit">bootstrap/app.php</div>
+<pre>use App\Http\Middleware\EnsureSensorToken;
+
+        $middleware-&gt;alias([
+            'admin' =&gt; EnsureUserIsAdmin::class,
+            'staff' =&gt; EnsureUserIsStaff::class,
+            'sensor.token' =&gt; EnsureSensorToken::class,
+        ]);</pre>
+
+<p>Apply it to the route:</p>
+
+<div class="filepath edit">routes/api.php</div>
+<pre>Route::post('/sensors/{sensor}/readings', [SensorDataController::class, 'store'])
+    -&gt;middleware('sensor.token')
+    -&gt;name('api.sensor-readings.store');</pre>
+
+<p>Finally, a command to mint tokens — written in the same attribute style as the existing commands in <code>app/Console/Commands</code>:</p>
+
+<div class="filepath new">app/Console/Commands/IssueSensorToken.php</div>
+<pre>&lt;?php
+
+namespace App\Console\Commands;
+
+use App\Models\Sensor;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
+use Illuminate\Console\Command;
+use Illuminate\Support\Str;
+
+#[Signature('sensors:token {sensor : The sensor ID}')]
+#[Description('Issue a new API token for a physical sensor node')]
+class IssueSensorToken extends Command
+{
+    public function handle(): int
+    {
+        $sensor = Sensor::find($this-&gt;argument('sensor'));
+
+        if (! $sensor) {
+            $this-&gt;error('Sensor not found.');
+
+            return self::FAILURE;
+        }
+
+        $plain = Str::random(48);
+        $sensor-&gt;update(['api_token' =&gt; hash('sha256', $plain)]);
+
+        $this-&gt;info("Token for sensor #{$sensor-&gt;id} ({$sensor-&gt;name}):");
+        $this-&gt;line($plain);
+        $this-&gt;warn('Copy it now — it is stored hashed and cannot be shown again.');
+
+        return self::SUCCESS;
+    }
+}</pre>
+
+<div class="callout ok">
+  <p><span class="label o">Existing tests will fail — and that is correct</span></p>
+  <p>The suite in <code>tests/</code> posts readings without a token, so those cases now return 401. Update them to mint a token and send an <code>Authorization</code> header. A reviewer who sees the tests updated alongside the fix reads it as deliberate; a reviewer who sees a skipped test does not.</p>
+</div>
+
+<h3 class="sub">2.2 Accept battery level from the device <span class="tag">RECOMMENDED</span></h3>
+<p>The <code>sensors</code> table has a <code>battery_level</code> column and the dashboard displays it, but the reading endpoint rejects the field — so a real node has no way to report it. Battery level belongs to the <i>sensor</i>, not to an individual reading, so it is split out of the payload before the reading row is created.</p>
+
+<div class="filepath edit">app/Http/Requests/Api/StoreSensorReadingRequest.php</div>
+<pre>    public function rules(): array
+    {
+        return [
+            'water_level' =&gt; ['required', 'numeric', 'min:0'],
+            'rainfall' =&gt; ['nullable', 'numeric', 'min:0'],
+            'temperature' =&gt; ['nullable', 'numeric'],
+            'humidity' =&gt; ['nullable', 'numeric', 'between:0,100'],
+            'battery_level' =&gt; ['nullable', 'numeric', 'between:0,100'],
+            'recorded_at' =&gt; ['nullable', 'date'],
+        ];
+    }</pre>
+
+<div class="callout danger">
+  <p><span class="label d">Do not skip the controller change</span></p>
+  <p>The controller currently spreads <code>...$request-&gt;validated()</code> straight into <code>SensorReading::create()</code>. Add <code>battery_level</code> to the rules without the change below and every POST will fail — <code>sensor_readings</code> has no such column.</p>
+</div>
+
+<div class="filepath edit">app/Http/Controllers/Api/SensorDataController.php</div>
+<pre>    public function store(StoreSensorReadingRequest $request, Sensor $sensor, AlertService $alertService): JsonResponse
+    {
+        $data = $request-&gt;validated();
+        $battery = $data['battery_level'] ?? null;
+        unset($data['battery_level']);
+
+        $reading = SensorReading::create([
+            'sensor_id' =&gt; $sensor-&gt;id,
+            ...$data,
+            'recorded_at' =&gt; $data['recorded_at'] ?? now(),
+        ]);
+
+        $attributes = ['last_reading_at' =&gt; $reading-&gt;recorded_at];
+
+        if ($battery !== null) {
+            $attributes['battery_level'] = $battery;
+        }
+
+        $sensor-&gt;update($attributes);
+
+        $sensor-&gt;loadMissing('floodZone');
+        $alert = $alertService-&gt;evaluateReading($sensor, $reading);
+
+        return response()-&gt;json([
+            'message' =&gt; 'Reading recorded successfully.',
+            'reading' =&gt; $reading,
+            'alert' =&gt; $alert,
+        ], 201);
+    }</pre>
+
+<h3 class="sub">2.3 Let actuator hardware read its own state <span class="tag">NEEDED FOR SECTION 7</span></h3>
+<p>The Smart Actuation screen writes pump, siren and floodgate state into the database, but nothing exposes that state outside the web UI. A relay board has no way to find out it should switch on. This read-only endpoint closes the loop; the node polls it every 30 seconds.</p>
+
+<div class="filepath new">app/Http/Controllers/Api/ActuatorStateController.php</div>
+<pre>&lt;?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Models\ActuatorDevice;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
+class ActuatorStateController extends Controller
+{
+    public function index(Request $request): JsonResponse
+    {
+        $devices = ActuatorDevice::query()
+            -&gt;when($request-&gt;integer('zone'), fn ($query, $zone) =&gt; $query-&gt;where('flood_zone_id', $zone))
+            -&gt;orderBy('id')
+            -&gt;get(['id', 'name', 'type', 'is_on', 'mode', 'status']);
+
+        return response()-&gt;json(['devices' =&gt; $devices]);
+    }
+}</pre>
+
+<div class="filepath edit">routes/api.php</div>
+<pre>Route::get('/actuators', [ActuatorStateController::class, 'index'])-&gt;name('api.actuators.index');</pre>
+
+<div class="callout warn">
+  <p><span class="label w">Be honest about this one in the paper</span></p>
+  <p>This endpoint is unauthenticated. It is read-only and exposes no personal data, so the risk is far lower than the reading endpoint's — but it does let anyone on the network see device states. State the limitation and note the mitigation (same per-device token scheme as 2.1) as future work, rather than leaving a reviewer to find it.</p>
+</div>
+
+<h3 class="sub">2.4 Apply and verify</h3>
+<pre class="sh">docker compose exec app php artisan migrate
+docker compose exec app php artisan sensors:token 1</pre>
+<p>Copy the printed token somewhere safe — it is stored hashed and cannot be retrieved again. If you lose it, run the command again to issue a replacement.</p>
+<p>To find the sensor ID, sign in as admin and open <b>Admin → Sensors</b>; the ID is in the row and in the edit URL. Pick a sensor whose flood zone you are happy to trigger alerts for.</p>
+
+<div class="callout ok">
+  <p><span class="label o">Checkpoint</span></p>
+  <p>Migration applied, token in hand, and <code>php artisan test</code> still green after updating the API tests. Now you can pick up a soldering iron.</p>
+</div>
+
+<div class="page-break"></div>
+
+<h2 class="section"><span class="n">3</span>Wiring the sensor node</h2>
+<p class="lede">One pin map, one voltage divider, and a strict rule about power. Get these right and the firmware just works.</p>
+
+<h3 class="sub">3.1 Pin map</h3>
+<p>These pins avoid the ESP32's strapping pins (GPIO 0, 5, 12, 15) and the flash pins (GPIO 6–11), which cause boot failures that look like random faults.</p>
+
+<table>
+  <tr><th style="width:24%">Component</th><th style="width:20%">Component pin</th><th style="width:18%">ESP32 pin</th><th>Notes</th></tr>
+  <tr><td><b>Ultrasonic</b><br>HC-SR04 / JSN-SR04T</td><td>VCC</td><td class="pin">VIN (5V)</td><td>Needs 5 V. Will not work reliably from the 3V3 pin.</td></tr>
+  <tr><td></td><td>TRIG</td><td class="pin">GPIO 17</td><td>Direct. A 3.3 V pulse triggers it fine.</td></tr>
+  <tr><td></td><td>ECHO</td><td class="pin">GPIO 16</td><td><b>Through the voltage divider in 3.2 — never direct.</b></td></tr>
+  <tr><td></td><td>GND</td><td class="pin">GND</td><td></td></tr>
+  <tr><td><b>DHT22</b></td><td>VCC (pin 1)</td><td class="pin">3V3</td><td>Powered at 3.3 V so its data line is already 3.3 V logic — no divider needed.</td></tr>
+  <tr><td></td><td>DATA (pin 2)</td><td class="pin">GPIO 4</td><td>10 kΩ pull-up resistor from DATA to 3V3. Bare 4-pin sensors need this; small breakout boards often have it built in.</td></tr>
+  <tr><td></td><td>GND (pin 4)</td><td class="pin">GND</td><td>Pin 3 is not connected.</td></tr>
+  <tr><td><b>Status LED</b></td><td>—</td><td class="pin">GPIO 2</td><td>Onboard blue LED on most devkits. No wiring needed.</td></tr>
+  <tr><td><b>Battery sense</b><br><i>(Section 8)</i></td><td>18650 +</td><td class="pin">GPIO 34</td><td>Through a 100 kΩ / 100 kΩ divider. Input-only ADC1 pin — correct choice for analogue reads.</td></tr>
+  <tr><td><b>Relay board</b><br><i>(Section 7)</i></td><td>IN1 pump</td><td class="pin">GPIO 26</td><td rowspan="4">Set B only. Relay VCC to 5 V, GND common with the ESP32.</td></tr>
+  <tr><td></td><td>IN2 siren</td><td class="pin">GPIO 27</td></tr>
+  <tr><td></td><td>IN3 floodgate</td><td class="pin">GPIO 14</td></tr>
+  <tr><td></td><td>IN4 spare</td><td class="pin">GPIO 13</td></tr>
+  <tr><td><b>SG90 servo</b><br><i>(Section 7)</i></td><td>Signal (orange)</td><td class="pin">GPIO 25</td><td>Red to 5 V, brown to GND. Never power a servo from the 3V3 pin.</td></tr>
+</table>
+
+<h3 class="sub">3.2 The voltage divider — the part that kills boards</h3>
+
+<div class="callout danger">
+  <p><span class="label d">ESP32 pins are not 5 V tolerant</span></p>
+  <p>The ultrasonic module runs at 5 V, so its ECHO pin outputs <b>5 V</b>. ESP32 GPIOs are rated to 3.3 V, absolute maximum 3.6 V. Wiring ECHO straight to a GPIO may work for an hour, a week, or not at all — then the pin dies silently and you debug firmware for two days. Fit the divider.</p>
+</div>
+
+<div class="fig">
+<svg width="430" height="176" viewBox="0 0 430 176" xmlns="http://www.w3.org/2000/svg">
+  <rect x="6" y="52" width="86" height="44" rx="5" fill="#eaf7fb" stroke="#14a3b8" stroke-width="1.4"/>
+  <text x="49" y="70" font-family="Segoe UI,Arial" font-size="10" font-weight="700" fill="#0b3c5d" text-anchor="middle">Ultrasonic</text>
+  <text x="49" y="85" font-family="Segoe UI,Arial" font-size="9" fill="#4a5c6b" text-anchor="middle">ECHO (5 V)</text>
+
+  <line x1="92" y1="74" x2="150" y2="74" stroke="#16232e" stroke-width="2"/>
+
+  <rect x="150" y="62" width="46" height="24" rx="3" fill="#fff" stroke="#16232e" stroke-width="1.6"/>
+  <text x="173" y="78" font-family="Consolas,monospace" font-size="10" font-weight="700" fill="#16232e" text-anchor="middle">1 kΩ</text>
+
+  <line x1="196" y1="74" x2="268" y2="74" stroke="#16232e" stroke-width="2"/>
+  <circle cx="252" cy="74" r="4" fill="#16232e"/>
+
+  <line x1="252" y1="74" x2="252" y2="104" stroke="#16232e" stroke-width="2"/>
+  <rect x="229" y="104" width="46" height="24" rx="3" fill="#fff" stroke="#16232e" stroke-width="1.6"/>
+  <text x="252" y="120" font-family="Consolas,monospace" font-size="10" font-weight="700" fill="#16232e" text-anchor="middle">2 kΩ</text>
+  <line x1="252" y1="128" x2="252" y2="148" stroke="#16232e" stroke-width="2"/>
+  <line x1="236" y1="148" x2="268" y2="148" stroke="#16232e" stroke-width="2.4"/>
+  <line x1="241" y1="154" x2="263" y2="154" stroke="#16232e" stroke-width="2.4"/>
+  <line x1="246" y1="160" x2="258" y2="160" stroke="#16232e" stroke-width="2.4"/>
+  <text x="252" y="174" font-family="Segoe UI,Arial" font-size="8.5" fill="#4a5c6b" text-anchor="middle">GND</text>
+
+  <line x1="268" y1="74" x2="330" y2="74" stroke="#16232e" stroke-width="2"/>
+  <rect x="330" y="52" width="94" height="44" rx="5" fill="#eaf7fb" stroke="#14a3b8" stroke-width="1.4"/>
+  <text x="377" y="70" font-family="Segoe UI,Arial" font-size="10" font-weight="700" fill="#0b3c5d" text-anchor="middle">ESP32</text>
+  <text x="377" y="85" font-family="Consolas,monospace" font-size="9" fill="#4a5c6b" text-anchor="middle">GPIO 16</text>
+
+  <rect x="276" y="24" width="112" height="22" rx="4" fill="#ecf8f1" stroke="#1e8a54" stroke-width="1.2"/>
+  <text x="332" y="39" font-family="Segoe UI,Arial" font-size="9" font-weight="700" fill="#156b41" text-anchor="middle">3.33 V — safe</text>
+  <line x1="310" y1="46" x2="300" y2="68" stroke="#1e8a54" stroke-width="1.2" stroke-dasharray="3 2"/>
+
+  <rect x="96" y="24" width="104" height="22" rx="4" fill="#fdeeec" stroke="#c0392b" stroke-width="1.2"/>
+  <text x="148" y="39" font-family="Segoe UI,Arial" font-size="9" font-weight="700" fill="#9d2c20" text-anchor="middle">5 V — too high</text>
+  <line x1="130" y1="46" x2="120" y2="68" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="3 2"/>
+</svg>
+<div class="figcap">Figure 1 — Divide ECHO down before it reaches the ESP32. 5 V × 2 kΩ ÷ (1 kΩ + 2 kΩ) = 3.33 V.</div>
+</div>
+
+<p>Build it on the breadboard: ECHO into one row, a 1 kΩ resistor from that row to a second row, a 2 kΩ resistor from the second row down to the ground rail, and a jumper from the second row to GPIO 16. If you only have 2.2 kΩ, that gives 3.44 V — still within the absolute maximum and acceptable. TRIG needs no divider because the ESP32 drives it, not the other way round.</p>
+
+<h3 class="sub">3.3 Power rules</h3>
+<table>
+  <tr><th style="width:34%">Rule</th><th>Reason</th></tr>
+  <tr><td>Use the <b>5 V 2 A adapter</b>, not a laptop USB port, once the pump or servo is connected</td><td>A laptop port supplies about 500 mA. The pump alone draws roughly 200 mA and the SG90 can spike near 700 mA when stalled. The ESP32 browns out and reboots, which looks exactly like a firmware crash.</td></tr>
+  <tr><td>Every ground must be <b>common</b></td><td>The ESP32, ultrasonic, relay board, servo and pump supply all share one ground. Separate grounds give floating references and wildly erratic readings.</td></tr>
+  <tr><td>Never power a <b>motor or pump</b> from an ESP32 pin</td><td>GPIO pins source about 40 mA maximum. The relay switches a separate supply; the GPIO only drives the relay's input.</td></tr>
+  <tr><td>Power the <b>DHT22 from 3V3</b></td><td>Keeps its data line at 3.3 V logic, so no level shifting is required.</td></tr>
+</table>
+
+<h3 class="sub">3.4 Wiring order</h3>
+<ol class="tight">
+  <li><b>Unplug the ESP32.</b> Never rewire a powered board.</li>
+  <li>Seat the ESP32 across the breadboard's centre channel, straddling both halves.</li>
+  <li>Run the rails first: a jumper from <code>GND</code> to the blue rail, and from <code>3V3</code> to the red rail. Colour discipline here prevents most wiring errors.</li>
+  <li>Wire the ultrasonic: VCC to <code>VIN</code>, GND to the blue rail, TRIG to GPIO 17.</li>
+  <li>Build the divider from 3.2, then jumper its midpoint to GPIO 16.</li>
+  <li>Wire the DHT22: VCC to the red rail, GND to the blue rail, DATA to GPIO 4, and the 10 kΩ pull-up from DATA to the red rail.</li>
+  <li><b>Check every connection twice</b>, especially that no 5 V wire reaches a GPIO directly. Then plug in.</li>
+</ol>
+
+<div class="page-break"></div>
+
+<h2 class="section"><span class="n">4</span>Bring-up — nine gates</h2>
+<p class="lede">Each gate adds exactly one capability and ends with an observable result. Do not start the next gate until the current one passes. When something breaks, it is almost always in the gate you just added.</p>
+
+<div class="gate">
+  <div class="gh"><span class="gn">GATE 1</span><span class="gt">The board talks to the IDE</span></div>
+  <div class="gb">
+    <p>Prove the toolchain, cable and drivers work before any sensor is involved.</p>
+    <pre>void setup() {
+  Serial.begin(115200);
+  pinMode(2, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(2, HIGH);
+  Serial.println("BahaAI node alive");
+  delay(500);
+  digitalWrite(2, LOW);
+  delay(500);
+}</pre>
+    <p>Upload, then open <b>Tools → Serial Monitor</b> and set the baud rate to <b>115200</b>.</p>
+    <p><b>If upload fails</b> with "Failed to connect": hold the <span style="font-family:Consolas">BOOT</span> button while the IDE prints "Connecting…", release once it starts writing. Some clone boards need this every time.</p>
+  </div>
+  <div class="pass"><b>Pass when:</b> the onboard LED blinks once per second and <code>BahaAI node alive</code> repeats in the Serial Monitor.</div>
+</div>
+
+<div class="gate">
+  <div class="gh"><span class="gn">GATE 2</span><span class="gt">Distance on the serial monitor</span></div>
+  <div class="gb">
+    <p>Use the cheap HC-SR04 here. Save the waterproof JSN-SR04T until the code is proven.</p>
+    <pre>#define PIN_TRIG 17
+#define PIN_ECHO 16
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(PIN_TRIG, OUTPUT);
+  pinMode(PIN_ECHO, INPUT);
+}
+
+void loop() {
+  digitalWrite(PIN_TRIG, LOW);
+  delayMicroseconds(4);
+  digitalWrite(PIN_TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(PIN_TRIG, LOW);
+
+  unsigned long duration = pulseIn(PIN_ECHO, HIGH, 30000UL);
+
+  if (duration == 0) {
+    Serial.println("no echo (out of range, or check wiring)");
+  } else {
+    Serial.printf("%.1f cm\n", duration / 58.0);
+  }
+  delay(500);
+}</pre>
+    <p>Hold a book at measured distances and compare against a tape measure. Readings should track within a centimetre or two.</p>
+    <p><b>Always "no echo"?</b> Confirm VCC is on <code>VIN</code> and not <code>3V3</code>, confirm the divider midpoint reaches GPIO 16, and confirm grounds are common. On a <b>JSN-SR04T v3.0</b>, also check that the <code>R27</code> pad is empty — a resistor there selects a serial mode that ignores TRIG entirely.</p>
+  </div>
+  <div class="pass"><b>Pass when:</b> printed centimetres track a tape measure as you move a flat object.</div>
+</div>
+
+<div class="gate">
+  <div class="gh"><span class="gn">GATE 3</span><span class="gt">Temperature and humidity</span></div>
+  <div class="gb">
+    <pre>#include &lt;DHT.h&gt;
+#define PIN_DHT 4
+DHT dht(PIN_DHT, DHT22);
+
+void setup() {
+  Serial.begin(115200);
+  dht.begin();
+}
+
+void loop() {
+  float t = dht.readTemperature();
+  float h = dht.readHumidity();
+
+  if (isnan(t) || isnan(h)) {
+    Serial.println("DHT read failed — check pull-up and wiring");
+  } else {
+    Serial.printf("%.1f C  %.1f %%\n", t, h);
+  }
+  delay(2500);
+}</pre>
+    <p>The DHT22 refuses reads closer together than about two seconds, so the 2.5-second delay is deliberate. Persistent <code>nan</code> almost always means a missing 10 kΩ pull-up, or a blue DHT11 declared as a DHT22 — change the type to <code>DHT11</code> if that is what arrived.</p>
+  </div>
+  <div class="pass"><b>Pass when:</b> a plausible room temperature and humidity print every 2.5 seconds. Breathe on the sensor — humidity should climb, then settle.</div>
+</div>
+
+<div class="gate">
+  <div class="gh"><span class="gn">GATE 4</span><span class="gt">Wi-Fi association</span></div>
+  <div class="gb">
+    <pre>#include &lt;WiFi.h&gt;
+
+const char* WIFI_SSID     = "YourNetwork";
+const char* WIFI_PASSWORD = "YourPassword";
+
+void setup() {
+  Serial.begin(115200);
+  delay(200);
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+  Serial.print("Connecting");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(400);
+    Serial.print(".");
+  }
+  Serial.println();
+  Serial.print("Connected. ESP32 IP: ");
+  Serial.println(WiFi.localIP());
+}
+
+void loop() {}</pre>
+    <p><b>Stuck printing dots?</b> In order of likelihood: the network is 5 GHz; the SSID or password has a typo (both are case-sensitive); the hotspot has hit its device limit. Note the printed IP — it confirms which subnet the ESP32 joined, which must match the laptop's.</p>
+  </div>
+  <div class="pass"><b>Pass when:</b> an IP address prints, on the same subnet as the laptop (first three numbers match).</div>
+</div>
+
+<div class="gate">
+  <div class="gh"><span class="gn">GATE 5</span><span class="gt">A reading from the laptop, by hand</span></div>
+  <div class="gb">
+    <p>Prove the server accepts a reading before asking the ESP32 to produce one. This separates network problems from firmware problems permanently.</p>
+    <p><b>Find the laptop's LAN IP.</b> In PowerShell run <code>ipconfig</code> and read the <i>IPv4 Address</i> under the adapter actually in use — the Wi-Fi one, not Ethernet, and not a <code>172.x</code> Docker or WSL adapter.</p>
+    <p><b>Open the firewall</b> once, in an <b>Administrator</b> PowerShell:</p>
+    <pre class="sh">netsh advfirewall firewall add rule name="BahaAI 8000" dir=in action=allow protocol=TCP localport=8000</pre>
+    <p><b>Post a reading.</b> Replace the IP, sensor ID and token:</p>
+    <pre class="sh">curl.exe -X POST http://192.168.1.14:8000/api/sensors/1/readings ^
+  -H "Content-Type: application/json" ^
+  -H "Accept: application/json" ^
+  -H "Authorization: Bearer YOUR_TOKEN_HERE" ^
+  -d "{\"water_level\":1.85,\"temperature\":27.4,\"humidity\":82}"</pre>
+    <div class="callout warn">
+      <p><span class="label w">PowerShell trap</span></p>
+      <p>In PowerShell, <code>curl</code> is an alias for <code>Invoke-WebRequest</code>, which takes completely different arguments. Type <code>curl.exe</code> — with the extension — or the command will fail in a confusing way.</p>
+    </div>
+    <p>A <code>201</code> response with the created reading means success. Interpreting the failures:</p>
+    <table>
+      <tr><th style="width:14%">Response</th><th>Meaning</th></tr>
+      <tr><td><b>401</b></td><td>Token wrong, or missing for that sensor. Re-issue with <code>sensors:token</code>.</td></tr>
+      <tr><td><b>404</b></td><td>That sensor ID does not exist. Check <b>Admin → Sensors</b>.</td></tr>
+      <tr><td><b>422</b></td><td>Validation failed — the response body names the field. Usually <code>water_level</code> missing or negative.</td></tr>
+      <tr><td><b>Timeout</b></td><td>Firewall, wrong IP, or the app is not running.</td></tr>
+    </table>
+    <p>Then run the same command from a <b>phone browser or another device on the same network</b> pointed at that URL — if the laptop can reach it but the phone cannot, it is the firewall, not the app.</p>
+  </div>
+  <div class="pass"><b>Pass when:</b> you get <code>201</code>, and the new reading appears on the sensor's page under <b>Water Levels</b> in the dashboard.</div>
+</div>
+
+<div class="gate">
+  <div class="gh"><span class="gn">GATE 6</span><span class="gt">The ESP32 posts a fixed number</span></div>
+  <div class="gb">
+    <p>Same request, now from the board — with a hardcoded water level so nothing depends on the sensor yet.</p>
+    <pre>#include &lt;WiFi.h&gt;
+#include &lt;HTTPClient.h&gt;
+
+const char* WIFI_SSID     = "YourNetwork";
+const char* WIFI_PASSWORD = "YourPassword";
+const char* SERVER_HOST   = "192.168.1.14";
+const int   SERVER_PORT   = 8000;
+const int   SENSOR_ID     = 1;
+const char* DEVICE_TOKEN  = "YOUR_TOKEN_HERE";
+
+void setup() {
+  Serial.begin(115200);
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  while (WiFi.status() != WL_CONNECTED) { delay(400); Serial.print("."); }
+  Serial.println("\nWi-Fi up");
+
+  String url = "http://" + String(SERVER_HOST) + ":" + String(SERVER_PORT)
+             + "/api/sensors/" + String(SENSOR_ID) + "/readings";
+
+  HTTPClient http;
+  http.begin(url);
+  http.addHeader("Content-Type", "application/json");
+  http.addHeader("Accept", "application/json");
+  http.addHeader("Authorization", String("Bearer ") + DEVICE_TOKEN);
+
+  int code = http.POST("{\"water_level\":1.85}");
+  Serial.printf("HTTP %d\n", code);
+  Serial.println(http.getString());
+  http.end();
+}
+
+void loop() {}</pre>
+    <p>A negative HTTP code is a client-side failure — the request never left the board. <code>-1</code> means it could not connect: wrong IP, firewall, or the ESP32 landed on a different subnet than the laptop.</p>
+  </div>
+  <div class="pass"><b>Pass when:</b> the Serial Monitor prints <code>HTTP 201</code> and a fresh reading appears in the dashboard.</div>
+</div>
+
+<div class="gate">
+  <div class="gh"><span class="gn">GATE 7</span><span class="gt">Real measurements, correctly converted</span></div>
+  <div class="gb">
+    <p>Load the full firmware from Section 5. Set <code>MOUNT_HEIGHT_M</code> using the method in Section 6, and drop <code>POST_INTERVAL_MS</code> to <code>15000</code> (15 seconds) while testing so you are not waiting five minutes per attempt.</p>
+    <p>Watch the Serial Monitor as you raise and lower a flat object beneath the sensor. <b>Distance and water level must move in opposite directions.</b> If they move together, <code>MOUNT_HEIGHT_M</code> is wrong or the subtraction is inverted.</p>
+    <div class="callout danger">
+      <p><span class="label d">Restore the interval before the demo</span></p>
+      <p>Leave it at 15 seconds and you generate 240 readings an hour, flooding the charts and slowing the prediction query. Set it back to <code>5UL * 60UL * 1000UL</code> once calibration is done.</p>
+    </div>
+  </div>
+  <div class="pass"><b>Pass when:</b> the dashboard water level rises as the object rises, and a reading arrives on every interval.</div>
+</div>
+
+<div class="gate">
+  <div class="gh"><span class="gn">GATE 8</span><span class="gt">Make a flood happen</span></div>
+  <div class="gb">
+    <p>This is the moment worth rehearsing for the panel. Mount the JSN-SR04T over the test tank and pour water in.</p>
+    <ol class="tight">
+      <li>Fit the waterproof sensor to the tank lid or a crossbar, facing straight down at the water.</li>
+      <li><b>Leave at least 25 cm of air</b> between the sensor face and the highest water — it is blind closer than that.</li>
+      <li>Re-measure <code>MOUNT_HEIGHT_M</code> for the new mounting and re-flash.</li>
+      <li>Set that zone's thresholds to suit the tank in <b>Admin → Flood Zones</b> — see Section 6.3.</li>
+      <li>Pour slowly and watch the dashboard cross <b>safe → warning → critical</b>.</li>
+    </ol>
+    <p>Each threshold crossing creates one alert and dispatches notifications. Alerts are deduplicated per sensor and severity, so a second warning-level reading will <i>not</i> create a second warning alert while the first is still active — that is intended behaviour, not a bug. Resolve the alert to see it fire again.</p>
+  </div>
+  <div class="pass"><b>Pass when:</b> an alert appears on the Alerts page with the right severity, and notification log entries exist for that zone's residents.</div>
+</div>
+
+<div class="gate">
+  <div class="gh"><span class="gn">GATE 9</span><span class="gt">Prediction from real data</span></div>
+  <div class="gb">
+    <p>The prediction fits a linear regression over the last 120 minutes and needs at least three readings in that window. At a five-minute interval you have 24 — comfortable.</p>
+    <p>To demonstrate a rising trend without waiting two hours, pour water in gradually over 15–20 minutes so several readings capture the rise, then force a prediction:</p>
+    <pre class="sh">docker compose exec app php artisan predictions:generate</pre>
+    <p>A steady pour produces a high R², so confidence will be high and <i>time to critical</i> plausible. A single sudden dump produces a poor fit and low confidence — which is itself a good thing to show a panel, because it demonstrates the confidence score doing its job.</p>
+  </div>
+  <div class="pass"><b>Pass when:</b> the Predictions page shows a positive rate of rise, a time-to-critical estimate, and a confidence score from your own water.</div>
+</div>
+
+<div class="page-break"></div>
+
+<h2 class="section"><span class="n">5</span>The sensor node firmware</h2>
+<p class="lede">Complete and ready to flash. Edit only the block marked at the top, then upload.</p>
+
+<p>Three things here are worth defending in your paper, because they are deliberate engineering rather than tutorial copy-paste:</p>
+<ul class="tight">
+  <li><b>Median-of-seven filtering.</b> A single ultrasonic ping off a rippling water surface is noisy and occasionally wildly wrong. Taking the median of seven samples discards outliers without smearing genuine level changes the way an average would.</li>
+  <li><b>Temperature-compensated speed of sound.</b> The usual <code>duration / 58</code> shortcut assumes a fixed air temperature. Since a DHT22 is already fitted, the firmware computes <code>c = 331.3 + 0.606 × T</code> instead. Between a 22 °C night and a 35 °C afternoon this is roughly a 2 % correction — about 2 cm at a 1 m range.</li>
+  <li><b>Range gating.</b> Readings inside the 25 cm blind zone or beyond 4.5 m are rejected rather than reported, so a failed ping cannot masquerade as a water level.</li>
+</ul>
+
+<div class="filepath new">firmware/baha_sensor_node/baha_sensor_node.ino</div>
+<pre>/* ============================================================
+ *  BahaAI — Flood Sensor Node
+ *  ESP32 + JSN-SR04T ultrasonic + DHT22
+ *
+ *  Posts to  POST /api/sensors/{id}/readings
+ *  Sends     water_level (m), temperature (C), humidity (%),
+ *            battery_level (%)
+ * ============================================================ */
+
+#include &lt;WiFi.h&gt;
+#include &lt;HTTPClient.h&gt;
+#include &lt;DHT.h&gt;
+
+/* ---------- EDIT EVERYTHING IN THIS BLOCK ---------- */
+const char* WIFI_SSID     = "YourNetwork";
+const char* WIFI_PASSWORD = "YourPassword";
+
+const char* SERVER_HOST   = "192.168.1.14";   // laptop LAN IP — never "localhost"
+const int   SERVER_PORT   = 8000;
+const int   SENSOR_ID     = 1;                // from Admin -> Sensors
+const char* DEVICE_TOKEN  = "paste-token-from-sensors:token";
+
+// Vertical distance from the sensor face down to the channel bed, in metres.
+// Measure it — do not estimate it. See Section 6.1.
+const float MOUNT_HEIGHT_M = 1.20;
+
+// 5 minutes. Offline is flagged at 30 min; predictions need 3 readings per 2 h.
+const unsigned long POST_INTERVAL_MS = 5UL * 60UL * 1000UL;
+
+const bool REPORT_BATTERY = false;            // set true once Section 8 is wired
+/* --------------------------------------------------- */
+
+#define PIN_TRIG     17
+#define PIN_ECHO     16
+#define PIN_DHT       4
+#define PIN_LED       2
+#define PIN_BATTERY  34
+
+DHT dht(PIN_DHT, DHT22);
+
+const int   SAMPLE_COUNT = 7;      // median filter width
+const float SENSOR_MIN_M = 0.25;   // JSN-SR04T blind zone
+const float SENSOR_MAX_M = 4.50;
+const float BATT_EMPTY_V = 3.00;
+const float BATT_FULL_V  = 4.20;
+
+unsigned long lastPost = 0;
+bool firstRun = true;
+
+void setup() {
+  Serial.begin(115200);
+  delay(200);
+
+  pinMode(PIN_TRIG, OUTPUT);
+  pinMode(PIN_ECHO, INPUT);
+  pinMode(PIN_LED, OUTPUT);
+  digitalWrite(PIN_TRIG, LOW);
+
+  dht.begin();
+  connectWifi();
+}
+
+void connectWifi() {
+  if (WiFi.status() == WL_CONNECTED) return;
+
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  Serial.print("Wi-Fi connecting");
+
+  unsigned long started = millis();
+  while (WiFi.status() != WL_CONNECTED &amp;&amp; millis() - started &lt; 20000UL) {
+    delay(400);
+    Serial.print(".");
+  }
+  Serial.println();
+
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.print("Connected, IP ");
+    Serial.println(WiFi.localIP());
+  } else {
+    Serial.println("Wi-Fi failed — will retry next cycle");
+  }
+}
+
+/* One ping. Returns metres, or -1 if the echo is missing or out of range. */
+float readDistanceOnce(float tempC) {
+  digitalWrite(PIN_TRIG, LOW);
+  delayMicroseconds(4);
+  digitalWrite(PIN_TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(PIN_TRIG, LOW);
+
+  unsigned long duration = pulseIn(PIN_ECHO, HIGH, 30000UL);
+  if (duration == 0) return -1.0;
+
+  // Speed of sound varies with air temperature; the DHT22 lets us correct it.
+  float speed  = 331.3 + 0.606 * tempC;              // m/s
+  float metres = (duration * 1e-6 * speed) / 2.0;    // halve: out and back
+
+  if (metres &lt; SENSOR_MIN_M || metres &gt; SENSOR_MAX_M) return -1.0;
+  return metres;
+}
+
+/* Median of several pings — rejects the outliers a rippling surface produces. */
+float readDistanceMedian(float tempC) {
+  float samples[SAMPLE_COUNT];
+  int valid = 0;
+
+  for (int i = 0; i &lt; SAMPLE_COUNT; i++) {
+    float d = readDistanceOnce(tempC);
+    if (d &gt; 0) samples[valid++] = d;
+    delay(100);                     // let echoes die away between pings
+  }
+
+  if (valid &lt; 3) return -1.0;       // not enough good data to trust
+
+  for (int i = 1; i &lt; valid; i++) { // insertion sort
+    float key = samples[i];
+    int j = i - 1;
+    while (j &gt;= 0 &amp;&amp; samples[j] &gt; key) { samples[j + 1] = samples[j]; j--; }
+    samples[j + 1] = key;
+  }
+
+  return samples[valid / 2];
+}
+
+float readBatteryPercent() {
+  uint32_t total = 0;
+  for (int i = 0; i &lt; 8; i++) total += analogReadMilliVolts(PIN_BATTERY);
+
+  float volts = (total / 8.0f) * 2.0f / 1000.0f;   // undo the 1:2 divider
+  float pct   = (volts - BATT_EMPTY_V) / (BATT_FULL_V - BATT_EMPTY_V) * 100.0f;
+
+  return constrain(pct, 0.0f, 100.0f);
+}
+
+bool postReading(float level, float tempC, float humidity, float battery) {
+  String url = "http://" + String(SERVER_HOST) + ":" + String(SERVER_PORT)
+             + "/api/sensors/" + String(SENSOR_ID) + "/readings";
+
+  String body = "{\"water_level\":" + String(level, 2);
+  if (!isnan(tempC))    body += ",\"temperature\":" + String(tempC, 2);
+  if (!isnan(humidity)) body += ",\"humidity\":" + String(humidity, 2);
+  if (battery &gt;= 0)     body += ",\"battery_level\":" + String(battery, 1);
+  body += "}";
+
+  HTTPClient http;
+  http.begin(url);
+  http.setTimeout(10000);
+  http.addHeader("Content-Type", "application/json");
+  http.addHeader("Accept", "application/json");
+  http.addHeader("Authorization", String("Bearer ") + DEVICE_TOKEN);
+
+  int code = http.POST(body);
+  Serial.printf("POST %s -&gt; HTTP %d\n", body.c_str(), code);
+
+  if (code == 401) Serial.println("  Token rejected — re-issue with sensors:token");
+  if (code == 404) Serial.println("  No sensor with that ID");
+  if (code == 422) Serial.println(http.getString());
+  if (code &lt;  0)   Serial.println("  Server unreachable — check IP and firewall");
+
+  http.end();
+  return code == 201;
+}
+
+void loop() {
+  if (!firstRun &amp;&amp; millis() - lastPost &lt; POST_INTERVAL_MS) return;
+
+  firstRun = false;
+  lastPost = millis();
+
+  digitalWrite(PIN_LED, HIGH);
+  connectWifi();
+
+  float tempC    = dht.readTemperature();
+  float humidity = dht.readHumidity();
+  float forSpeed = isnan(tempC) ? 26.0 : tempC;   // Cebu annual average fallback
+
+  float distance = readDistanceMedian(forSpeed);
+
+  if (distance &lt; 0) {
+    Serial.println("No usable echo — skipping this cycle");
+    digitalWrite(PIN_LED, LOW);
+    return;
+  }
+
+  // The sensor measures DOWN; the app wants UP.
+  float level = MOUNT_HEIGHT_M - distance;
+  if (level &lt; 0) level = 0;
+
+  float battery = REPORT_BATTERY ? readBatteryPercent() : -1.0;
+
+  Serial.printf("distance %.3f m | level %.3f m | %.1f C | %.1f %%\n",
+                distance, level, tempC, humidity);
+
+  if (WiFi.status() == WL_CONNECTED) {
+    postReading(level, tempC, humidity, battery);
+  } else {
+    Serial.println("Offline — reading discarded");
+  }
+
+  digitalWrite(PIN_LED, LOW);
+}</pre>
+
+<div class="callout">
+  <p><span class="label i">Note on rainfall</span></p>
+  <p>The firmware deliberately never sends <code>rainfall</code>. Section 4 of the buying guide explains why: the ₱75 module detects wet or dry, it does not measure millimetres, and publishing its output as a millimetre value would be inventing data. Leave the field empty and let the OpenWeatherMap integration supply rainfall — or build the tipping bucket and send real millimetres.</p>
+</div>
+
+<div class="callout warn">
+  <p><span class="label w">Readings are discarded, not queued</span></p>
+  <p>If Wi-Fi is down at post time, that cycle's reading is lost. For a bench demonstration this is fine and keeps the code readable. For real deployment you would buffer to flash and replay on reconnect — worth naming as future work, since <code>recorded_at</code> is already accepted by the API precisely so a device can backfill delayed readings.</p>
+</div>
+
+<div class="page-break"></div>
+
+<h2 class="section"><span class="n">6</span>Calibration and mounting</h2>
+<p class="lede">The firmware is only as good as the one number you measure by hand.</p>
+
+<h3 class="sub">6.1 Measuring MOUNT_HEIGHT the reliable way</h3>
+<p>Rather than fighting a tape measure in an awkward spot, let the sensor measure it for you. With the sensor fixed in its <b>final</b> position and the tank or channel <b>empty</b>:</p>
+<ol class="tight">
+  <li>Flash the firmware with any value in <code>MOUNT_HEIGHT_M</code> — it does not matter yet.</li>
+  <li>Open the Serial Monitor and read the printed <code>distance</code> value.</li>
+  <li>With no water present, that distance <b>is</b> the mount height. Copy it into <code>MOUNT_HEIGHT_M</code> and re-flash.</li>
+</ol>
+<p>This cancels out mounting tilt and the offset between the board and the transducer face, both of which a tape measure gets wrong. Re-do it whenever the sensor is moved, even slightly.</p>
+
+<div class="fig">
+<svg width="400" height="216" viewBox="0 0 400 216" xmlns="http://www.w3.org/2000/svg">
+  <rect x="118" y="14" width="74" height="17" rx="3" fill="#0b3c5d"/>
+  <text x="155" y="26" font-family="Segoe UI,Arial" font-size="8.5" fill="#fff" text-anchor="middle">ultrasonic</text>
+  <line x1="155" y1="31" x2="155" y2="40" stroke="#16232e" stroke-width="1.6"/>
+  <path d="M143 40 L167 40 L161 50 L149 50 Z" fill="#9fb3c2"/>
+
+  <rect x="66" y="60" width="180" height="130" fill="none" stroke="#8ba0b1" stroke-width="2"/>
+  <rect x="68" y="132" width="176" height="56" fill="#bfe3f2"/>
+  <path d="M68 132 Q90 126 112 132 T156 132 T200 132 T244 132 V140 H68 Z" fill="#9ed4ea"/>
+
+  <rect x="68" y="52" width="176" height="55" fill="#d98014" opacity=".14"/>
+  <line x1="68" y1="107" x2="244" y2="107" stroke="#d98014" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="110" y="83" font-family="Segoe UI,Arial" font-size="7.6" font-weight="700" fill="#a5620a" text-anchor="middle">25 cm blind zone</text>
+
+  <line x1="155" y1="52" x2="155" y2="130" stroke="#c0392b" stroke-width="1.6" stroke-dasharray="4 3"/>
+  <polygon points="155,130 151,122 159,122" fill="#c0392b"/>
+  <polygon points="155,54 151,62 159,62" fill="#c0392b"/>
+  <rect x="163" y="110" width="76" height="17" rx="3" fill="#fdeeec" stroke="#c0392b" stroke-width="1"/>
+  <text x="201" y="122" font-family="Segoe UI,Arial" font-size="8.5" font-weight="700" fill="#9d2c20" text-anchor="middle">distance</text>
+
+  <line x1="290" y1="52" x2="290" y2="188" stroke="#0b3c5d" stroke-width="1.6"/>
+  <polygon points="290,52 286,60 294,60" fill="#0b3c5d"/>
+  <polygon points="290,188 286,180 294,180" fill="#0b3c5d"/>
+  <rect x="298" y="105" width="96" height="30" rx="3" fill="#eef7fc" stroke="#1076a8" stroke-width="1"/>
+  <text x="346" y="117" font-family="Segoe UI,Arial" font-size="8.5" font-weight="700" fill="#0b3c5d" text-anchor="middle">MOUNT_</text>
+  <text x="346" y="129" font-family="Segoe UI,Arial" font-size="8.5" font-weight="700" fill="#0b3c5d" text-anchor="middle">HEIGHT_M</text>
+
+  <line x1="40" y1="132" x2="40" y2="188" stroke="#1e8a54" stroke-width="1.6"/>
+  <polygon points="40,132 36,140 44,140" fill="#1e8a54"/>
+  <polygon points="40,188 36,180 44,180" fill="#1e8a54"/>
+  <rect x="0" y="146" width="34" height="28" rx="3" fill="#ecf8f1" stroke="#1e8a54" stroke-width="1"/>
+  <text x="17" y="158" font-family="Segoe UI,Arial" font-size="8" font-weight="700" fill="#156b41" text-anchor="middle">water</text>
+  <text x="17" y="169" font-family="Segoe UI,Arial" font-size="8" font-weight="700" fill="#156b41" text-anchor="middle">level</text>
+
+  <line x1="66" y1="188" x2="290" y2="188" stroke="#6b7d8d" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="178" y="203" font-family="Segoe UI,Arial" font-size="8" fill="#6b7d8d" text-anchor="middle">bed / tank floor</text>
+
+</svg>
+<div class="figcap">Figure 2 — The sensor reports the red measurement. The app needs the green one. The firmware subtracts.</div>
+</div>
+
+<h3 class="sub">6.2 Verify the inversion before trusting anything</h3>
+<p>With the tank part-filled, confirm the two numbers move in opposite directions. If they move together, the subtraction is backwards and every alert will be inverted.</p>
+<table>
+  <tr><th style="width:26%">State</th><th class="num" style="width:22%">distance</th><th class="num" style="width:22%">water_level</th><th>Verdict</th></tr>
+  <tr><td>Tank empty</td><td class="num">0.60 m</td><td class="num">0.00 m</td><td>Correct</td></tr>
+  <tr><td>Half full</td><td class="num">0.42 m</td><td class="num">0.18 m</td><td>Correct — one up, one down</td></tr>
+  <tr><td>Near full</td><td class="num">0.30 m</td><td class="num">0.30 m</td><td>Correct</td></tr>
+  <tr><td colspan="4" style="background:#fdeeec"><b>If water level falls as you pour water in, <code>MOUNT_HEIGHT_M</code> is wrong or the sign is flipped. Stop and fix it now.</b></td></tr>
+</table>
+
+<h3 class="sub">6.3 Scaling the thresholds to a test tank</h3>
+<p>The seeded zones use field thresholds — warning at 1.5 m, critical at 3.0 m. A 40 cm tank will never reach those, so nothing will ever alert. Edit the zone your sensor belongs to in <b>Admin → Flood Zones</b> and scale the thresholds down.</p>
+<p>Worked example for a sensor mounted <b>60 cm</b> above the tank floor:</p>
+<table>
+  <tr><th style="width:38%">Quantity</th><th class="num" style="width:20%">Value</th><th>Why</th></tr>
+  <tr><td><code>MOUNT_HEIGHT_M</code></td><td class="num">0.60 m</td><td>Measured by the method in 6.1.</td></tr>
+  <tr><td>Highest measurable water</td><td class="num">0.35 m</td><td>60 cm minus the 25 cm blind zone. Water above this is invisible to the sensor.</td></tr>
+  <tr><td><code>safe_threshold</code></td><td class="num">0.00</td><td>Baseline.</td></tr>
+  <tr><td><code>warning_threshold</code></td><td class="num">0.15</td><td>15 cm of water — easy to reach with a jug.</td></tr>
+  <tr><td><code>critical_threshold</code></td><td class="num">0.28</td><td>Leaves 7 cm of headroom below the blind zone, so critical is reachable without the sensor going blind mid-demonstration.</td></tr>
+</table>
+
+<div class="callout warn">
+  <p><span class="label w">Write this down for the panel</span></p>
+  <p>Say plainly that thresholds were scaled for bench demonstration and that field values remain 1.5 m and 3.0 m. Scaling is normal engineering practice; a reviewer who discovers it unannounced may read it as the system being tuned to pass its own test.</p>
+</div>
+
+<h3 class="sub">6.4 What degrades an ultrasonic reading</h3>
+<table>
+  <tr><th style="width:26%">Cause</th><th>Effect and mitigation</th></tr>
+  <tr><td><b>Tilt</b></td><td>The beam reflects away from the sensor instead of back. Mount within about 5° of vertical — check with a phone spirit level. This is the most common cause of a sensor that reads intermittently.</td></tr>
+  <tr><td><b>Beam spread</b></td><td>The cone is roughly 15° wide — about 26 cm across at 1 m range. Anything inside that cone (tank wall, pipe, bracket, cable) reflects sooner than the water and reports as a falsely high level. Keep the cone clear.</td></tr>
+  <tr><td><b>Ripples and turbulence</b></td><td>Scatter the echo. The median filter absorbs most of it. Mount over still water rather than a fast chute where possible.</td></tr>
+  <tr><td><b>Foam and floating debris</b></td><td>Reflect at the debris surface, not the water. Unavoidable outdoors — mention it as a known limitation.</td></tr>
+  <tr><td><b>Air temperature</b></td><td>Already corrected in firmware using the DHT22. Without correction, expect roughly 2 % error across a normal day.</td></tr>
+  <tr><td><b>Condensation on the face</b></td><td>Can block the transducer. In the field enclosure, point the sensor down and add a small drip edge.</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<h2 class="section"><span class="n">7</span>The actuator node — Set B</h2>
+<p class="lede">Pump, siren and floodgate driven by the Smart Actuation screen. Requires change 2.3 from Section 2.</p>
+
+<div class="callout danger">
+  <p><span class="label d">Low-voltage DC only</span></p>
+  <p>The relays on these boards are printed with mains ratings. <b>Do not switch mains voltage in this project.</b> Breadboard wiring, exposed terminals and a student enclosure provide none of the isolation, strain relief or clearance that mains work requires, and a flooded demonstration involves water on the same table. Switch only the 3–6 V pump and the 5 V buzzer. Say so in the paper — it reads as competence, not timidity.</p>
+</div>
+
+<h3 class="sub">7.1 Wiring the relay board</h3>
+<ul class="tight">
+  <li>Relay <code>VCC</code> to the 5 V rail, <code>GND</code> to common ground.</li>
+  <li><code>IN1 → GPIO 26</code> (pump), <code>IN2 → GPIO 27</code> (siren), <code>IN3 → GPIO 14</code> (floodgate), <code>IN4 → GPIO 13</code> (spare).</li>
+  <li>The switched device goes through the <b>COM</b> and <b>NO</b> (normally open) screw terminals, in series with its own supply — so the load is off until the relay closes.</li>
+</ul>
+
+<div class="callout warn">
+  <p><span class="label w">Two relay-board quirks that waste afternoons</span></p>
+  <p><b>Most boards are active LOW.</b> <code>digitalWrite(pin, LOW)</code> turns the relay <i>on</i>. If your relays are on at boot and click off when commanded, this is why — the firmware below has a flag for it.</p>
+  <p><b>The JD-VCC jumper.</b> If relays do not click at all, the 3.3 V logic is too weak for the opto-isolators. Remove the <code>VCC–JD-VCC</code> jumper and feed <code>JD-VCC</code> from 5 V separately, keeping grounds common.</p>
+</div>
+
+<h3 class="sub">7.2 Polling firmware</h3>
+<p>Install <b>ArduinoJson</b> (by Benoit Blanchon) from the Library Manager first. The node polls every 30 seconds and mirrors whatever the dashboard says.</p>
+
+<div class="callout warn">
+  <p><span class="label w">ArduinoJson version</span></p>
+  <p>The code below uses the version 7 API. If the Library Manager installed version 6, <code>JsonDocument doc;</code> will not compile — either upgrade to 7, or change that one line to <code>DynamicJsonDocument doc(2048);</code>. Everything else is identical between the two versions.</p>
+</div>
+
+<div class="filepath new">firmware/baha_actuator_node/baha_actuator_node.ino</div>
+<pre>#include &lt;WiFi.h&gt;
+#include &lt;HTTPClient.h&gt;
+#include &lt;ArduinoJson.h&gt;
+
+const char* WIFI_SSID     = "YourNetwork";
+const char* WIFI_PASSWORD = "YourPassword";
+const char* SERVER_HOST   = "192.168.1.14";
+const int   SERVER_PORT   = 8000;
+const int   ZONE_ID       = 1;               // flood zone this node serves
+
+#define RELAY_PUMP   26
+#define RELAY_SIREN  27
+#define RELAY_GATE   14
+
+const bool RELAY_ACTIVE_LOW = true;          // most 4-channel boards are
+const unsigned long POLL_INTERVAL_MS = 30UL * 1000UL;
+
+unsigned long lastPoll = 0;
+
+void setRelay(int pin, bool on) {
+  digitalWrite(pin, (on == RELAY_ACTIVE_LOW) ? LOW : HIGH);
+}
+
+void setup() {
+  Serial.begin(115200);
+
+  int pins[] = { RELAY_PUMP, RELAY_SIREN, RELAY_GATE };
+  for (int pin : pins) {
+    pinMode(pin, OUTPUT);
+    setRelay(pin, false);                    // everything off at boot
+  }
+
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  while (WiFi.status() != WL_CONNECTED) { delay(400); Serial.print("."); }
+  Serial.println("\nWi-Fi up");
+}
+
+void pollActuators() {
+  String url = "http://" + String(SERVER_HOST) + ":" + String(SERVER_PORT)
+             + "/api/actuators?zone=" + String(ZONE_ID);
+
+  HTTPClient http;
+  http.begin(url);
+  http.setTimeout(10000);
+  http.addHeader("Accept", "application/json");
+
+  int code = http.GET();
+  if (code != 200) {
+    Serial.printf("actuator poll -&gt; HTTP %d\n", code);
+    http.end();
+    return;
+  }
+
+  JsonDocument doc;
+  DeserializationError err = deserializeJson(doc, http.getString());
+  http.end();
+
+  if (err) {
+    Serial.println("actuator JSON parse failed");
+    return;
+  }
+
+  for (JsonObject device : doc["devices"].as&lt;JsonArray&gt;()) {
+    const char* type = device["type"];
+    bool on = device["is_on"];
+
+    if (strcmp(type, "pump") == 0) {
+      setRelay(RELAY_PUMP, on);
+    } else if (strcmp(type, "siren") == 0) {
+      setRelay(RELAY_SIREN, on);
+    } else if (strcmp(type, "floodgate") == 0 || strcmp(type, "valve") == 0) {
+      setRelay(RELAY_GATE, on);
+    }
+
+    Serial.printf("  %-10s %s\n", type, on ? "ON" : "off");
+  }
+}
+
+void loop() {
+  if (millis() - lastPoll &lt; POLL_INTERVAL_MS) return;
+  lastPoll = millis();
+
+  if (WiFi.status() != WL_CONNECTED) {
+    WiFi.reconnect();
+    return;
+  }
+
+  pollActuators();
+}</pre>
+
+<div class="callout">
+  <p><span class="label i">Demonstration tip</span></p>
+  <p>Thirty seconds is a long silence in front of a panel. Drop <code>POLL_INTERVAL_MS</code> to 5 seconds for the demonstration so the pump responds while the examiner is still looking at the screen, and say that the field value is higher to conserve battery.</p>
+</div>
+
+<h3 class="sub">7.3 The servo floodgate</h3>
+<p>A servo needs a timed pulse train, not a relay contact, so drive it directly from <code>GPIO 25</code> with the ESP32Servo library — red to the 5 V rail, brown to common ground, orange to the GPIO. Never power it from the 3V3 pin; its stall current will brown out the board.</p>
+<pre>#include &lt;ESP32Servo.h&gt;
+
+Servo gate;
+const int GATE_CLOSED_DEG = 0;
+const int GATE_OPEN_DEG   = 90;
+
+// in setup():
+gate.attach(25);
+gate.write(GATE_CLOSED_DEG);
+
+// when the floodgate device reports is_on:
+gate.write(on ? GATE_OPEN_DEG : GATE_CLOSED_DEG);</pre>
+
+<div class="page-break"></div>
+
+<h2 class="section"><span class="n">8</span>Battery backup, enclosure and mounting</h2>
+<p class="lede">What turns a breadboard into something that survives a night outdoors — and the one part the buying guide missed.</p>
+
+<h3 class="sub">8.1 You need one part that is not on the buying list</h3>
+
+<div class="callout danger">
+  <p><span class="label d">TP4056 plus 18650 alone cannot power an ESP32</span></p>
+  <p>An 18650 cell delivers 3.0–4.2 V. The ESP32's <code>VIN</code> pin expects 5 V, and its <code>3V3</code> pin has an absolute maximum of 3.6 V — so a freshly charged 4.2 V cell wired to <code>3V3</code> is over the limit and will eventually damage the board. You need a <b>boost converter</b> between them.</p>
+  <p>Buy either an <b>MT3608 step-up module</b> (roughly ₱60, adjust its trimmer to 5.0 V with the multimeter <i>before</i> connecting the ESP32), or a combined <b>18650 power-bank / UPS charging module</b> (roughly ₱150) that integrates charging, protection and 5 V output on one board. The combined module is the better choice — fewer wires, and it handles charge and discharge at the same time.</p>
+</div>
+
+<p>Also check which TP4056 variant you received. The bare version has no low-voltage cutoff and will discharge an 18650 until it is permanently ruined. The protected version carries two extra chips beside the charging IC (a DW01 and a dual MOSFET) and disconnects the cell at about 2.5 V. Buy the protected one.</p>
+
+<table>
+  <tr><th style="width:24%">Connection</th><th>Goes to</th></tr>
+  <tr><td><code>IN+ / IN−</code></td><td>5 V USB adapter — the charging input.</td></tr>
+  <tr><td><code>B+ / B−</code></td><td>The 18650 holder. Observe polarity; reversing it destroys the module instantly.</td></tr>
+  <tr><td><code>OUT+ / OUT−</code></td><td>The boost converter input. The boost output (set to 5.0 V) then feeds ESP32 <code>VIN</code> and <code>GND</code>.</td></tr>
+  <tr><td>Battery sense</td><td>100 kΩ from <code>B+</code> to a junction, 100 kΩ from that junction to <code>GND</code>, junction to <code>GPIO 34</code>. Halves 4.2 V to 2.1 V, comfortably inside the ADC range.</td></tr>
+</table>
+
+<p>Once wired, set <code>REPORT_BATTERY = true</code> in the firmware, then calibrate: measure the actual cell voltage across <code>B+</code>/<code>B−</code> with the multimeter and compare it against the firmware's computed <code>volts</code>. If they disagree, adjust the <code>2.0f</code> multiplier in <code>readBatteryPercent()</code> by the ratio. Resistors are typically 5 % parts, so a few percent of error here is normal and worth correcting once.</p>
+
+<h3 class="sub">8.2 Enclosure</h3>
+<ul class="tight">
+  <li><b>Keep the antenna outside metal.</b> The IP65 box must be plastic. A metal enclosure will kill Wi-Fi range entirely.</li>
+  <li><b>Cable glands, not drilled holes.</b> Every cable entering the box needs a gland, and every gland should enter from the <b>underside</b> so water cannot pool at the opening.</li>
+  <li><b>Drip loop.</b> Let each cable hang below its entry point before rising into the gland, so water runs off the low point instead of tracking along the cable into the box.</li>
+  <li><b>The sensor points down through the bottom face</b>, sealed around the barrel with neutral-cure silicone. Do not seal the transducer face itself.</li>
+  <li><b>Add a desiccant sachet.</b> Sealed boxes in a tropical climate condense internally as they cool at night; a silica gel packet costs nothing and keeps the board dry.</li>
+</ul>
+
+<h3 class="sub">8.3 Mounting geometry</h3>
+<table>
+  <tr><th style="width:30%">Constraint</th><th>Value and reason</th></tr>
+  <tr><td>Height above highest expected water</td><td>At least <b>25 cm</b> — the blind zone. Realistically leave 40 cm so an unexpected surge does not blind the sensor exactly when it matters most.</td></tr>
+  <tr><td>Angle</td><td>Within <b>5°</b> of vertical.</td></tr>
+  <tr><td>Clear cone</td><td>About <b>26 cm diameter at 1 m</b> range, widening with distance. No brackets, cables or walls inside it.</td></tr>
+  <tr><td>Debris clearance</td><td>Above the waterline that carries branches and rubbish. A struck sensor is a dead sensor.</td></tr>
+  <tr><td>Rigidity</td><td>Bolt to a bridge underside, culvert headwall or a braced post. Any sway changes the measured distance and appears in the data as phantom water-level noise.</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<h2 class="section"><span class="n">9</span>Troubleshooting</h2>
+<p class="lede">Symptoms in the order you are likely to meet them.</p>
+
+<table>
+  <tr><th style="width:27%">Symptom</th><th style="width:33%">Most likely cause</th><th>Fix</th></tr>
+  <tr><td>Board never appears as a COM port; Port menu greyed out</td><td>Charge-only USB cable</td><td>First determine whether Windows sees the device at all (see the callout in 1.2). Nothing in Device Manager means the cable, not the driver. Test the cable on a phone — file transfer offered or not.</td></tr>
+  <tr><td>Device shows a yellow triangle under <code>VID_1A86</code></td><td>WCH driver not installed</td><td>Install CH341SER (CH340) or CH343SER (CH9102) as administrator, then replug. Check the PID: <code>7523</code> = CH340, <code>55D4</code> = CH9102.</td></tr>
+  <tr><td>Driver installed but still no port</td><td>Driver staged with nothing to bind to</td><td>Confirm with <code>pnputil /enum-drivers</code> that the INF is staged. If it is, the board is not enumerating — go back to the cable.</td></tr>
+  <tr><td>"Failed to connect to ESP32"</td><td>Board not in bootloader mode</td><td>Hold <b>BOOT</b> while the IDE prints "Connecting…", release when writing starts.</td></tr>
+  <tr><td>Board reboots randomly</td><td>Insufficient current</td><td>Use the 5 V 2 A adapter, not a laptop port. Common once a pump or servo is attached.</td></tr>
+  <tr><td>Boots to a garbled loop</td><td>A strapping pin is held at the wrong level</td><td>Nothing should be wired to GPIO 0, 5, 12 or 15. Use the Section 3.1 pin map.</td></tr>
+  <tr><td>Ultrasonic always "no echo"</td><td>Powered from 3V3, or ECHO not reaching the GPIO</td><td>VCC must be on <code>VIN</code>. Check the divider midpoint with the multimeter — it should read about 3.3 V during a ping.</td></tr>
+  <tr><td>JSN-SR04T silent, HC-SR04 fine</td><td>v3.0 board in serial mode</td><td>Check that the <code>R27</code> pad is unpopulated. A resistor there selects a mode that ignores TRIG.</td></tr>
+  <tr><td>Distance jumps wildly</td><td>Tilt, or an obstruction in the beam cone</td><td>Level the sensor to within 5°; clear the 26 cm cone. The median filter handles ripples, not geometry.</td></tr>
+  <tr><td>Readings stop above a level</td><td>Water entered the 25 cm blind zone</td><td>Raise the sensor or lower the critical threshold. Recalculate per Section 6.3.</td></tr>
+  <tr><td>DHT22 always <code>nan</code></td><td>Missing pull-up, or wrong type</td><td>Fit the 10 kΩ from DATA to 3V3. If the sensor is blue, it is a DHT11 — change the constructor.</td></tr>
+  <tr><td>Wi-Fi never connects</td><td>5 GHz network</td><td>The ESP32 is 2.4 GHz only. Use a 2.4 GHz SSID or a phone hotspot.</td></tr>
+  <tr><td><code>HTTP -1</code> from the ESP32</td><td>Cannot reach the server</td><td>Verify the laptop's LAN IP, that the firewall rule exists, and that both devices share a subnet. Confirm with Gate 5 from another device first.</td></tr>
+  <tr><td><code>HTTP 401</code></td><td>Token wrong or missing</td><td>Re-issue with <code>php artisan sensors:token {id}</code> and paste the new value into the firmware.</td></tr>
+  <tr><td><code>HTTP 404</code></td><td>Sensor ID does not exist</td><td>Check <b>Admin → Sensors</b> for the real ID.</td></tr>
+  <tr><td><code>HTTP 422</code></td><td>Validation failed</td><td>Read the response body — it names the field. Usually a negative <code>water_level</code> from a bad <code>MOUNT_HEIGHT_M</code>.</td></tr>
+  <tr><td><code>HTTP 500</code> after adding battery</td><td>Controller change from 2.2 not applied</td><td><code>battery_level</code> must be removed from the payload before <code>SensorReading::create()</code>.</td></tr>
+  <tr><td>Level falls as water rises</td><td>Inverted conversion</td><td>Re-measure <code>MOUNT_HEIGHT_M</code> per Section 6.1 and re-check the subtraction.</td></tr>
+  <tr><td>Readings arrive, no alert</td><td>Thresholds still at field values</td><td>Scale the zone's thresholds to the tank (Section 6.3).</td></tr>
+  <tr><td>Alert fires once, never again</td><td>Working as designed</td><td>Alerts are deduplicated per sensor and severity while one is active. Resolve it to allow the next.</td></tr>
+  <tr><td>"Sensor offline" alerts</td><td>Gaps longer than 30 minutes</td><td>Confirm the post interval and that failed cycles are not silently repeating — watch the Serial Monitor.</td></tr>
+  <tr><td>Predictions stay empty</td><td>Fewer than 3 readings in 2 hours</td><td>Let it run 20 minutes at a 5-minute interval, then <code>php artisan predictions:generate</code>.</td></tr>
+  <tr><td>Relays on at boot</td><td>Active-LOW board</td><td>Confirm <code>RELAY_ACTIVE_LOW = true</code>.</td></tr>
+  <tr><td>Relays never click</td><td>3.3 V logic too weak</td><td>Remove the <code>VCC–JD-VCC</code> jumper and power <code>JD-VCC</code> from 5 V, grounds common.</td></tr>
+</table>
+
+<h2 class="section"><span class="n">10</span>Acceptance checklist</h2>
+<p class="lede">Tick these in order. Anything unticked is the next thing to work on.</p>
+
+<table>
+  <tr><th style="width:9%">Gate</th><th style="width:61%">Result</th><th>Done</th></tr>
+  <tr><td><b>Server</b></td><td>Migration applied, token issued, API tests updated and passing</td><td class="mid"><span class="checkbox"></span></td></tr>
+  <tr><td><b>1</b></td><td>Serial output and blinking LED</td><td class="mid"><span class="checkbox"></span></td></tr>
+  <tr><td><b>2</b></td><td>Distance tracks a tape measure</td><td class="mid"><span class="checkbox"></span></td></tr>
+  <tr><td><b>3</b></td><td>Temperature and humidity read correctly</td><td class="mid"><span class="checkbox"></span></td></tr>
+  <tr><td><b>4</b></td><td>ESP32 gets an IP on the laptop's subnet</td><td class="mid"><span class="checkbox"></span></td></tr>
+  <tr><td><b>5</b></td><td><code>curl.exe</code> returns 201 and the reading appears in the dashboard</td><td class="mid"><span class="checkbox"></span></td></tr>
+  <tr><td><b>6</b></td><td>ESP32 posts a fixed reading successfully</td><td class="mid"><span class="checkbox"></span></td></tr>
+  <tr><td><b>7</b></td><td>Real measurement, converted correctly, verified against 6.2</td><td class="mid"><span class="checkbox"></span></td></tr>
+  <tr><td><b>8</b></td><td>Pouring water drives safe → warning → critical with alerts and notifications</td><td class="mid"><span class="checkbox"></span></td></tr>
+  <tr><td><b>9</b></td><td>A prediction with real rate of rise and confidence</td><td class="mid"><span class="checkbox"></span></td></tr>
+  <tr><td><b>Set B</b></td><td>Dashboard toggle switches the physical pump and siren</td><td class="mid"><span class="checkbox"></span></td></tr>
+  <tr><td><b>Set B</b></td><td>Battery level visible in the dashboard; node survives unplugging the adapter</td><td class="mid"><span class="checkbox"></span></td></tr>
+  <tr><td><b>Final</b></td><td>Post interval restored to 5 minutes; all parts in the enclosure</td><td class="mid"><span class="checkbox"></span></td></tr>
+</table>
+
+<h3 class="sub">Demonstration sequence</h3>
+<p>A sequence that tells a complete story in about ten minutes, ending on the strongest point:</p>
+<ol class="tight">
+  <li>Show the dashboard at rest, with the real sensor reporting a safe level every five minutes.</li>
+  <li>Pour water steadily. Narrate the level climbing on the live chart.</li>
+  <li>Cross the warning threshold — the alert appears, notifications dispatch to that barangay's residents.</li>
+  <li>Open the notification log to show who was reached and by which channel.</li>
+  <li>Run <code>predictions:generate</code> and show rate of rise, time to critical, and confidence derived from the water you just poured.</li>
+  <li>Cross critical. Toggle the pump from the Smart Actuation screen and let the panel watch physical water being moved.</li>
+  <li>Unplug the mains adapter. The node keeps reporting on battery — the point that lands hardest for a flood system in the Philippines.</li>
+</ol>
+
+<div class="callout ok">
+  <p><span class="label o">Keep the simulator available</span></p>
+  <p>Do not remove <code>php artisan sensors:simulate</code> when the hardware works. One physical node covers one zone; the simulator populates the other six so the map, analytics and zone comparisons look complete. Explain the split openly — one real node proves the data path, simulation proves the platform scales. Panels respect that far more than an unconvincing claim of seven live sensors.</p>
+</div>
+
+<div class="foot">
+  BahaAI IoT Hardware Assembly Guide &nbsp;·&nbsp; Prepared 13 September 2026 &nbsp;·&nbsp; Companion to the IoT Hardware Buying Guide<br>
+  Pin assignments and code are specific to this build. Verify voltages with a multimeter before connecting anything to an ESP32 GPIO.
+</div>
+
+</body>
+</html>
+

@@ -6,6 +6,7 @@ use App\Mail\AlertNotificationMail;
 use App\Models\Alert;
 use App\Models\NotificationLog;
 use App\Models\User;
+use App\Services\Sms\SmsGateway;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -13,9 +14,12 @@ use Throwable;
 
 class NotificationDispatcher
 {
+    public function __construct(private SmsGateway $sms) {}
+
     /**
      * Dispatch notifications for an alert to all affected residents and staff.
-     * Email is sent for real; SMS/push are simulated via database logging.
+     * Email is sent for real. SMS goes through the configured gateway, which
+     * defaults to a simulating log driver. Push is not yet wired.
      *
      * @return array{notified: int, email_sent: int, email_failed: int}
      */
@@ -37,7 +41,54 @@ class NotificationDispatcher
             'notified' => $recipients->count(),
             'email_sent' => $emailSent,
             'email_failed' => $emailFailed,
+            'sirens' => $this->logSirens($alert),
         ];
+    }
+
+    /**
+     * Record the sirens sounding for this alert.
+     *
+     * The devices themselves are driven by ActuatorSimulationService when the
+     * zone crosses its threshold; this records that the audible channel was
+     * used, so the Alert page shows every channel in one place.
+     *
+     * @return int Number of sirens active for this alert
+     */
+    private function logSirens(Alert $alert): int
+    {
+        $zone = $alert->floodZone;
+
+        if (! $zone) {
+            return 0;
+        }
+
+        $sirens = $zone->actuatorDevices()
+            ->where('type', 'siren')
+            ->where('is_on', true)
+            ->get();
+
+        $content = sprintf(
+            '[BahaAI %s] Audible warning sounding in %s, %s.',
+            strtoupper($alert->severity),
+            $zone->name,
+            $zone->barangay,
+        );
+
+        foreach ($sirens as $siren) {
+            NotificationLog::create([
+                'alert_id' => $alert->id,
+                'user_id' => null,
+                'channel' => 'siren',
+                'recipient' => $siren->name,
+                'content' => $content,
+                // No physical siren is wired yet; the command is real, the
+                // sound is not. Under-claim rather than over-claim.
+                'status' => 'simulated',
+                'sent_at' => null,
+            ]);
+        }
+
+        return $sirens->count();
     }
 
     /**
@@ -76,8 +127,10 @@ class NotificationDispatcher
         );
 
         if (($preferences['sms'] ?? false) && $user->mobile) {
-            // SMS delivery is simulated (no gateway wired) — logged for the audit trail.
-            $this->createLog($alert, $user, 'sms', $user->mobile, $content, 'sent');
+            // Status comes from the gateway itself: 'sent' only when a live
+            // driver transmitted, 'simulated' when the log driver stood in.
+            $result = $this->sms->send($user->mobile, $content);
+            $this->createLog($alert, $user, 'sms', $user->mobile, $content, $result->status);
         }
 
         if ($preferences['email'] ?? false) {
@@ -87,8 +140,9 @@ class NotificationDispatcher
         }
 
         if ($preferences['push'] ?? false) {
-            // Push delivery is simulated (no service wired) — logged for the audit trail.
-            $this->createLog($alert, $user, 'push', $user->name, $content, 'sent');
+            // Push has no service wired. Record the intended device target
+            // (none yet) rather than the user's name, and never claim delivery.
+            $this->createLog($alert, $user, 'push', 'no-device-registered', $content, 'simulated');
         }
 
         return ['email_sent' => $emailSent, 'email_failed' => $emailFailed];
@@ -132,6 +186,8 @@ class NotificationDispatcher
             'recipient' => $recipient,
             'content' => $content,
             'status' => $status,
+            // Only a genuine transmission gets a timestamp; a simulated row
+            // must not look like a delivery receipt.
             'sent_at' => $status === 'sent' ? now() : null,
         ]);
     }

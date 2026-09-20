@@ -31,6 +31,15 @@ class ActuatorController extends Controller
 
     public function toggle(ActuatorDevice $device, Request $request, ActuatorSimulationService $service): RedirectResponse
     {
+        // The UI hides manual control for auto-mode devices; enforce it here too
+        // so a direct PATCH cannot fight the automation.
+        if ($device->mode === 'auto') {
+            return redirect()->back()->with(
+                'error',
+                "{$device->name} is in automatic mode. Switch it to manual to control it directly.",
+            );
+        }
+
         $service->toggle($device, $request->user()->id);
 
         return redirect()->back()->with('success', "Device {$device->name} toggled.");

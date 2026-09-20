@@ -2,14 +2,15 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import InfoBanner from '@/Components/InfoBanner';
 import PageHeader from '@/Components/PageHeader';
 import SectionCard from '@/Components/SectionCard';
+import SheltersMap, { type ShelterPoint } from '@/Components/Map/SheltersMap';
+import { cn } from '@/lib/utils';
 import { Head } from '@inertiajs/react';
-import { Home, MapPin, Navigation, Phone, ShieldCheck } from 'lucide-react';
+import { Home, MapPin, Navigation, Phone, ShieldCheck, Users } from 'lucide-react';
 
 const HOTLINES = [
     { label: 'National Emergency Hotline', number: '911' },
     { label: 'NDRRMC Operations Center', number: '(02) 8911-1406' },
     { label: 'Philippine Red Cross', number: '143' },
-    { label: 'Local DRRMO', number: '(032) 000-0000' },
 ];
 
 const CHECKLIST = [
@@ -19,53 +20,88 @@ const CHECKLIST = [
     'Follow instructions from local disaster response officers.',
 ];
 
-export default function EvacuationCentersIndex() {
+interface Center extends ShelterPoint {
+    address: string | null;
+    contact_number: string | null;
+    occupancy_percent: number;
+    current_occupancy: number;
+    flood_zone?: { id: number; name: string } | null;
+}
+
+interface Props {
+    centers: Center[];
+    userLocation: { lat: number; lng: number } | null;
+    userBarangay: string | null;
+}
+
+const STATUS_STYLE: Record<string, string> = {
+    open: 'bg-emerald-50 text-emerald-700 ring-emerald-200',
+    full: 'bg-orange-50 text-orange-700 ring-orange-200',
+    closed: 'bg-red-50 text-red-700 ring-red-200',
+};
+
+export default function EvacuationCentersIndex({ centers, userLocation, userBarangay }: Props) {
+    const nearest = centers[0];
+
     return (
         <AuthenticatedLayout>
             <Head title="Evacuation Centers" />
 
             <PageHeader
                 title="Evacuation Centers"
-                subtitle="Find nearby evacuation centers, safe routes, and emergency contacts."
+                subtitle={
+                    userLocation
+                        ? 'Centers near you, closest first.'
+                        : 'Designated evacuation centers across Consolacion.'
+                }
                 icon={<span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50"><Home className="h-6 w-6 text-brand-600" /></span>}
             />
 
+            {!userLocation && (
+                <InfoBanner>
+                    Set your location under <b>Profile &amp; Settings → Update Location</b> to see which center is
+                    closest to you and how far away it is.
+                </InfoBanner>
+            )}
+
             <div className="grid gap-6 lg:grid-cols-3">
-                <SectionCard
-                    title="Nearest Centers Map"
-                    className="lg:col-span-2"
-                    action={<button className="flex items-center gap-2 text-sm font-semibold text-brand-600"><Navigation className="h-4 w-4" /> Show Safe Route</button>}
-                    flush
-                    bodyClassName="p-5 pt-4"
-                >
-                    <div className="relative h-80 overflow-hidden rounded-xl bg-slate-100">
-                        <svg viewBox="0 0 400 300" className="h-full w-full" preserveAspectRatio="xMidYMid slice">
-                            <rect width="400" height="300" fill="#e8edf2" />
-                            <rect x="0" y="0" width="150" height="100" fill="#dfeadd" />
-                            <rect x="280" y="180" width="120" height="120" fill="#dfeadd" />
-                            <path d="M-10 70 C90 100 130 40 210 90 S360 170 410 140" stroke="#9cc6e8" strokeWidth="24" fill="none" opacity="0.8" />
-                            <g stroke="#ffffff" strokeWidth="4" opacity="0.8">
-                                <line x1="0" y1="200" x2="400" y2="220" />
-                                <line x1="160" y1="0" x2="220" y2="300" />
-                            </g>
-                        </svg>
-                        {[
-                            { x: '30%', y: '40%' },
-                            { x: '62%', y: '55%' },
-                            { x: '45%', y: '72%' },
-                        ].map((p, i) => (
-                            <span key={i} className="absolute -translate-x-1/2 -translate-y-full" style={{ left: p.x, top: p.y }}>
-                                <Home className="h-7 w-7 fill-emerald-600 text-white drop-shadow" />
-                            </span>
-                        ))}
-                    </div>
+                <SectionCard title="Evacuation Center Map" className="lg:col-span-2" flush bodyClassName="p-5 pt-4">
+                    {centers.length > 0 ? (
+                        <SheltersMap centers={centers} userLocation={userLocation} />
+                    ) : (
+                        <p className="py-16 text-center text-sm text-slate-400">
+                            No evacuation centers have been registered yet.
+                        </p>
+                    )}
                     <p className="mt-3 text-sm text-slate-500">
-                        Evacuation center locations are provided and maintained by your Local Government Unit (LGU).
-                        Contact your barangay for the officially designated center nearest you.
+                        Locations are maintained by your Local Government Unit. Capacity figures reflect the latest
+                        update from the DRRMO and may change during an active emergency.
                     </p>
                 </SectionCard>
 
                 <div className="space-y-6">
+                    {nearest && (
+                        <SectionCard title={userLocation ? 'Nearest Center' : 'Recommended Center'} icon={<Navigation className="h-5 w-5 text-brand-600" />}>
+                            <p className="text-base font-bold text-navy-900">{nearest.name}</p>
+                            <p className="mt-0.5 text-sm text-slate-500">
+                                {nearest.barangay}
+                                {nearest.distance_km != null && ` · ${nearest.distance_km} km away`}
+                            </p>
+                            <div className="mt-3 flex items-center gap-2 text-sm text-slate-600">
+                                <Users className="h-4 w-4 text-brand-500" />
+                                {nearest.spaces_remaining} of {nearest.capacity} spaces free
+                            </div>
+                            <a
+                                href={`https://www.google.com/maps/dir/?api=1&destination=${nearest.latitude},${nearest.longitude}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-700"
+                            >
+                                <Navigation className="h-4 w-4" /> Get directions
+                            </a>
+                        </SectionCard>
+                    )}
+
                     <SectionCard title="Emergency Hotlines" icon={<Phone className="h-5 w-5 text-red-500" />}>
                         <div className="space-y-2">
                             {HOTLINES.map((h) => (
@@ -89,6 +125,57 @@ export default function EvacuationCentersIndex() {
                     </SectionCard>
                 </div>
             </div>
+
+            <SectionCard title={`All Centers (${centers.length})`} className="mt-6">
+                <div className="space-y-3">
+                    {centers.map((center) => (
+                        <div
+                            key={center.id}
+                            className={cn(
+                                'rounded-xl border p-4',
+                                center.barangay === userBarangay ? 'border-brand-200 bg-brand-50/40' : 'border-slate-200',
+                            )}
+                        >
+                            <div className="flex flex-wrap items-start justify-between gap-3">
+                                <div>
+                                    <p className="font-semibold text-navy-900">{center.name}</p>
+                                    <p className="text-sm text-slate-500">
+                                        {center.address ?? center.barangay}
+                                        {center.distance_km != null && ` · ${center.distance_km} km`}
+                                    </p>
+                                </div>
+                                <span className={cn('rounded-full px-2.5 py-1 text-xs font-semibold capitalize ring-1', STATUS_STYLE[center.status] ?? 'bg-slate-50 text-slate-600 ring-slate-200')}>
+                                    {center.status}
+                                </span>
+                            </div>
+
+                            <div className="mt-3 flex items-center gap-3">
+                                <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-100">
+                                    <div
+                                        className={cn(
+                                            'h-full rounded-full',
+                                            center.occupancy_percent >= 90 ? 'bg-red-500' : center.occupancy_percent >= 70 ? 'bg-orange-400' : 'bg-emerald-500',
+                                        )}
+                                        style={{ width: `${center.occupancy_percent}%` }}
+                                    />
+                                </div>
+                                <span className="shrink-0 text-xs font-medium text-slate-500">
+                                    {center.current_occupancy}/{center.capacity}
+                                </span>
+                            </div>
+
+                            {center.contact_number && (
+                                <a href={`tel:${center.contact_number}`} className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-brand-600">
+                                    <Phone className="h-3.5 w-3.5" /> {center.contact_number}
+                                </a>
+                            )}
+                        </div>
+                    ))}
+                    {centers.length === 0 && (
+                        <p className="py-8 text-center text-sm text-slate-400">No evacuation centers registered.</p>
+                    )}
+                </div>
+            </SectionCard>
 
             <InfoBanner>
                 In an emergency, always call your local hotline first and follow the guidance of official disaster response authorities.

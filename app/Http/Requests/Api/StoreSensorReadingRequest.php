@@ -18,6 +18,7 @@ class StoreSensorReadingRequest extends FormRequest
             'rainfall' => ['nullable', 'numeric', 'min:0'],
             'temperature' => ['nullable', 'numeric'],
             'humidity' => ['nullable', 'numeric', 'between:0,100'],
+            'battery_level' => ['nullable', 'numeric', 'between:0,100'],
             'recorded_at' => ['nullable', 'date'],
         ];
     }

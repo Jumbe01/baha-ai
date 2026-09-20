@@ -137,9 +137,12 @@ class AlertPipelineTest extends TestCase
 
     public function test_api_ingestion_triggers_alert(): void
     {
+        $token = 'pipeline-device-token';
+        $this->sensor->update(['api_token' => hash('sha256', $token)]);
+
         $response = $this->postJson(route('api.sensor-readings.store', $this->sensor), [
             'water_level' => 3.5,
-        ]);
+        ], ['Authorization' => 'Bearer '.$token]);
 
         $response->assertCreated();
         $this->assertDatabaseHas('alerts', ['sensor_id' => $this->sensor->id, 'severity' => 'critical']);

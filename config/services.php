@@ -51,4 +51,23 @@ return [
         'redirect' => env('FACEBOOK_REDIRECT_URI', '/auth/facebook/callback'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | SMS gateway
+    |--------------------------------------------------------------------------
+    |
+    | 'log' (default) records messages without transmitting, so the system can
+    | be demonstrated without an account or credits. Set SMS_GATEWAY=semaphore
+    | with a key to deliver real messages to Philippine networks.
+    |
+    */
+    'sms' => [
+        'gateway' => env('SMS_GATEWAY', 'log'),
+
+        'semaphore' => [
+            'key' => env('SEMAPHORE_API_KEY'),
+            'sender_name' => env('SEMAPHORE_SENDER_NAME'),
+        ],
+    ],
+
 ];

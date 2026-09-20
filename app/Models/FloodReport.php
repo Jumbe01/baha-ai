@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Auditable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 ])]
 class FloodReport extends Model
 {
+    use Auditable;
+
     protected function casts(): array
     {
         return [
@@ -23,5 +26,10 @@ class FloodReport extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function auditLabel(): ?string
+    {
+        return sprintf('%s report in %s', $this->severity, $this->barangay ?? 'unknown barangay');
     }
 }
