@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" font-family="Arial, sans-serif">
+<defs>
+  <pattern id="h" width="10" height="10" patternUnits="userSpaceOnUse" x="85" y="55">
+    <rect x="3" y="3" width="4" height="4" fill="#999"/>
+  </pattern>
+  <pattern id="r" width="14" height="10" patternUnits="userSpaceOnUse" x="43" y="55">
+    <rect x="5" y="3" width="4" height="4" fill="#999"/>
+  </pattern>
+</defs>
+<rect width="900" height="700" fill="#fff"/>
+<text x="20" y="24" font-size="15" font-weight="bold">Breadboard Step 3: DHT22 + rain sensor (3.3V side)</text>
+
+<!-- breadboard body -->
+<rect x="30" y="40" width="234" height="630" rx="6" fill="#f4f4f0" stroke="#ccc"/>
+<rect x="43" y="55" width="28" height="600" fill="url(#r)"/>
+<rect x="219" y="55" width="28" height="600" fill="url(#r)"/>
+<rect x="85" y="55" width="50" height="600" fill="url(#h)"/>
+<rect x="155" y="55" width="50" height="600" fill="url(#h)"/>
+<line x1="44" y1="50" x2="44" y2="660" stroke="#3a7bd5"/><line x1="70" y1="50" x2="70" y2="660" stroke="#e33"/>
+<line x1="220" y1="50" x2="220" y2="660" stroke="#3a7bd5"/><line x1="246" y1="50" x2="246" y2="660" stroke="#e33"/>
+<g font-size="11" font-weight="bold" text-anchor="middle">
+<text x="50" y="48" fill="#3a7bd5">−</text><text x="64" y="48" fill="#e33">+</text>
+<text x="226" y="48" fill="#3a7bd5">−</text><text x="240" y="48" fill="#e33">+</text>
+</g>
+<g font-size="9" fill="#555" text-anchor="middle">
+<text x="90" y="52">a</text><text x="100" y="52">b</text><text x="110" y="52">c</text><text x="120" y="52">d</text><text x="130" y="52">e</text>
+<text x="160" y="52">f</text><text x="170" y="52">g</text><text x="180" y="52">h</text><text x="190" y="52">i</text><text x="200" y="52">j</text>
+<text x="145" y="64">1</text><text x="145" y="164">11</text><text x="145" y="264">21</text><text x="145" y="364">31</text><text x="145" y="464">41</text><text x="145" y="564">51</text><text x="145" y="654">60</text>
+</g>
+<text x="147" y="690" font-size="10" fill="#555" text-anchor="middle">LEFT = 5V  |  RIGHT = 3V3</text>
+
+<g opacity="0.3">
+<polyline points="5,90 64,90 64,70" fill="none" stroke="#e33" stroke-width="3"/>
+<polyline points="5,100 50,100 50,70" fill="none" stroke="#2a9d3a" stroke-width="3"/>
+<polyline points="50,650 50,664 226,664 226,650" fill="none" stroke="#e6c200" stroke-width="3"/>
+<line x1="110" y1="100" x2="110" y2="150" stroke="#777" stroke-width="2"/>
+<line x1="100" y1="150" x2="100" y2="200" stroke="#777" stroke-width="2"/>
+<line x1="110" y1="200" x2="110" y2="250" stroke="#777" stroke-width="2"/>
+<polyline points="290,70 240,70" fill="none" stroke="#f39c12" stroke-width="3"/>
+<rect x="223" y="82" width="20" height="18" rx="3" fill="#222"/>
+</g>
+
+<!-- DHT22: VCC + rail row 15, GND - rail row 17 -->
+<polyline points="240,200 290,200" fill="none" stroke="#f39c12" stroke-width="3"/>
+<polyline points="226,220 226,226 290,226" fill="none" stroke="#111" stroke-width="3"/>
+<circle cx="240" cy="200" r="4" fill="#f39c12"/><circle cx="226" cy="220" r="4" fill="#111"/>
+<text x="268" y="194" font-size="10" fill="#222" font-weight="bold">DHT22</text>
+
+<!-- Rain: VCC + rail row 30, GND - rail row 32 -->
+<polyline points="240,350 290,350" fill="none" stroke="#f39c12" stroke-width="3"/>
+<polyline points="226,370 226,376 290,376" fill="none" stroke="#111" stroke-width="3"/>
+<circle cx="240" cy="350" r="4" fill="#f39c12"/><circle cx="226" cy="370" r="4" fill="#111"/>
+<text x="268" y="344" font-size="10" fill="#222" font-weight="bold">RAIN</text>
+
+<g font-size="13" fill="#222">
+<text x="320" y="70" font-weight="bold">UNPLUG the laptop USB and the charger first.</text>
+
+<text x="320" y="104" font-weight="bold">A. DHT22 (3 pins) — read the labels on its board</text>
+<text x="330" y="124">VCC / + → RIGHT + rail (about row 15)</text>
+<text x="330" y="142">GND / − → RIGHT − rail (about row 17)</text>
+<text x="330" y="160">DATA / OUT → ESP32 P4, directly (female-to-female)</text>
+
+<text x="320" y="196" font-weight="bold">B. Rain sensor control board (4 pins)</text>
+<text x="330" y="216">VCC → RIGHT + rail (about row 30)</text>
+<text x="330" y="234">GND → RIGHT − rail (about row 32)</text>
+<text x="330" y="252">DO → ESP32 P33, directly</text>
+<text x="330" y="270">AO → ESP32 P35, directly</text>
+<text x="330" y="288">2 wires from the rain plate → the 2 pins on the other end</text>
+<text x="330" y="306">of the control board (either way round)</text>
+
+<text x="320" y="342" font-weight="bold">Why the RIGHT side?</text>
+<text x="330" y="362">Both sensors run on 3.3V, the ESP32's own voltage —</text>
+<text x="330" y="380">so their signals are safe for the ESP32 pins.</text>
+<text x="330" y="398">NEVER put them on the LEFT (5V) rails.</text>
+
+<text x="320" y="434" font-weight="bold">Check before power-on (Ω 200):</text>
+<text x="330" y="454">• RIGHT + ↔ RIGHT − → OL (or a high number, not near 0)</text>
+<text x="330" y="472">• LEFT + ↔ LEFT − → still OL or ~1000 (the ultrasonic)</text>
+</g>
+</svg>

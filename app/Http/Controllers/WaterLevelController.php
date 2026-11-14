@@ -53,11 +53,13 @@ class WaterLevelController extends Controller
             ->orderBy('recorded_at')
             ->get()
             ->map(fn ($r) => [
-                'time' => $r->recorded_at->format('Y-m-d H:i'),
+                // ISO 8601 with offset so the browser converts to the viewer's local time.
+                'time' => $r->recorded_at->toIso8601String(),
                 'water_level' => (float) $r->water_level,
-                'rainfall' => (float) $r->rainfall,
-                'temperature' => (float) $r->temperature,
-                'humidity' => (float) $r->humidity,
+                // Null means "not reported", which is different from a measured 0.
+                'rainfall' => $r->rainfall !== null ? (float) $r->rainfall : null,
+                'temperature' => $r->temperature !== null ? (float) $r->temperature : null,
+                'humidity' => $r->humidity !== null ? (float) $r->humidity : null,
             ]);
 
         return Inertia::render('WaterLevels/Show', [

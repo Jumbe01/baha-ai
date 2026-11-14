@@ -35,6 +35,19 @@ class ActuatorTest extends TestCase
         );
     }
 
+    public function test_api_returns_device_state_filtered_by_zone_for_relay_node(): void
+    {
+        ActuatorDevice::factory()->for($this->zone)->create(['type' => 'pump', 'is_on' => true]);
+        ActuatorDevice::factory()->for(FloodZone::factory())->create();
+
+        $response = $this->getJson(route('api.actuators.index', ['zone' => $this->zone->id]));
+
+        $response->assertOk()
+            ->assertJsonCount(1, 'devices')
+            ->assertJsonPath('devices.0.type', 'pump')
+            ->assertJsonPath('devices.0.is_on', true);
+    }
+
     public function test_staff_can_toggle_device(): void
     {
         $user = User::factory()->staff()->create();

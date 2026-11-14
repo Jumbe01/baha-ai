@@ -37,9 +37,9 @@ interface SensorDetail {
 interface Reading {
     time: string;
     water_level: number;
-    rainfall: number;
-    temperature: number;
-    humidity: number;
+    rainfall: number | null;
+    temperature: number | null;
+    humidity: number | null;
 }
 
 interface Props {
@@ -96,9 +96,9 @@ export default function Show({ sensor, readings, hours }: Props) {
                         </div>
                     </div>
                 </SectionCard>
-                <StatCard label="Rainfall" value={latestReading?.rainfall.toFixed(1) ?? '--'} unit="mm" icon={CloudRain} tone="info" />
-                <StatCard label="Temperature" value={latestReading?.temperature.toFixed(1) ?? '--'} unit="°C" icon={Thermometer} tone="moderate" />
-                <StatCard label="Humidity" value={latestReading?.humidity.toFixed(1) ?? '--'} unit="%" icon={Droplets} tone="info" />
+                <StatCard label="Rainfall" value={latestReading?.rainfall?.toFixed(1) ?? '--'} unit="mm" icon={CloudRain} tone="info" />
+                <StatCard label="Temperature" value={latestReading?.temperature?.toFixed(1) ?? '--'} unit="°C" icon={Thermometer} tone="moderate" />
+                <StatCard label="Humidity" value={latestReading?.humidity?.toFixed(1) ?? '--'} unit="%" icon={Droplets} tone="info" />
             </div>
 
             <SectionCard

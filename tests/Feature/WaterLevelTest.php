@@ -79,6 +79,29 @@ class WaterLevelTest extends TestCase
         );
     }
 
+    public function test_show_keeps_unreported_fields_null_and_sends_timezone_aware_times(): void
+    {
+        // Regression: a node that reports only water_level showed 0.0 °C / 0.0 %,
+        // and naive "Y-m-d H:i" UTC strings were read by the browser as local time.
+        $sensor = Sensor::factory()->for($this->zone)->create();
+        SensorReading::factory()->for($sensor)->create([
+            'water_level' => 1.85,
+            'rainfall' => null,
+            'temperature' => null,
+            'humidity' => null,
+            'recorded_at' => now(),
+        ]);
+
+        $response = $this->actingAs($this->user)->get(route('water-levels.show', $sensor));
+
+        $response->assertInertia(fn ($page) => $page
+            ->where('readings.0.temperature', null)
+            ->where('readings.0.humidity', null)
+            ->where('readings.0.rainfall', null)
+            ->where('readings.0.time', fn ($t) => (bool) preg_match('/[+-]\d{2}:\d{2}$|Z$/', $t))
+        );
+    }
+
     public function test_show_displays_sensor_detail(): void
     {
         $sensor = Sensor::factory()->for($this->zone)->create();

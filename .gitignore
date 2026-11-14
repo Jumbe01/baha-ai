@@ -25,3 +25,7 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Firmware credentials (Wi-Fi password, device token)
+firmware/**/secrets.h
+backups/

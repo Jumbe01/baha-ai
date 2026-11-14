@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 640" font-family="Arial, sans-serif">
+<rect width="940" height="640" fill="#fff"/>
+<text x="20" y="26" font-size="15" font-weight="bold">Jug flood test: how to mount the ultrasonic sensor (side view, drawn to scale)</text>
+
+<!-- table -->
+<rect x="20" y="580" width="440" height="10" fill="#8b6b4a"/>
+
+<!-- jug: 36 cm tall (1 cm = 8 px), bottom y=580, rim y=292 -->
+<path d="M150,292 L150,580 L374,580 L374,292" fill="#f2f7fb" stroke="#555" stroke-width="3"/>
+<!-- water at about 20 cm -->
+<rect x="152" y="420" width="220" height="158" fill="#7fb8e6" opacity="0.7"/>
+<text x="262" y="520" font-size="12" text-anchor="middle" fill="#0b4a7a">water</text>
+
+<!-- threshold lines -->
+<g font-size="11" font-weight="bold">
+<line x1="150" y1="460" x2="374" y2="460" stroke="#e6a100" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="380" y="464" fill="#c98a00">15 cm: SIREN</text>
+<line x1="150" y1="380" x2="374" y2="380" stroke="#d62828" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="380" y="378" fill="#d62828">25 cm: PUMP</text>
+<text x="380" y="391" fill="#d62828">+ FLOODGATE</text>
+<line x1="150" y1="340" x2="374" y2="340" stroke="#111" stroke-width="2"/>
+<text x="380" y="344" fill="#111">30 cm: STOP pouring</text>
+</g>
+
+<!-- pump on the bottom, hose back into jug (kept near the wall) -->
+<rect x="162" y="552" width="40" height="26" rx="4" fill="#555"/>
+<text x="182" y="569" font-size="10" fill="#fff" text-anchor="middle">PUMP</text>
+<polyline points="182,552 182,306 200,306 200,330" fill="none" stroke="#2a9d3a" stroke-width="4"/>
+<text x="206" y="326" font-size="10" fill="#2a9d3a">hose outlet</text>
+<text x="206" y="338" font-size="10" fill="#2a9d3a">(by the wall)</text>
+
+<!-- stand: stick taped to the jug's side, arm on top -->
+<rect x="396" y="56" width="10" height="524" fill="#c8a165" stroke="#8b6b4a"/>
+<rect x="222" y="50" width="184" height="8" fill="#c8a165" stroke="#8b6b4a"/>
+<g stroke="#999" stroke-width="5">
+<line x1="370" y1="320" x2="410" y2="320"/><line x1="370" y1="520" x2="410" y2="520"/>
+</g>
+<text x="414" y="312" font-size="10" fill="#666">tape</text>
+<text x="414" y="530" font-size="10" fill="#666">tape</text>
+
+<!-- HC-SR04 hanging under the arm, eyes down -->
+<rect x="226" y="58" width="72" height="10" fill="#2d6fd1"/>
+<rect x="232" y="68" width="20" height="16" fill="#bbb" stroke="#666"/>
+<rect x="272" y="68" width="20" height="16" fill="#bbb" stroke="#666"/>
+<text x="210" y="46" font-size="11" font-weight="bold">HC-SR04, eyes pointing DOWN</text>
+
+<!-- beam -->
+<polygon points="262,84 228,420 296,420" fill="#7fb8e6" opacity="0.18"/>
+<line x1="262" y1="84" x2="262" y2="420" stroke="#3a7bd5" stroke-dasharray="3 4"/>
+
+<!-- wires to breadboard -->
+<polyline points="298,62 390,62 390,600 470,600" fill="none" stroke="#e67e22" stroke-width="2" stroke-dasharray="8 4"/>
+<text x="476" y="604" font-size="11" fill="#e67e22">4 long wires → breadboard (keep it DRY, away from the jug)</text>
+
+<!-- dimensions -->
+<g stroke="#111" stroke-width="1.5" fill="#111" font-size="12" font-weight="bold">
+<line x1="100" y1="84" x2="100" y2="580"/>
+<polygon points="100,84 95,94 105,94"/><polygon points="100,580 95,570 105,570"/>
+<line x1="90" y1="84" x2="232" y2="84" stroke-dasharray="2 3"/>
+<text x="40" y="330" stroke="none">62 cm</text>
+<text x="28" y="346" stroke="none" font-weight="normal" font-size="10">eyes → bottom</text>
+
+<line x1="130" y1="292" x2="130" y2="580"/>
+<polygon points="130,292 125,302 135,302"/><polygon points="130,580 125,570 135,570"/>
+<text x="106" y="440" stroke="none" font-size="11">36</text>
+
+<line x1="130" y1="84" x2="130" y2="292"/>
+<polygon points="130,84 125,94 135,94"/><polygon points="130,292 125,282 135,282"/>
+<text x="106" y="196" stroke="none" font-size="11">26</text>
+</g>
+
+<!-- instructions -->
+<g font-size="13" fill="#222">
+<text x="480" y="80" font-weight="bold">1. Make a stand</text>
+<text x="492" y="100">A straight stick (wood strip, ruler, PVC pipe) taped</text>
+<text x="492" y="118">upright to the OUTSIDE of the jug, plus a short arm</text>
+<text x="492" y="136">on top that reaches over the middle of the jug.</text>
+
+<text x="480" y="170" font-weight="bold">2. Fix the sensor under the arm</text>
+<text x="492" y="190">Eyes pointing straight DOWN (check: not tilted).</text>
+<text x="492" y="208">Centre it over the jug so the beam misses the rim.</text>
+<text x="492" y="226">Tape or rubber band on the blue board only, not the eyes.</text>
+
+<text x="480" y="260" font-weight="bold">3. Height: eyes 62 cm above the jug's inside bottom</text>
+<text x="492" y="280">= about 26 cm above the rim. Measure with a tape.</text>
+<text x="492" y="298">Different height? Tell me the number and I'll</text>
+<text x="492" y="316">update MOUNT_HEIGHT_M in the code.</text>
+
+<text x="480" y="350" font-weight="bold">4. Pump and hose</text>
+<text x="492" y="370">Pump flat on the bottom. Hose up along the wall and</text>
+<text x="492" y="388">back into the jug, away from the middle (beam).</text>
+
+<text x="480" y="422" font-weight="bold">5. Check before pouring (empty jug)</text>
+<text x="492" y="442">Serial monitor should show level ≈ 0.00 m.</text>
+<text x="492" y="460">Pour to 10 cm on a ruler → level ≈ 0.10 m.</text>
+
+<text x="480" y="494" font-weight="bold" fill="#d62828">Never let the sensor be closer than 25 cm to the water,</text>
+<text x="480" y="512" font-weight="bold" fill="#d62828">so stop pouring at 30 cm.</text>
+</g>
+</svg>

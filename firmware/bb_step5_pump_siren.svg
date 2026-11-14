@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="Arial, sans-serif">
+<rect width="900" height="560" fill="#fff"/>
+<text x="20" y="26" font-size="15" font-weight="bold">Breadboard Step 5: Pump (K1) and siren (K2) on the relay screw terminals</text>
+
+<!-- relay board -->
+<rect x="200" y="50" width="160" height="470" rx="8" fill="#2d6fd1"/>
+<text x="290" y="72" font-size="12" fill="#fff" text-anchor="middle">relay board</text>
+<text x="290" y="88" font-size="10" fill="#dfe8ff" text-anchor="middle">(blue boxes face right)</text>
+
+<!-- 12 screws: K4,K3,K2,K1 top->bottom, each NO, COM, NC -->
+<g font-size="11" fill="#fff" font-weight="bold">
+<text x="214" y="118">K4</text><text x="214" y="228">K3</text><text x="214" y="338">K2</text><text x="214" y="448">K1</text>
+</g>
+<g fill="#ddd" stroke="#555">
+<circle cx="190" cy="110" r="9"/><circle cx="190" cy="132" r="9"/><circle cx="190" cy="154" r="9"/>
+<circle cx="190" cy="220" r="9"/><circle cx="190" cy="242" r="9"/><circle cx="190" cy="264" r="9"/>
+<circle cx="190" cy="330" r="9"/><circle cx="190" cy="352" r="9"/><circle cx="190" cy="374" r="9"/>
+<circle cx="190" cy="440" r="9"/><circle cx="190" cy="462" r="9"/><circle cx="190" cy="484" r="9"/>
+</g>
+<g font-size="10" fill="#fff">
+<text x="240" y="114">NO</text><text x="240" y="136">COM</text><text x="240" y="158">NC</text>
+<text x="240" y="224">NO</text><text x="240" y="246">COM</text><text x="240" y="268">NC</text>
+<text x="240" y="334">NO</text><text x="240" y="356">COM</text><text x="240" y="378">NC</text>
+<text x="240" y="444">NO</text><text x="240" y="466">COM</text><text x="240" y="488">NC</text>
+</g>
+<text x="120" y="200" font-size="10" fill="#888" text-anchor="middle">K3, K4:</text>
+<text x="120" y="214" font-size="10" fill="#888" text-anchor="middle">leave empty</text>
+
+<!-- 5V feed to K2 COM and K1 COM -->
+<polyline points="181,352 140,352 140,462 181,462" fill="none" stroke="#e33" stroke-width="3"/>
+<polyline points="140,462 140,530 20,530" fill="none" stroke="#e33" stroke-width="3"/>
+<text x="24" y="522" font-size="11" fill="#e33" font-weight="bold">from LEFT + rail (5V)</text>
+<text x="146" y="410" font-size="10" fill="#e33">short link</text>
+
+<!-- siren on K2 NO -->
+<polyline points="181,330 60,330" fill="none" stroke="#c0392b" stroke-width="3"/>
+<rect x="20" y="300" width="40" height="40" rx="20" fill="#222"/>
+<text x="40" y="294" font-size="11" text-anchor="middle" font-weight="bold">SIREN</text>
+<text x="66" y="324" font-size="10" fill="#c0392b">red</text>
+<polyline points="40,340 40,370 20,370" fill="none" stroke="#111" stroke-width="3"/>
+<text x="46" y="364" font-size="10">black → LEFT − rail</text>
+
+<!-- pump on K1 NO -->
+<polyline points="181,440 60,440" fill="none" stroke="#c0392b" stroke-width="3"/>
+<rect x="20" y="420" width="40" height="40" rx="6" fill="#555"/>
+<text x="40" y="414" font-size="11" text-anchor="middle" font-weight="bold">PUMP</text>
+<text x="66" y="434" font-size="10" fill="#c0392b">red</text>
+<polyline points="40,460 40,490 20,490" fill="none" stroke="#111" stroke-width="3"/>
+<text x="46" y="484" font-size="10">black → LEFT − rail</text>
+
+<g font-size="13" fill="#222">
+<text x="400" y="70" font-weight="bold">UNPLUG the charger and the laptop USB first.</text>
+
+<text x="400" y="104" font-weight="bold">Screws (12 in one column, top → bottom):</text>
+<text x="410" y="124">K4, K3, K2, K1 — each group: NO (top), COM (middle), NC (bottom)</text>
+
+<text x="400" y="160" font-weight="bold">A. 5V to the COMs</text>
+<text x="410" y="180">Jumper: LEFT + rail → K2 COM (middle screw of K2)</text>
+<text x="410" y="198">Short wire: K2 COM → K1 COM (two wires in one screw is fine)</text>
+
+<text x="400" y="234" font-weight="bold">B. Siren on K2</text>
+<text x="410" y="254">Siren red → K2 NO (top screw of K2)</text>
+<text x="410" y="272">Siren black → LEFT − rail</text>
+
+<text x="400" y="308" font-weight="bold">C. Pump on K1</text>
+<text x="410" y="328">Pump red → K1 NO (top screw of K1)</text>
+<text x="410" y="346">Pump black → LEFT − rail</text>
+
+<text x="400" y="382" font-weight="bold">How to clamp a wire:</text>
+<text x="410" y="402">Loosen the screw, push the bare end (or a jumper's male pin)</text>
+<text x="410" y="420">into the side hole, tighten, tug gently — it must not slide out.</text>
+
+<text x="400" y="456" font-weight="bold" fill="#c0392b">Put the pump IN A CUP OF WATER before power-on.</text>
+<text x="410" y="476">Running it dry damages it.</text>
+
+<text x="400" y="512" font-weight="bold">Test with gate7_relay: pump runs 1 s, siren beeps 1 s.</text>
+</g>
+</svg>

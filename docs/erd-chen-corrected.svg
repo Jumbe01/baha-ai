@@ -1,0 +1,278 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4960 2790" width="4960" height="2790" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif">
+<rect width="4960" height="2790" fill="#ffffff"/>
+<line x1="582.8" y1="866.0" x2="135.0" y2="600.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="135.0" cy="600.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="135.0" y="605.6" text-anchor="middle" font-size="16" fill="#16232e">CenterName</text>
+<line x1="608.2" y1="866.0" x2="279.3" y2="514.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="279.3" cy="514.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="279.3" y="519.6" text-anchor="middle" font-size="16" fill="#16232e">Barangay</text>
+<line x1="624.4" y1="866.0" x2="423.6" y2="428.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="423.6" cy="428.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="423.6" y="433.6" text-anchor="middle" font-size="16" fill="#16232e">Address</text>
+<line x1="631.8" y1="866.0" x2="567.9" y2="600.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="567.9" cy="600.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="567.9" y="605.6" text-anchor="middle" font-size="16" fill="#16232e">Capacity</text>
+<line x1="646.4" y1="866.0" x2="712.1" y2="514.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="712.1" cy="514.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="712.1" y="518.9" text-anchor="middle" font-size="14" fill="#16232e">CurrentOccupancy</text>
+<line x1="655.6" y1="866.0" x2="856.4" y2="428.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="856.4" cy="428.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="856.4" y="433.6" text-anchor="middle" font-size="16" fill="#16232e">Latitude</text>
+<line x1="680.9" y1="866.0" x2="1000.7" y2="600.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="1000.7" cy="600.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="1000.7" y="605.6" text-anchor="middle" font-size="16" fill="#16232e">Longitude</text>
+<line x1="684.5" y1="866.0" x2="1145.0" y2="514.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="1145.0" cy="514.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="1145.0" y="519.6" text-anchor="middle" font-size="16" fill="#16232e">AvailStatus</text>
+<line x1="1902.8" y1="866.0" x2="1455.0" y2="600.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="1455.0" cy="600.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="1455.0" y="605.6" text-anchor="middle" font-size="16" fill="#16232e">DeviceName</text>
+<line x1="1928.2" y1="866.0" x2="1599.3" y2="514.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="1599.3" cy="514.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="1599.3" y="519.6" text-anchor="middle" font-size="16" fill="#16232e">DeviceType</text>
+<line x1="1944.4" y1="866.0" x2="1743.6" y2="428.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="1743.6" cy="428.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="1743.6" y="433.6" text-anchor="middle" font-size="16" fill="#16232e">Latitude</text>
+<line x1="1951.8" y1="866.0" x2="1887.9" y2="600.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="1887.9" cy="600.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="1887.9" y="605.6" text-anchor="middle" font-size="16" fill="#16232e">Longitude</text>
+<line x1="1966.4" y1="866.0" x2="2032.1" y2="514.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="2032.1" cy="514.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="2032.1" y="519.6" text-anchor="middle" font-size="16" fill="#16232e">Status</text>
+<line x1="1975.6" y1="866.0" x2="2176.4" y2="428.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="2176.4" cy="428.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="2176.4" y="433.6" text-anchor="middle" font-size="16" fill="#16232e">BatteryLevel</text>
+<line x1="2000.9" y1="866.0" x2="2320.7" y2="600.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="2320.7" cy="600.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="2320.7" y="605.6" text-anchor="middle" font-size="16" fill="#16232e">LastReadingAt</text>
+<line x1="2004.5" y1="866.0" x2="2465.0" y2="514.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="2465.0" cy="514.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="2465.0" y="519.6" text-anchor="middle" font-size="16" fill="#16232e">APIToken</text>
+<line x1="3172.8" y1="866.0" x2="2725.0" y2="600.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="2725.0" cy="600.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="2725.0" y="605.6" text-anchor="middle" font-size="16" fill="#16232e">DeviceName</text>
+<line x1="3198.2" y1="866.0" x2="2869.3" y2="514.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="2869.3" cy="514.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="2869.3" y="519.6" text-anchor="middle" font-size="16" fill="#16232e">ActuatorType</text>
+<line x1="3214.4" y1="866.0" x2="3013.6" y2="428.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="3013.6" cy="428.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="3013.6" y="433.6" text-anchor="middle" font-size="16" fill="#16232e">Latitude</text>
+<line x1="3221.8" y1="866.0" x2="3157.9" y2="600.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="3157.9" cy="600.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="3157.9" y="605.6" text-anchor="middle" font-size="16" fill="#16232e">Longitude</text>
+<line x1="3236.4" y1="866.0" x2="3302.1" y2="514.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="3302.1" cy="514.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="3302.1" y="519.6" text-anchor="middle" font-size="16" fill="#16232e">IsOn</text>
+<line x1="3245.6" y1="866.0" x2="3446.4" y2="428.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="3446.4" cy="428.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="3446.4" y="433.6" text-anchor="middle" font-size="16" fill="#16232e">Mode</text>
+<line x1="3270.9" y1="866.0" x2="3590.7" y2="600.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="3590.7" cy="600.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="3590.7" y="605.6" text-anchor="middle" font-size="16" fill="#16232e">Status</text>
+<line x1="3274.5" y1="866.0" x2="3735.0" y2="514.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="3735.0" cy="514.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="3735.0" y="518.9" text-anchor="middle" font-size="14" fill="#16232e">LastActivatedAt</text>
+<line x1="4379.0" y1="866.0" x2="3980.0" y2="600.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="3980.0" cy="600.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="3980.0" y="605.6" text-anchor="middle" font-size="16" fill="#16232e">FullName</text>
+<line x1="4403.6" y1="866.0" x2="4130.0" y2="514.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="4130.0" cy="514.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="4130.0" y="519.6" text-anchor="middle" font-size="16" fill="#16232e">Email</text>
+<line x1="4419.2" y1="866.0" x2="4280.0" y2="428.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="4280.0" cy="428.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="4280.0" y="433.6" text-anchor="middle" font-size="16" fill="#16232e">Role</text>
+<line x1="4430.0" y1="866.0" x2="4430.0" y2="600.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="4430.0" cy="600.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="4430.0" y="605.6" text-anchor="middle" font-size="16" fill="#16232e">ContactNumber</text>
+<line x1="4443.2" y1="866.0" x2="4580.0" y2="514.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="4580.0" cy="514.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="4580.0" y="519.6" text-anchor="middle" font-size="16" fill="#16232e">Barangay</text>
+<line x1="4451.6" y1="866.0" x2="4730.0" y2="428.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="4730.0" cy="428.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="4730.0" y="433.6" text-anchor="middle" font-size="16" fill="#16232e">Address</text>
+<line x1="4481.0" y1="866.0" x2="4880.0" y2="600.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="4880.0" cy="600.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="4880.0" y="604.9" text-anchor="middle" font-size="14" fill="#16232e">NotifPreference</text>
+<line x1="1929.6" y1="1466.0" x2="1710.0" y2="1220.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="1710.0" cy="1220.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="1710.0" y="1225.6" text-anchor="middle" font-size="16" fill="#16232e">WaterLevel_m</text>
+<line x1="1876.9" y1="1466.0" x2="1618.0" y2="1360.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="1618.0" cy="1360.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="1618.0" y="1365.6" text-anchor="middle" font-size="16" fill="#16232e">Rainfall_mm</text>
+<line x1="1853.0" y1="1500.0" x2="1710.0" y2="1500.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="1710.0" cy="1500.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="1710.0" y="1505.6" text-anchor="middle" font-size="16" fill="#16232e">Temperature_C</text>
+<line x1="1876.9" y1="1534.0" x2="1618.0" y2="1640.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="1618.0" cy="1640.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="1618.0" y="1645.6" text-anchor="middle" font-size="16" fill="#16232e">Humidity_pct</text>
+<line x1="1929.6" y1="1534.0" x2="1710.0" y2="1780.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="1710.0" cy="1780.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="1710.0" y="1785.6" text-anchor="middle" font-size="16" fill="#16232e">RecordedAt</text>
+<line x1="3582.4" y1="1486.0" x2="3810.0" y2="1140.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="3810.0" cy="1140.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="3810.0" y="1145.6" text-anchor="middle" font-size="16" fill="#16232e">Severity</text>
+<line x1="3605.9" y1="1486.0" x2="3902.0" y2="1266.7" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="3902.0" cy="1266.7" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="3902.0" y="1272.3" text-anchor="middle" font-size="16" fill="#16232e">Title</text>
+<line x1="3627.1" y1="1486.0" x2="3810.0" y2="1393.3" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="3810.0" cy="1393.3" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="3810.0" y="1398.9" text-anchor="middle" font-size="16" fill="#16232e">Message</text>
+<line x1="3667.0" y1="1520.0" x2="3902.0" y2="1520.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="3902.0" cy="1520.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="3902.0" y="1525.6" text-anchor="middle" font-size="16" fill="#16232e">WaterLevel_m</text>
+<line x1="3627.1" y1="1554.0" x2="3810.0" y2="1646.7" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="3810.0" cy="1646.7" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="3810.0" y="1652.3" text-anchor="middle" font-size="16" fill="#16232e">Status</text>
+<line x1="3605.9" y1="1554.0" x2="3902.0" y2="1773.3" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="3902.0" cy="1773.3" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="3902.0" y="1778.9" text-anchor="middle" font-size="16" fill="#16232e">Source</text>
+<line x1="3582.4" y1="1554.0" x2="3810.0" y2="1900.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="3810.0" cy="1900.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="3810.0" y="1905.6" text-anchor="middle" font-size="16" fill="#16232e">ResolvedAt</text>
+<line x1="675.7" y1="1786.0" x2="450.0" y2="1470.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="450.0" cy="1470.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="450.0" y="1474.9" text-anchor="middle" font-size="14" fill="#16232e">CurrentLevel_m</text>
+<line x1="650.2" y1="1786.0" x2="358.0" y2="1586.7" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="358.0" cy="1586.7" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="358.0" y="1592.3" text-anchor="middle" font-size="16" fill="#16232e">RateOfRise</text>
+<line x1="627.1" y1="1786.0" x2="450.0" y2="1703.3" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="450.0" cy="1703.3" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="450.0" y="1708.2" text-anchor="middle" font-size="14" fill="#16232e">PredictedLevel_m</text>
+<line x1="593.0" y1="1820.0" x2="358.0" y2="1820.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="358.0" cy="1820.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="358.0" y="1824.9" text-anchor="middle" font-size="14" fill="#16232e">MinutesToCritical</text>
+<line x1="627.1" y1="1854.0" x2="450.0" y2="1936.7" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="450.0" cy="1936.7" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="450.0" y="1941.6" text-anchor="middle" font-size="14" fill="#16232e">Confidence_pct</text>
+<line x1="650.2" y1="1854.0" x2="358.0" y2="2053.3" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="358.0" cy="2053.3" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="358.0" y="2058.9" text-anchor="middle" font-size="16" fill="#16232e">RiskLevel</text>
+<line x1="675.7" y1="1854.0" x2="450.0" y2="2170.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="450.0" cy="2170.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="450.0" y="2175.6" text-anchor="middle" font-size="16" fill="#16232e">GeneratedAt</text>
+<line x1="4537.0" y1="1820.0" x2="4650.0" y2="1820.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="4650.0" cy="1820.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="4650.0" y="1825.6" text-anchor="middle" font-size="16" fill="#16232e">ReadAt</text>
+<line x1="3592.7" y1="2176.0" x2="3810.0" y2="1950.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="3810.0" cy="1950.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="3810.0" y="1955.6" text-anchor="middle" font-size="16" fill="#16232e">Channel</text>
+<line x1="3667.0" y1="2182.9" x2="3902.0" y2="2123.3" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="3902.0" cy="2123.3" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="3902.0" y="2128.9" text-anchor="middle" font-size="16" fill="#16232e">Recipient</text>
+<line x1="3658.1" y1="2244.0" x2="3810.0" y2="2296.7" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="3810.0" cy="2296.7" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="3810.0" y="2301.6" text-anchor="middle" font-size="14" fill="#16232e">DeliveryStatus</text>
+<line x1="3604.7" y1="2244.0" x2="3902.0" y2="2470.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="3902.0" cy="2470.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="3902.0" y="2475.6" text-anchor="middle" font-size="16" fill="#16232e">SentAt</text>
+<line x1="1913.0" y1="2297.2" x2="1430.0" y2="2420.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="1430.0" cy="2420.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="1430.0" y="2425.6" text-anchor="middle" font-size="16" fill="#16232e">ZoneName</text>
+<line x1="1959.3" y1="2304.0" x2="1598.6" y2="2506.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="1598.6" cy="2506.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="1598.6" y="2511.6" text-anchor="middle" font-size="16" fill="#16232e">Barangay</text>
+<line x1="1993.3" y1="2304.0" x2="1767.1" y2="2592.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="1767.1" cy="2592.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="1767.1" y="2596.9" text-anchor="middle" font-size="14" fill="#16232e">SafeThreshold_m</text>
+<line x1="2000.9" y1="2304.0" x2="1935.7" y2="2420.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="1935.7" cy="2420.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="1935.7" y="2424.2" text-anchor="middle" font-size="12" fill="#16232e">WarningThreshold_m</text>
+<line x1="2032.1" y1="2304.0" x2="2104.3" y2="2506.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="2104.3" cy="2506.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="2104.3" y="2510.2" text-anchor="middle" font-size="12" fill="#16232e">CriticalThreshold_m</text>
+<line x1="2046.7" y1="2304.0" x2="2272.9" y2="2592.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="2272.9" cy="2592.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="2272.9" y="2597.6" text-anchor="middle" font-size="16" fill="#16232e">RiskLevel</text>
+<line x1="2115.5" y1="2304.0" x2="2441.4" y2="2420.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="2441.4" cy="2420.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="2441.4" y="2425.6" text-anchor="middle" font-size="16" fill="#16232e">Coordinates</text>
+<line x1="2105.0" y1="2304.0" x2="2610.0" y2="2506.0" stroke="#16232e" stroke-width="1.3"/>
+<ellipse cx="2610.0" cy="2506.0" rx="84" ry="31" fill="#ffffff" stroke="#16232e" stroke-width="1.5" stroke-dasharray="7 5"/>
+<text x="2610.0" y="2511.6" text-anchor="middle" font-size="16" fill="#16232e">IsActive</text>
+<line x1="1990.6" y1="2236.0" x2="1722.7" y2="1926.3" stroke="#16232e" stroke-width="1.6"/>
+<text x="1876.7" y="2071.1" font-size="21" font-weight="700" fill="#16232e">1</text>
+<line x1="1951.2" y1="934.0" x2="1708.4" y2="1867.6" stroke="#16232e" stroke-width="1.6"/>
+<text x="1849.8" y="1390.8" font-size="21" font-weight="700" fill="#16232e">N</text>
+<polygon points="1700,1864.0 1784.0,1900 1700,1936.0 1616.0,1900" fill="#ffffff" stroke="#16232e" stroke-width="1.8"/>
+<text x="1700" y="1906.0" text-anchor="middle" font-size="17" fill="#16232e">contains</text>
+<line x1="2073.7" y1="2236.0" x2="2966.1" y2="1671.5" stroke="#16232e" stroke-width="1.6"/>
+<text x="2539.9" y="1943.7" font-size="21" font-weight="700" fill="#16232e">1</text>
+<line x1="3219.6" y1="934.0" x2="3009.8" y2="1618.2" stroke="#16232e" stroke-width="1.6"/>
+<text x="3134.7" y="1266.1" font-size="21" font-weight="700" fill="#16232e">N</text>
+<polygon points="3000,1614.0 3084.0,1650 3000,1686.0 2916.0,1650" fill="#ffffff" stroke="#16232e" stroke-width="1.8"/>
+<text x="3000" y="1656.0" text-anchor="middle" font-size="17" fill="#16232e">contains</text>
+<line x1="1964.8" y1="2236.0" x2="674.5" y2="1441.2" stroke="#16232e" stroke-width="1.6"/>
+<text x="1339.6" y="1828.6" font-size="21" font-weight="700" fill="#16232e">1</text>
+<line x1="640.0" y1="934.0" x2="640.0" y2="1384.0" stroke="#16232e" stroke-width="1.6"/>
+<text x="660.0" y="1149.0" font-size="21" font-weight="700" fill="#16232e">N</text>
+<polygon points="640,1384.0 724.0,1420 640,1456.0 556.0,1420" fill="#ffffff" stroke="#16232e" stroke-width="1.8"/>
+<text x="640" y="1426.0" text-anchor="middle" font-size="17" fill="#16232e">is served by</text>
+<line x1="2113.2" y1="2236.0" x2="2714.6" y2="2016.6" stroke="#16232e" stroke-width="1.6"/>
+<text x="2433.9" y="2116.3" font-size="21" font-weight="700" fill="#16232e">1</text>
+<line x1="3503.3" y1="1554.0" x2="2795.0" y2="1979.0" stroke="#16232e" stroke-width="1.6"/>
+<text x="3169.2" y="1756.5" font-size="21" font-weight="700" fill="#16232e">N</text>
+<polygon points="2760,1964.0 2844.0,2000 2760,2036.0 2676.0,2000" fill="#ffffff" stroke="#16232e" stroke-width="1.8"/>
+<text x="2760" y="2004.9" text-anchor="middle" font-size="14" fill="#16232e">is subject of</text>
+<line x1="1913.0" y1="2251.0" x2="1289.4" y2="2140.5" stroke="#16232e" stroke-width="1.6"/>
+<text x="1621.2" y="2185.8" font-size="21" font-weight="700" fill="#16232e">1</text>
+<line x1="758.1" y1="1854.0" x2="1194.5" y2="2109.2" stroke="#16232e" stroke-width="1.6"/>
+<text x="996.3" y="1971.6" font-size="21" font-weight="700" fill="#16232e">N</text>
+<polygon points="1230,2094.0 1314.0,2130 1230,2166.0 1146.0,2130" fill="#ffffff" stroke="#16232e" stroke-width="1.8"/>
+<text x="1230" y="2134.9" text-anchor="middle" font-size="14" fill="#16232e">is forecast for</text>
+<line x1="1960.0" y1="934.0" x2="1960.0" y2="1174.0" stroke="#16232e" stroke-width="1.6"/>
+<text x="1980.0" y="1044.0" font-size="21" font-weight="700" fill="#16232e">1</text>
+<line x1="1960.0" y1="1466.0" x2="1960.0" y2="1246.0" stroke="#16232e" stroke-width="1.6"/>
+<text x="1980.0" y="1346.0" font-size="21" font-weight="700" fill="#16232e">N</text>
+<polygon points="1960,1174.0 2044.0,1210 1960,1246.0 1876.0,1210" fill="#ffffff" stroke="#16232e" stroke-width="1.8"/>
+<text x="1960" y="1216.0" text-anchor="middle" font-size="17" fill="#16232e">measures</text>
+<line x1="1906.8" y1="934.0" x2="1163.7" y2="1408.5" stroke="#16232e" stroke-width="1.6"/>
+<text x="1555.2" y="1161.2" font-size="21" font-weight="700" fill="#16232e">1</text>
+<line x1="737.5" y1="1786.0" x2="1103.0" y2="1454.4" stroke="#16232e" stroke-width="1.6"/>
+<text x="940.3" y="1610.2" font-size="21" font-weight="700" fill="#16232e">N</text>
+<polygon points="1130,1394.0 1214.0,1430 1130,1466.0 1046.0,1430" fill="#ffffff" stroke="#16232e" stroke-width="1.8"/>
+<text x="1130" y="1436.0" text-anchor="middle" font-size="17" fill="#16232e">is basis for</text>
+<line x1="2060.8" y1="934.0" x2="2743.0" y2="1164.1" stroke="#16232e" stroke-width="1.6"/>
+<text x="2421.9" y="1039.1" font-size="21" font-weight="700" fill="#16232e">1</text>
+<line x1="3483.0" y1="1486.0" x2="2831.4" y2="1198.3" stroke="#16232e" stroke-width="1.6"/>
+<text x="3177.2" y="1332.1" font-size="21" font-weight="700" fill="#16232e">N</text>
+<polygon points="2790,1144.0 2874.0,1180 2790,1216.0 2706.0,1180" fill="#ffffff" stroke="#16232e" stroke-width="1.8"/>
+<text x="2790" y="1186.0" text-anchor="middle" font-size="17" fill="#16232e">raises</text>
+<line x1="3666.2" y1="1554.0" x2="4011.9" y2="1664.6" stroke="#16232e" stroke-width="1.6"/>
+<text x="3859.1" y="1599.3" font-size="21" font-weight="700" fill="#16232e">1</text>
+<line x1="4340.1" y1="1786.0" x2="4104.6" y2="1696.9" stroke="#16232e" stroke-width="1.6"/>
+<text x="4242.4" y="1731.4" font-size="21" font-weight="700" fill="#16232e">N</text>
+<polygon points="4060,1644.0 4144.0,1680 4060,1716.0 3976.0,1680" fill="#ffffff" stroke="#16232e" stroke-width="1.8"/>
+<text x="4060" y="1686.0" text-anchor="middle" font-size="17" fill="#16232e">addressed to</text>
+<line x1="3560.0" y1="1554.0" x2="3560.0" y2="1844.0" stroke="#16232e" stroke-width="1.6"/>
+<text x="3580.0" y="1689.0" font-size="21" font-weight="700" fill="#16232e">1</text>
+<line x1="3560.0" y1="2176.0" x2="3560.0" y2="1916.0" stroke="#16232e" stroke-width="1.6"/>
+<text x="3580.0" y="2036.0" font-size="21" font-weight="700" fill="#16232e">N</text>
+<polygon points="3560,1844.0 3644.0,1880 3560,1916.0 3476.0,1880" fill="#ffffff" stroke="#16232e" stroke-width="1.8"/>
+<text x="3560" y="1884.9" text-anchor="middle" font-size="14" fill="#16232e">dispatched via</text>
+<line x1="4430.0" y1="934.0" x2="4430.0" y2="1344.0" stroke="#16232e" stroke-width="1.6"/>
+<text x="4450.0" y="1129.0" font-size="21" font-weight="700" fill="#16232e">1</text>
+<line x1="4430.0" y1="1786.0" x2="4430.0" y2="1416.0" stroke="#16232e" stroke-width="1.6"/>
+<text x="4450.0" y="1591.0" font-size="21" font-weight="700" fill="#16232e">N</text>
+<polygon points="4430,1344.0 4514.0,1380 4430,1416.0 4346.0,1380" fill="#ffffff" stroke="#16232e" stroke-width="1.8"/>
+<text x="4430" y="1386.0" text-anchor="middle" font-size="17" fill="#16232e">receives</text>
+<rect x="533.0" y="866.0" width="214" height="68" rx="7" fill="#ffffff" stroke="#16232e" stroke-width="2.4"/>
+<text x="640" y="906.0" text-anchor="middle" font-size="17" font-weight="700" fill="#16232e">EvacuationCenter</text>
+<rect x="1853.0" y="866.0" width="214" height="68" rx="7" fill="#ffffff" stroke="#16232e" stroke-width="2.4"/>
+<text x="1960" y="907.0" text-anchor="middle" font-size="20" font-weight="700" fill="#16232e">SensorDevice</text>
+<rect x="3123.0" y="866.0" width="214" height="68" rx="7" fill="#ffffff" stroke="#16232e" stroke-width="2.4"/>
+<text x="3230" y="907.0" text-anchor="middle" font-size="20" font-weight="700" fill="#16232e">ActuatorUnit</text>
+<rect x="4323.0" y="866.0" width="214" height="68" rx="7" fill="#ffffff" stroke="#16232e" stroke-width="2.4"/>
+<text x="4430" y="907.0" text-anchor="middle" font-size="20" font-weight="700" fill="#16232e">User</text>
+<rect x="1853.0" y="1466.0" width="214" height="68" rx="7" fill="#ffffff" stroke="#16232e" stroke-width="2.4"/>
+<text x="1960" y="1506.0" text-anchor="middle" font-size="17" font-weight="700" fill="#16232e">WaterLevelReading</text>
+<rect x="3453.0" y="1486.0" width="214" height="68" rx="7" fill="#ffffff" stroke="#16232e" stroke-width="2.4"/>
+<text x="3560" y="1527.0" text-anchor="middle" font-size="20" font-weight="700" fill="#16232e">Alert</text>
+<rect x="593.0" y="1786.0" width="214" height="68" rx="7" fill="#ffffff" stroke="#16232e" stroke-width="2.4"/>
+<text x="700" y="1826.0" text-anchor="middle" font-size="17" font-weight="700" fill="#16232e">FloodPrediction</text>
+<rect x="4323.0" y="1786.0" width="214" height="68" rx="7" fill="#ffffff" stroke="#16232e" stroke-width="2.4"/>
+<text x="4430" y="1827.0" text-anchor="middle" font-size="20" font-weight="700" fill="#16232e">AlertRecipient</text>
+<rect x="3453.0" y="2176.0" width="214" height="68" rx="7" fill="#ffffff" stroke="#16232e" stroke-width="2.4"/>
+<text x="3560" y="2215.9" text-anchor="middle" font-size="17" font-weight="700" fill="#16232e">NotificationLog</text>
+<rect x="1913.0" y="2236.0" width="214" height="68" rx="7" fill="#ffffff" stroke="#16232e" stroke-width="2.4"/>
+<text x="2020" y="2277.0" text-anchor="middle" font-size="20" font-weight="700" fill="#16232e">Zone</text>
+</svg>

@@ -257,6 +257,9 @@ The suite covers auth/OTP, role middleware, sensor/zone CRUD, the ingestion API,
 ## Documentation
 
 - **[`docs/manual-test-walkthrough.html`](docs/manual-test-walkthrough.html)** — **start here for checking or defense prep.** 67 numbered test cases covering every function from a clean install, each with steps, the exact expected result, and a pass/fail box. Ends with a module coverage summary and an adviser sign-off page. Also available as [PDF](docs/manual-test-walkthrough.pdf).
+- **[`docs/erd-corrected.html`](docs/erd-corrected.html)** — corrected ERD and full data dictionary, generated from the delivered schema. Includes a Chen-notation diagram (replaces manuscript Figure 43) and a crow's-foot view of all 16 tables. Also available as [PDF](docs/erd-corrected.pdf).
+  - Diagrams for inserting into documents: [`erd-chen-corrected.png`](docs/erd-chen-corrected.png) · [`erd-crowsfoot.png`](docs/erd-crowsfoot.png) (both ≥6000 px wide)
+  - Editable vector/source: [`erd-chen-corrected.svg`](docs/erd-chen-corrected.svg) · [`erd-crowsfoot.svg`](docs/erd-crowsfoot.svg) · [`erd-corrected.mmd`](docs/erd-corrected.mmd)
 - **[`docs/student-guide.html`](docs/student-guide.html)** — hands-on testing guide for students: how to start it with Docker, a command cheat sheet, a guided "make a flood happen" walkthrough, and a field-by-field reference for every screen.
 - **[`docs/user-guide.html`](docs/user-guide.html)** — deeper end-user manual explaining all three roles and how predictions/alerts/data work internally.
 

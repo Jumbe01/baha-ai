@@ -1,0 +1,207 @@
+erDiagram
+    FLOOD_ZONES ||--o{ SENSORS : "contains"
+    FLOOD_ZONES ||--o{ ACTUATOR_DEVICES : "contains"
+    FLOOD_ZONES ||--o{ EVACUATION_CENTERS : "is served by"
+    FLOOD_ZONES ||--o{ ALERTS : "is subject of"
+    FLOOD_ZONES ||--o{ PREDICTIONS : "is forecast for"
+    FLOOD_ZONES ||--o{ FLOOD_INCIDENTS : "records"
+
+    SENSORS ||--o{ SENSOR_READINGS : "measures"
+    SENSORS ||--o{ PREDICTIONS : "is basis for"
+    SENSORS ||--o{ ALERTS : "raises"
+
+    ALERTS ||--o{ ALERT_RECIPIENTS : "is addressed to"
+    ALERTS ||--o{ NOTIFICATION_LOGS : "is dispatched via"
+    ALERTS ||--o| FLOOD_INCIDENTS : "becomes on resolve"
+
+    USERS ||--o{ ALERT_RECIPIENTS : "receives"
+    USERS ||--o{ NOTIFICATION_LOGS : "is sent"
+    USERS ||--o{ ALERTS : "issues or resolves"
+    USERS ||--o{ FLOOD_REPORTS : "submits"
+    USERS ||--o{ ACTUATOR_LOGS : "operates"
+    USERS ||--o{ AUDIT_LOGS : "performs"
+    USERS ||--o{ OTP_CODES : "verifies with"
+
+    ACTUATOR_DEVICES ||--o{ ACTUATOR_LOGS : "logs"
+
+    FLOOD_ZONES {
+        bigint id PK
+        varchar name
+        varchar barangay
+        decimal safe_threshold "metres"
+        decimal warning_threshold "metres"
+        decimal critical_threshold "metres"
+        json coordinates
+        varchar risk_level
+        boolean is_active
+    }
+    SENSORS {
+        bigint id PK
+        bigint flood_zone_id FK
+        varchar name
+        varchar type
+        decimal latitude
+        decimal longitude
+        varchar status
+        decimal battery_level
+        timestamp last_reading_at
+        varchar api_token "hashed"
+    }
+    SENSOR_READINGS {
+        bigint id PK
+        bigint sensor_id FK
+        decimal water_level "metres"
+        decimal rainfall "millimetres"
+        decimal temperature
+        decimal humidity
+        timestamp recorded_at
+    }
+    PREDICTIONS {
+        bigint id PK
+        bigint sensor_id FK
+        bigint flood_zone_id FK
+        decimal current_level
+        decimal rate_of_rise "m per min"
+        decimal predicted_level
+        integer minutes_to_critical
+        decimal confidence "R squared pct"
+        varchar risk_level
+        text recommendation
+        json forecast_points
+        timestamp generated_at
+    }
+    ALERTS {
+        bigint id PK
+        bigint flood_zone_id FK
+        bigint sensor_id FK
+        varchar severity
+        varchar title
+        text message
+        decimal water_level
+        varchar status
+        varchar source
+        bigint created_by FK
+        bigint resolved_by FK
+        timestamp resolved_at
+    }
+    ALERT_RECIPIENTS {
+        bigint id PK
+        bigint alert_id FK
+        bigint user_id FK
+        timestamp read_at
+    }
+    NOTIFICATION_LOGS {
+        bigint id PK
+        bigint alert_id FK
+        bigint user_id FK "null for siren"
+        varchar channel
+        varchar recipient
+        text content
+        varchar status
+        timestamp sent_at
+    }
+    FLOOD_INCIDENTS {
+        bigint id PK
+        bigint flood_zone_id FK
+        bigint alert_id FK "unique"
+        varchar severity
+        decimal peak_water_level
+        decimal total_rainfall
+        integer duration_minutes
+        integer affected_residents
+        text description
+        timestamp occurred_at
+    }
+    ACTUATOR_DEVICES {
+        bigint id PK
+        bigint flood_zone_id FK
+        varchar name
+        varchar type
+        decimal latitude
+        decimal longitude
+        boolean is_on
+        varchar mode "auto or manual"
+        varchar status
+        timestamp last_activated_at
+    }
+    ACTUATOR_LOGS {
+        bigint id PK
+        bigint actuator_device_id FK
+        bigint user_id FK
+        varchar action
+        varchar trigger "manual or automatic"
+        text notes
+        timestamp logged_at
+    }
+    EVACUATION_CENTERS {
+        bigint id PK
+        bigint flood_zone_id FK
+        varchar name
+        varchar barangay
+        varchar address
+        integer capacity
+        integer current_occupancy
+        decimal latitude
+        decimal longitude
+        varchar contact_number
+        varchar status
+        boolean is_active
+    }
+    FLOOD_REPORTS {
+        bigint id PK
+        bigint user_id FK
+        varchar barangay
+        varchar severity
+        text description
+        decimal latitude
+        decimal longitude
+        varchar status
+    }
+    USERS {
+        bigint id PK
+        varchar name
+        varchar email UK
+        timestamp email_verified_at
+        varchar password "hashed"
+        varchar role
+        varchar mobile
+        decimal latitude
+        decimal longitude
+        varchar address
+        varchar barangay "alert targeting"
+        json notification_preference
+    }
+    AUDIT_LOGS {
+        bigint id PK
+        bigint user_id FK "null for system"
+        varchar action
+        varchar auditable_type
+        bigint auditable_id
+        varchar label
+        json changes "redacted"
+        varchar ip_address
+        timestamp created_at
+    }
+    OTP_CODES {
+        bigint id PK
+        bigint user_id FK
+        varchar code
+        timestamp expires_at
+        timestamp verified_at
+    }
+    WEATHER_DATA {
+        bigint id PK
+        varchar location
+        decimal latitude
+        decimal longitude
+        decimal temperature
+        decimal feels_like
+        integer humidity
+        decimal rainfall
+        decimal wind_speed
+        varchar condition
+        varchar description
+        varchar icon
+        json forecast
+        timestamp fetched_at
+    }

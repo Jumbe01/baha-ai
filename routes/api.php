@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ActuatorStateController;
 use App\Http\Controllers\Api\MapDataController;
 use App\Http\Controllers\Api\SensorDataController;
 use Illuminate\Http\Request;
@@ -12,6 +13,8 @@ Route::get('/user', function (Request $request) {
 Route::post('/sensors/{sensor}/readings', [SensorDataController::class, 'store'])
     ->middleware('sensor.token')
     ->name('api.sensor-readings.store');
+
+Route::get('/actuators', [ActuatorStateController::class, 'index'])->name('api.actuators.index');
 
 Route::get('/map/geojson', [MapDataController::class, 'geojson'])->name('api.map.geojson');
 Route::get('/map/sensors', [MapDataController::class, 'sensors'])->name('api.map.sensors');
