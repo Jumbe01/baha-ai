@@ -117,4 +117,15 @@ echo "  Admin login: admin@bahaai.test   password: password"
 echo "========================================================"
 echo ""
 
-exec php artisan serve --host=0.0.0.0 --port=8000
+# Scheduler: predictions every 15 min, offline checks, actuator evaluation,
+# hourly weather. Without it the Predictions screen stays empty in Docker.
+# ponytail: background process with no supervisor; if it dies it stays dead
+# until the container restarts. Move to its own compose service if that bites.
+php artisan schedule:work &
+
+# Several PHP workers so a long request (a storm sending alert emails) does
+# not freeze the dashboard's polling for every other user.
+export PHP_CLI_SERVER_WORKERS="${PHP_CLI_SERVER_WORKERS:-4}"
+
+# --no-reload is required for artisan serve to honour the worker count.
+exec php artisan serve --host=0.0.0.0 --port=8000 --no-reload

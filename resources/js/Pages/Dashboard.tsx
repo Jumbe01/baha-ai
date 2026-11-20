@@ -36,6 +36,10 @@ interface Stats {
     avgTemperature: number | null;
     avgHumidity: number | null;
     totalRainfall: number | null;
+    activeAlerts: number;
+    predictionRisk: 'safe' | 'warning' | 'critical' | null;
+    highestWarning: number | null;
+    highestCritical: number | null;
 }
 
 interface FloodZoneStatus {
@@ -64,22 +68,37 @@ export default function Dashboard({ stats, floodZones, recentReadings }: Props) 
     const firstName = auth.user.name.split(' ')[0];
     const isStaff = auth.user.role === 'admin' || auth.user.role === 'staff';
     const [reportOpen, setReportOpen] = useState(false);
+    const [simulating, setSimulating] = useState(false);
+
+    const simulate = (name: 'simulation.storm' | 'simulation.calm') =>
+        router.post(route(name), {}, {
+            preserveScroll: true,
+            onStart: () => setSimulating(true),
+            onFinish: () => setSimulating(false),
+        });
 
     // Live auto-refresh: pull fresh data every 15s without a full page reload.
     useEffect(() => {
         const id = setInterval(() => {
-            router.reload({ only: ['stats', 'floodZones', 'recentReadings'] });
+            router.reload({ only: ['stats', 'floodZones', 'recentReadings', 'unreadNotifications'] });
         }, 15000);
         return () => clearInterval(id);
     }, []);
 
     const { critical, warning, safe } = stats.riskCounts;
-    const activeAlerts = warning + critical;
+    const stationsAtRisk = warning + critical;
+    const activeAlerts = stats.activeAlerts;
 
     // Overall situation derived from live sensor risk counts.
     const overall = critical > 0 ? 'critical' : warning > 0 ? 'moderate' : 'safe';
     const waterStatusWord = critical > 0 ? 'Critical' : warning > 0 ? 'Moderate' : 'Normal';
-    const predictionWord = critical > 0 ? 'High Risk' : warning > 0 ? 'Moderate Risk' : 'Low Risk';
+    // From the regression forecast when one is fresh; otherwise fall back to live sensor risk.
+    const forecast = stats.predictionRisk ?? (critical > 0 ? 'critical' : warning > 0 ? 'warning' : 'safe');
+    const predictionWord = forecast === 'critical' ? 'High Risk' : forecast === 'warning' ? 'Moderate Risk' : 'Low Risk';
+    const predictionTone = forecast === 'critical' ? 'critical' : forecast === 'warning' ? 'moderate' : 'safe';
+    const gaugeWarning = stats.highestWarning ?? 1.5;
+    const gaugeCritical = stats.highestCritical ?? 3.0;
+    const gaugeMax = Math.max(gaugeCritical + 1, stats.highestWaterLevel);
     const rainfall = stats.totalRainfall ?? 0;
     const rainWord = rainfall >= 30 ? 'Heavy Rain' : rainfall >= 7.5 ? 'Moderate Rain' : rainfall > 0 ? 'Light Rain' : 'No Rain';
 
@@ -95,14 +114,16 @@ export default function Dashboard({ stats, floodZones, recentReadings }: Props) 
                         {isStaff && (
                             <>
                                 <button
-                                    onClick={() => router.post(route('simulation.storm'), {}, { preserveScroll: true })}
-                                    className="flex h-9 items-center gap-2 rounded-xl bg-red-600 px-3 text-sm font-semibold text-white hover:bg-red-700"
+                                    onClick={() => simulate('simulation.storm')}
+                                    disabled={simulating}
+                                    className="flex h-9 items-center gap-2 rounded-xl bg-red-600 px-3 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-wait disabled:opacity-60"
                                 >
-                                    <CloudLightning className="h-4 w-4" /> Simulate Storm
+                                    <CloudLightning className="h-4 w-4" /> {simulating ? 'Simulating…' : 'Simulate Storm'}
                                 </button>
                                 <button
-                                    onClick={() => router.post(route('simulation.calm'), {}, { preserveScroll: true })}
-                                    className="flex h-9 items-center gap-2 rounded-xl border border-slate-300 px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                                    onClick={() => simulate('simulation.calm')}
+                                    disabled={simulating}
+                                    className="flex h-9 items-center gap-2 rounded-xl border border-slate-300 px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:cursor-wait disabled:opacity-60"
                                 >
                                     Reset
                                 </button>
@@ -132,7 +153,7 @@ export default function Dashboard({ stats, floodZones, recentReadings }: Props) 
                                 {overall === 'critical' ? 'FLOOD WARNING' : 'ADVISORY'}
                             </p>
                             <p className="text-sm text-slate-600">
-                                {activeAlerts} station{activeAlerts === 1 ? '' : 's'} reporting elevated water levels in your area. Possible flooding in low-lying areas.
+                                {stationsAtRisk} station{stationsAtRisk === 1 ? '' : 's'} reporting elevated water levels in your area. Possible flooding in low-lying areas.
                             </p>
                         </div>
                     </div>
@@ -164,9 +185,9 @@ export default function Dashboard({ stats, floodZones, recentReadings }: Props) 
                     label="AI Flood Prediction"
                     value={predictionWord}
                     icon={BrainCircuit}
-                    tone={overall}
-                    status="Next 24 hours"
-                    meta="Based on live sensor risk"
+                    tone={predictionTone}
+                    status="Next 60 minutes"
+                    meta={stats.predictionRisk ? 'From latest regression forecast' : 'Based on live sensor risk'}
                 />
                 <StatCard
                     label="Rainfall (24h avg)"
@@ -199,7 +220,7 @@ export default function Dashboard({ stats, floodZones, recentReadings }: Props) 
                 >
                     <p className="mb-4 text-sm font-medium text-slate-500">{stats.highestSensor ?? 'No active station'}</p>
                     <div className="flex items-center gap-6">
-                        <WaterGauge value={stats.highestWaterLevel} max={4} warning={2.5} critical={3.5} />
+                        <WaterGauge value={stats.highestWaterLevel} max={gaugeMax} warning={gaugeWarning} critical={gaugeCritical} />
                         <div className="flex-1">
                             <p className="font-display text-3xl font-bold text-navy-900">
                                 {stats.highestWaterLevel.toFixed(2)}<span className="ml-1 text-lg text-slate-500">m</span>

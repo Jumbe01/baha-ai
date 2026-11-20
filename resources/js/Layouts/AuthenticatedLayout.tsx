@@ -61,7 +61,9 @@ export default function AuthenticatedLayout({
         if (flash?.success) toast.success(flash.success);
         if (flash?.error) toast.error(flash.error);
         if (flash?.status) toast(flash.status);
-    }, [flash?.success, flash?.error, flash?.status]);
+        // Keyed on the flash object: each visit sends a new one, so the same
+        // message twice in a row (two storms) still shows a toast.
+    }, [flash]);
 
     const { primary, admin } = getNavigation(user.role, unread);
     const roleLabel = ROLE_LABELS[user.role] ?? user.role;

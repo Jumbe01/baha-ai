@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Console\Command;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 
 class SimulationController extends Controller
 {
@@ -13,18 +15,30 @@ class SimulationController extends Controller
      */
     public function storm(): RedirectResponse
     {
-        Artisan::call('sensors:simulate', ['--storm' => true]);
-
-        return redirect()->back()->with('success', 'Storm simulated — elevated readings generated and alerts dispatched.');
+        return $this->simulate(['--storm' => true]);
     }
 
     /**
-     * Generate normal (safe) readings to reset the scene.
+     * Generate normal (safe) readings and close the simulated alerts.
      */
     public function calm(): RedirectResponse
     {
-        Artisan::call('sensors:simulate');
+        return $this->simulate([]);
+    }
 
-        return redirect()->back()->with('success', 'Normal readings generated — conditions back to baseline.');
+    private function simulate(array $options): RedirectResponse
+    {
+        $code = Artisan::call('sensors:simulate', $options);
+        $summary = Str::of(Artisan::output())->trim()->explode("\n")->last();
+
+        if ($code !== Command::SUCCESS) {
+            return back()->with('error', trim($summary) ?: 'Simulation failed.');
+        }
+
+        // Refresh forecasts now so the prediction screens follow the demo
+        // instead of waiting for the 15-minute schedule.
+        Artisan::call('predictions:generate');
+
+        return back()->with('success', trim($summary));
     }
 }

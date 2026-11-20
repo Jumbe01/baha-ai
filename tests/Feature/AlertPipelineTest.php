@@ -88,6 +88,34 @@ class AlertPipelineTest extends TestCase
         $this->assertDatabaseCount('alerts', 2);
     }
 
+    public function test_escalation_supersedes_the_warning_alert(): void
+    {
+        $warning = $this->service->evaluateReading($this->sensor, $this->reading(2.0));
+        $this->service->evaluateReading($this->sensor, $this->reading(3.5));
+
+        $this->assertSame('resolved', $warning->fresh()->status);
+        $this->assertSame(1, Alert::active()->count());
+    }
+
+    public function test_falling_back_to_warning_does_not_raise_a_second_alert(): void
+    {
+        $this->service->evaluateReading($this->sensor, $this->reading(3.5));
+
+        $this->assertNull($this->service->evaluateReading($this->sensor, $this->reading(2.0)));
+        $this->assertDatabaseCount('alerts', 1);
+    }
+
+    public function test_an_offline_alert_does_not_block_a_flood_warning(): void
+    {
+        Alert::create([
+            'flood_zone_id' => $this->zone->id, 'sensor_id' => $this->sensor->id, 'severity' => 'warning',
+            'title' => 'Sensor offline: test', 'message' => 'offline', 'water_level' => null,
+            'status' => 'active', 'source' => 'automatic',
+        ]);
+
+        $this->assertNotNull($this->service->evaluateReading($this->sensor, $this->reading(2.0)));
+    }
+
     public function test_alert_dispatches_notifications_to_zone_residents(): void
     {
         User::factory()->resident()->create(['barangay' => 'Tayud']);

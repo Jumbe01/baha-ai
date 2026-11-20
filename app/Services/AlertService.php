@@ -21,7 +21,7 @@ class AlertService
      * breaches the warning or critical threshold and there is no matching
      * active alert, create a new alert and dispatch notifications.
      */
-    public function evaluateReading(Sensor $sensor, SensorReading $reading): ?Alert
+    public function evaluateReading(Sensor $sensor, SensorReading $reading, string $source = 'automatic'): ?Alert
     {
         $zone = $sensor->floodZone;
         $assessment = $this->riskService->forWaterLevel($reading->water_level, $zone);
@@ -36,15 +36,30 @@ class AlertService
             return null;
         }
 
-        $existing = Alert::active()
+        // Only water-level alerts count: an active "sensor offline" warning
+        // (water_level null) must not swallow a real flood warning.
+        $active = Alert::active()
             ->where('flood_zone_id', $zone->id)
             ->where('sensor_id', $sensor->id)
-            ->where('severity', $assessment['level'])
-            ->first();
+            ->whereNotNull('water_level')
+            ->get();
 
-        if ($existing) {
+        // Already covered at this severity or higher: nothing new to say.
+        $covered = $assessment['level'] === 'warning'
+            ? $active->isNotEmpty()
+            : $active->contains('severity', 'critical');
+
+        if ($covered) {
             return null;
         }
+
+        // Escalation supersedes the warning instead of leaving two alerts
+        // active for one sensor. Closed without an incident: the critical
+        // alert's incident covers the same flood event.
+        $active->where('severity', 'warning')->each->update([
+            'status' => 'resolved',
+            'resolved_at' => now(),
+        ]);
 
         $alert = Alert::create([
             'flood_zone_id' => $zone->id,
@@ -62,7 +77,7 @@ class AlertService
             ),
             'water_level' => $reading->water_level,
             'status' => 'active',
-            'source' => 'automatic',
+            'source' => $source,
         ]);
 
         $this->dispatcher->dispatch($alert);
@@ -158,6 +173,11 @@ class AlertService
     {
         // Offline-sensor alerts carry no water level and are not flood events.
         if (! $alert->sensor_id || $alert->water_level === null) {
+            return null;
+        }
+
+        // Demo storms must not show up in analytics and exports as real floods.
+        if ($alert->source === 'simulation') {
             return null;
         }
 
