@@ -18,6 +18,7 @@ interface Sensor {
     barangay: string;
     water_level: number;
     last_reading_at: string | null;
+    online: boolean;
     risk: { level: string; color: string; label: string };
     thresholds: { safe: number; warning: number; critical: number };
 }
@@ -46,6 +47,7 @@ export default function WaterLevelsIndex({ sensors }: { sensors: Sensor[] }) {
     }, [sensors]);
 
     const total = sensors.length;
+    const online = sensors.filter((s) => s.online).length;
     const pct = (n: number) => (total ? Math.round((n / total) * 100) : 0);
 
     return (
@@ -75,7 +77,7 @@ export default function WaterLevelsIndex({ sensors }: { sensors: Sensor[] }) {
             />
 
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                <StatCard label="Total Stations" value={total} icon={Radio} tone="info" status={`${total} active`} />
+                <StatCard label="Total Stations" value={total} icon={Radio} tone="info" status={`${online} online`} />
                 <StatCard label="Normal" value={counts.normal} icon={Waves} tone="safe" status={`${pct(counts.normal)}%`} />
                 <StatCard label="Warning" value={counts.warning} icon={AlertTriangle} tone="warning" status={`${pct(counts.warning)}%`} />
                 <StatCard label="Critical" value={counts.critical} icon={Siren} tone="critical" status={`${pct(counts.critical)}%`} />
@@ -120,7 +122,7 @@ export default function WaterLevelsIndex({ sensors }: { sensors: Sensor[] }) {
                                             <span className={cn('font-bold', st.text)}>{s.water_level.toFixed(2)} m</span>
                                             <p className="text-xs text-slate-400">{rangeLabel}</p>
                                         </td>
-                                        <td className="px-5 py-4"><StatusBadge level={level} label={s.risk.label} /></td>
+                                        <td className="px-5 py-4">{s.online ? <StatusBadge level={level} label={s.risk.label} /> : <StatusBadge level="neutral" label="Offline" />}</td>
                                         <td className="px-5 py-4">
                                             <div className="h-1.5 w-20 overflow-hidden rounded-full bg-slate-100">
                                                 <div className={cn('h-full rounded-full', st.icon.replace('text-', 'bg-'))} style={{ width: `${barPct}%` }} />

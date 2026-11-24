@@ -26,6 +26,11 @@ class AlertService
         $zone = $sensor->floodZone;
         $assessment = $this->riskService->forWaterLevel($reading->water_level, $zone);
 
+        // A reading is proof the sensor is reporting again: close its
+        // "sensor offline" alert (the only alerts with no water level).
+        Alert::active()->where('sensor_id', $sensor->id)->whereNull('water_level')
+            ->update(['status' => 'resolved', 'resolved_at' => now()]);
+
         // Drive auto-mode hardware on every reading, including safe ones —
         // that is what releases pumps and sirens once the water recedes.
         // Keyed off the whole zone, not this one sensor, so a safe reading

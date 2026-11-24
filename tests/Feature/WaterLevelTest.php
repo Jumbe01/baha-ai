@@ -24,6 +24,20 @@ class WaterLevelTest extends TestCase
         $this->zone = FloodZone::factory()->create();
     }
 
+    public function test_index_keeps_offline_sensors_listed_and_flags_them(): void
+    {
+        Sensor::factory()->for($this->zone)->create(['name' => 'A-online', 'status' => 'active']);
+        Sensor::factory()->for($this->zone)->create(['name' => 'B-offline', 'status' => 'offline']);
+        Sensor::factory()->for($this->zone)->create(['name' => 'C-maintenance', 'status' => 'maintenance']);
+
+        $this->actingAs($this->user)->get(route('water-levels.index'))
+            ->assertInertia(fn ($page) => $page
+                ->has('sensors', 2)
+                ->where('sensors.0.online', true)
+                ->where('sensors.1.online', false)
+            );
+    }
+
     public function test_index_shows_active_sensors(): void
     {
         Sensor::factory()->for($this->zone)->count(3)->create(['status' => 'active']);

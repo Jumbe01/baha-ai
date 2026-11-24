@@ -13,13 +13,16 @@ class WaterLevelController extends Controller
 {
     public function index(RiskLevelService $riskService): Response
     {
+        // Offline stations stay on the board (flagged), so a silent sensor is
+        // visible to responders instead of quietly disappearing.
         $sensors = Sensor::with(['floodZone', 'latestReading'])
-            ->where('status', 'active')
+            ->whereIn('status', ['active', 'offline'])
             ->orderBy('name')
             ->get()
             ->map(fn ($sensor) => [
                 'id' => $sensor->id,
                 'name' => $sensor->name,
+                'online' => $sensor->status === 'active',
                 'type' => $sensor->type,
                 'flood_zone' => $sensor->floodZone->name,
                 'barangay' => $sensor->floodZone->barangay,

@@ -98,6 +98,19 @@ class DeviceStatusTest extends TestCase
         $this->assertSame('active', $this->sensor->fresh()->status);
     }
 
+    public function test_reporting_again_closes_the_offline_alert(): void
+    {
+        $this->sensor->update(['status' => 'active', 'last_reading_at' => now()->subHours(2)]);
+        app(\App\Services\AlertService::class)->flagOfflineSensors();
+        $this->assertSame(1, \App\Models\Alert::active()->whereNull('water_level')->count());
+
+        $this->postJson(route('api.sensor-readings.store', $this->sensor), [
+            'water_level' => 0.1,
+        ], $this->headers())->assertCreated();
+
+        $this->assertSame(0, \App\Models\Alert::active()->whereNull('water_level')->count());
+    }
+
     public function test_a_sensor_under_maintenance_is_not_flipped_to_active(): void
     {
         $this->sensor->update(['status' => 'maintenance']);
