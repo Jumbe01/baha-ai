@@ -8,6 +8,7 @@ use App\Services\Sms\SmsGateway;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
@@ -40,6 +41,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Vite::prefetch(concurrency: 3);
+
+        // Record IDs are integers. Without this, a non-numeric ID in a URL
+        // reaches PostgreSQL's bigint comparison and fails with a 500 instead
+        // of a clean 404.
+        Route::patterns(array_fill_keys([
+            'sensor', 'alert', 'device', 'floodReport', 'notification', 'id',
+            'flood_zone', 'evacuation_center', 'user',
+        ], '[0-9]+'));
 
         // A field node posts every 5 minutes, so 60/min leaves generous headroom
         // while capping how fast a forged or malfunctioning client can inject
