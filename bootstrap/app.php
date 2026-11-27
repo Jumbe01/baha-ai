@@ -23,6 +23,10 @@ return Application::configure(basePath: dirname(__DIR__))
             AddLinkHeadersForPreloadedAssets::class,
         ]);
 
+        // Behind Caddy (production): trust X-Forwarded-* so URLs are https and
+        // rate limits use the real client IP. The app port is never public there.
+        $middleware->trustProxies(at: '*');
+
         $middleware->throttleApi();
 
         $middleware->alias([

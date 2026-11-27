@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 680" font-family="Arial, sans-serif">
+<rect width="1000" height="680" fill="#fff"/>
+<text x="20" y="26" font-size="16" font-weight="bold">Rebuild Step 3: power on both rails + ESP32 ground (not to scale)</text>
+
+<!-- boards -->
+<rect x="38" y="50" width="170" height="570" fill="#f4f4f0" stroke="#bbb"/>
+<rect x="208" y="50" width="162" height="570" fill="#f4f4f0" stroke="#bbb"/>
+<line x1="208" y1="50" x2="208" y2="620" stroke="#999" stroke-dasharray="5 4"/>
+<!-- rails: left board outer -, inner + ; right board inner -, outer + -->
+<line x1="50" y1="58" x2="50" y2="612" stroke="#3a7bd5" stroke-width="2"/>
+<line x1="62" y1="58" x2="62" y2="612" stroke="#e33" stroke-width="2"/>
+<line x1="345" y1="58" x2="345" y2="612" stroke="#3a7bd5" stroke-width="2"/>
+<line x1="357" y1="58" x2="357" y2="612" stroke="#e33" stroke-width="2"/>
+<g font-size="11" font-weight="bold" text-anchor="middle">
+<text x="50" y="46" fill="#3a7bd5">−</text><text x="62" y="46" fill="#e33">+</text>
+<text x="345" y="46" fill="#3a7bd5">−</text><text x="357" y="46" fill="#e33">+</text>
+</g>
+<g font-size="9" fill="#555" text-anchor="middle">
+<text x="85" y="46">a</text><text x="95" y="46">b</text><text x="105" y="46">c</text><text x="115" y="46">d</text><text x="125" y="46">e</text>
+<text x="150" y="46">f</text><text x="160" y="46">g</text><text x="170" y="46">h</text><text x="180" y="46">i</text><text x="190" y="46">j</text>
+<text x="220" y="46">a</text><text x="230" y="46">b</text><text x="240" y="46">c</text><text x="250" y="46">d</text><text x="260" y="46">e</text>
+<text x="285" y="46">f</text><text x="295" y="46">g</text><text x="305" y="46">h</text><text x="315" y="46">i</text><text x="325" y="46">j</text>
+</g>
+<g font-size="9" fill="#555" text-anchor="end">
+<text x="34" y="99">4</text><text x="34" y="144">9</text><text x="34" y="261">22</text><text x="34" y="576">57</text><text x="34" y="603">60</text>
+</g>
+
+<!-- existing parts -->
+<polyline points="10,72 62,72" fill="none" stroke="#e33" stroke-width="3"/>
+<polyline points="10,80 50,80" fill="none" stroke="#2a9d3a" stroke-width="3"/>
+<text x="70" y="70" font-size="9" fill="#555">charger cable (already in)</text>
+<rect x="44" y="330" width="24" height="16" rx="3" fill="#222"/><rect x="44" y="330" width="6" height="16" fill="#bbb"/>
+<text x="74" y="342" font-size="9" fill="#555">capacitor (stripe on −)</text>
+<g fill="#c8a165" stroke="#7a5a2a"><rect x="100" y="110" width="6" height="30"/><rect x="92" y="150" width="6" height="30"/><rect x="100" y="190" width="6" height="30"/></g>
+<text x="112" y="170" font-size="9" fill="#555">divider</text>
+
+<!-- ESP32: rows 4-22 -->
+<rect x="160" y="88" width="90" height="180" rx="4" fill="#222"/>
+<rect x="190" y="80" width="28" height="16" fill="#bbb" stroke="#666"/>
+<text x="205" y="180" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">ESP32</text>
+<text x="205" y="196" font-size="9" fill="#fff" text-anchor="middle">rows 4–22</text>
+<g fill="#d4af37"><circle cx="240" cy="96" r="3"/><circle cx="240" cy="141" r="3"/><circle cx="240" cy="258" r="3"/></g>
+<g font-size="9" fill="#fff" text-anchor="end">
+<text x="234" y="99">5V</text><text x="234" y="144">GND</text><text x="234" y="261">3V3</text>
+</g>
+<text x="268" y="99" font-size="9" fill="#c0392b">← leave EMPTY</text>
+
+<!-- NEW wires -->
+<polyline points="260,141 345,141" fill="none" stroke="#222" stroke-width="3.5"/>
+<circle cx="260" cy="141" r="4" fill="#222"/><circle cx="345" cy="141" r="4" fill="#222"/>
+<text x="268" y="134" font-size="10" font-weight="bold">A</text>
+
+<polyline points="62,573 357,573" fill="none" stroke="#e33" stroke-width="3.5"/>
+<circle cx="62" cy="573" r="4" fill="#e33"/><circle cx="357" cy="573" r="4" fill="#e33"/>
+<text x="200" y="566" font-size="10" font-weight="bold" fill="#e33">B (+)</text>
+<polyline points="50,600 345,600" fill="none" stroke="#222" stroke-width="3.5"/>
+<circle cx="50" cy="600" r="4" fill="#222"/><circle cx="345" cy="600" r="4" fill="#222"/>
+<text x="200" y="594" font-size="10" font-weight="bold">C (−)</text>
+
+<!-- instructions -->
+<g font-size="13" fill="#222">
+<text x="410" y="70" font-weight="bold">Everything UNPLUGGED (charger and USB).</text>
+
+<text x="410" y="104" font-weight="bold">First, check two things</text>
+<text x="422" y="124">• Read the tiny labels next to the RIGHT pins:</text>
+<text x="436" y="142">row 4 = 5V, row 9 = GND, row 22 = 3V3?</text>
+<text x="422" y="160">• LEFT side: is there at least 1 empty hole left of</text>
+<text x="436" y="178">the pins in rows 11 and 12? (needed later)</text>
+
+<text x="410" y="214" font-weight="bold">A. ESP32 ground (short black wire, MALE–MALE)</text>
+<text x="422" y="234">Right board <tspan font-weight="bold">e9</tspan> → right board <tspan font-weight="bold">− rail</tspan> (blue line), row 9.</text>
+
+<text x="410" y="270" font-weight="bold">B. 5V bridge (long red wire, MALE–MALE)</text>
+<text x="422" y="290">Left board <tspan font-weight="bold">+ rail</tspan> row 57 → right board <tspan font-weight="bold">+ rail</tspan> row 57.</text>
+
+<text x="410" y="326" font-weight="bold">C. GND bridge (long black/blue wire, MALE–MALE)</text>
+<text x="422" y="346">Left board <tspan font-weight="bold">− rail</tspan> row 60 → right board <tspan font-weight="bold">− rail</tspan> row 60.</text>
+<text x="422" y="364">Lay B and C flat, straight across: they never cross.</text>
+
+<text x="410" y="400" font-weight="bold">Note the rails are mirrored:</text>
+<text x="422" y="420">left board: − outside, + inside.</text>
+<text x="422" y="438">right board: − inside, + outside. Follow the line colours.</text>
+
+<text x="410" y="474" font-weight="bold">Multimeter, Ω 200 (still unplugged)</text>
+<text x="422" y="494">1. Left + ↔ right + (both row 1)  → near 0</text>
+<text x="422" y="512">2. Left − ↔ right − (both row 1)  → near 0</text>
+<text x="422" y="530">3. Right + ↔ right −  → OL (may climb to OL)</text>
+<text x="422" y="548">4. Right − rail ↔ ESP32 GND pin (row 9)  → near 0</text>
+
+<text x="410" y="584" font-weight="bold">Then plug in only the charger, V⎓20:</text>
+<text x="422" y="604">right + ↔ right −  → about 5 V. Unplug again.</text>
+<text x="410" y="632" font-weight="bold" fill="#c0392b">The ESP32 5V pin (row 4) stays EMPTY. The ESP32 runs on USB.</text>
+<text x="410" y="656" font-size="12" fill="#555">Wire types: breadboard ↔ breadboard = MALE–MALE.  Module pin ↔ breadboard = FEMALE–MALE.</text>
+<text x="410" y="672" font-size="12" fill="#555">(Female end goes on the module's pin, male end into the breadboard.)</text>
+</g>
+</svg>

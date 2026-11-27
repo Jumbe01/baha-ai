@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" font-family="Arial, sans-serif">
+<rect width="1000" height="560" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Servo (floodgate): right board (zoomed, rows 12–32)</text>
+
+<!-- right board a-e, gap, f-j, rails ; y = 60 + (r-12)*22 -->
+<rect x="40" y="50" width="330" height="470" fill="#f4f4f0" stroke="#bbb"/>
+<rect x="180" y="56" width="26" height="458" fill="#e8e8e2"/>
+<line x1="320" y1="56" x2="320" y2="514" stroke="#3a7bd5" stroke-width="3"/>
+<line x1="345" y1="56" x2="345" y2="514" stroke="#e33" stroke-width="3"/>
+<g font-size="13" font-weight="bold" text-anchor="middle"><text x="320" y="46" fill="#3a7bd5">−</text><text x="345" y="46" fill="#e33">+</text></g>
+<g font-size="11" fill="#555" text-anchor="middle">
+<text x="70" y="46">a</text><text x="95" y="46">b</text><text x="120" y="46">c</text><text x="145" y="46">d</text><text x="170" y="46">e</text>
+<text x="215" y="46">f</text><text x="235" y="46">g</text><text x="255" y="46">h</text><text x="275" y="46">i</text><text x="295" y="46">j</text>
+</g>
+<g font-size="12" fill="#555" text-anchor="end" font-weight="bold">
+<text x="34" y="64">12</text><text x="34" y="86">13</text><text x="34" y="108">14</text><text x="34" y="130">15</text><text x="34" y="262">21</text><text x="34" y="460">30</text><text x="34" y="482">31</text>
+</g>
+
+<!-- ESP32 edge rows 12-21 -->
+<rect x="40" y="50" width="115" height="226" fill="#222"/>
+<g fill="#d4af37"><circle cx="145" cy="60" r="5"/><circle cx="145" cy="82" r="5"/><circle cx="145" cy="104" r="5"/><circle cx="145" cy="126" r="5"/><circle cx="145" cy="258" r="5"/></g>
+<g font-size="11" fill="#fff" text-anchor="end">
+<text x="132" y="64">P26</text><text x="132" y="86" fill="#ffd166" font-weight="bold">P25</text><text x="132" y="108">P33</text><text x="132" y="130">P32</text><text x="132" y="262">3V3</text>
+</g>
+<text x="60" y="292" font-size="10" fill="#555">ESP32 bottom end (row 21)</text>
+
+<!-- existing relay IN1 at e12 -->
+<polyline points="170,60 380,60" fill="none" stroke="#27ae60" stroke-width="3" opacity="0.5"/>
+<text x="385" y="64" font-size="10" fill="#27ae60">relay IN1 (already in)</text>
+
+<!-- servo -->
+<rect x="700" y="230" width="120" height="70" rx="6" fill="#1f4fa8"/>
+<rect x="745" y="215" width="30" height="20" rx="10" fill="#fff" stroke="#999"/>
+<text x="760" y="272" font-size="13" fill="#fff" text-anchor="middle" font-weight="bold">SERVO</text>
+<!-- plug -->
+<rect x="590" y="250" width="22" height="42" fill="#222"/>
+<polyline points="612,258 700,258" fill="none" stroke="#e67e22" stroke-width="3"/>
+<polyline points="612,271 700,271" fill="none" stroke="#e33" stroke-width="3"/>
+<polyline points="612,284 700,284" fill="none" stroke="#8b4513" stroke-width="3"/>
+<text x="560" y="244" font-size="10" text-anchor="middle">servo plug (female)</text>
+
+<!-- jumpers from plug to board -->
+<polyline points="590,258 500,258 500,82 170,82" fill="none" stroke="#e67e22" stroke-width="4"/>
+<polyline points="590,271 485,271 485,456 345,456" fill="none" stroke="#e33" stroke-width="4"/>
+<polyline points="590,284 470,284 470,478 320,478" fill="none" stroke="#8b4513" stroke-width="4"/>
+<circle cx="170" cy="82" r="6" fill="#e67e22"/><circle cx="345" cy="456" r="6" fill="#e33"/><circle cx="320" cy="478" r="6" fill="#8b4513"/>
+<g font-size="12" font-weight="bold">
+<text x="210" y="76" fill="#e67e22">orange → e13</text>
+<text x="360" y="450" fill="#e33">red → + r30</text>
+<text x="335" y="500" fill="#8b4513">brown → − r31</text>
+</g>
+
+<!-- notes -->
+<g font-size="12.5" fill="#222">
+<text x="560" y="70" font-weight="bold">Unplug the charger and USB first.</text>
+<text x="560" y="96" font-weight="bold">Wire type: MALE–MALE (×3)</text>
+<text x="572" y="114">One end into the servo plug, other end</text>
+<text x="572" y="132">into the breadboard.</text>
+<text x="560" y="160" font-weight="bold">Servo wire colours</text>
+<text x="572" y="178">orange = signal, red = +5V, brown = GND</text>
+<text x="560" y="350" font-weight="bold">Right board rails</text>
+<text x="572" y="368">+ = OUTER (red line), − = INNER (blue line)</text>
+<text x="560" y="404" font-weight="bold">Test</text>
+<text x="572" y="422">Charger + USB on, upload gate8_servo.</text>
+<text x="572" y="440">The arm swings slowly between two positions.</text>
+<text x="572" y="458">No restart (no "Brownout") in the Serial Monitor.</text>
+<text x="560" y="494" fill="#c0392b" font-weight="bold">Remove the servo arm/horn from anything first</text>
+<text x="560" y="512" fill="#c0392b" font-weight="bold">so it can swing freely.</text>
+</g>
+</svg>

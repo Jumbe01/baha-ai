@@ -19,7 +19,7 @@
 
 #include <DHT.h>
 
-#define PIN_DHT 4
+#define PIN_DHT 32   // was 4; two-breadboard layout
 
 DHT dht(PIN_DHT, DHT22);
 

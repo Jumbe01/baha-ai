@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" font-family="Arial, sans-serif">
+<rect width="1000" height="600" fill="#fff"/>
+<text x="20" y="26" font-size="16" font-weight="bold">Rebuild Step 4: ultrasonic (HC-SR04): LEFT board only (zoomed, rows 1–30)</text>
+
+<!-- left board -->
+<rect x="38" y="50" width="200" height="490" fill="#f4f4f0" stroke="#bbb"/>
+<line x1="50" y1="56" x2="50" y2="534" stroke="#3a7bd5" stroke-width="2"/>
+<line x1="62" y1="56" x2="62" y2="534" stroke="#e33" stroke-width="2"/>
+<rect x="128" y="56" width="20" height="478" fill="#e8e8e2"/>
+<g font-size="10" font-weight="bold" text-anchor="middle">
+<text x="50" y="47" fill="#3a7bd5">−</text><text x="62" y="47" fill="#e33">+</text>
+</g>
+<g font-size="9" fill="#555" text-anchor="middle">
+<text x="85" y="47">a</text><text x="95" y="47">b</text><text x="105" y="47">c</text><text x="115" y="47">d</text><text x="125" y="47">e</text>
+<text x="155" y="47">f</text><text x="165" y="47">g</text><text x="175" y="47">h</text><text x="185" y="47">i</text><text x="195" y="47">j</text>
+<text x="138" y="47" font-size="8">gap</text>
+</g>
+<g font-size="9" fill="#555" text-anchor="end">
+<text x="34" y="123">5</text><text x="34" y="193">10</text><text x="34" y="207">11</text><text x="34" y="221">12</text>
+<text x="34" y="263">15</text><text x="34" y="333">20</text><text x="34" y="389">24</text><text x="34" y="403">25</text><text x="34" y="445">28</text>
+</g>
+
+<!-- ESP32 (left part) rows 4-22 -->
+<rect x="162" y="100" width="76" height="262" fill="#222"/>
+<text x="236" y="96" font-size="9" text-anchor="end" fill="#555">ESP32 → (continues on right board)</text>
+<g fill="#d4af37"><circle cx="170" cy="204" r="3"/><circle cx="170" cy="218" r="3"/></g>
+<g font-size="9" fill="#fff"><text x="178" y="207">P16</text><text x="178" y="221">P17</text></g>
+
+<!-- divider (already on the board) -->
+<g fill="#c8a165" stroke="#7a5a2a">
+<rect x="102" y="128" width="6" height="56"/><rect x="92" y="198" width="6" height="56"/><rect x="102" y="268" width="6" height="56"/>
+</g>
+<g fill="#555"><circle cx="105" cy="120" r="2.5"/><circle cx="105" cy="190" r="2.5"/><circle cx="95" cy="190" r="2.5"/><circle cx="95" cy="260" r="2.5"/><circle cx="105" cy="260" r="2.5"/><circle cx="105" cy="330" r="2.5"/></g>
+<text x="112" y="160" font-size="8" fill="#7a5a2a">R1</text><text x="80" y="230" font-size="8" fill="#7a5a2a">R2</text><text x="112" y="300" font-size="8" fill="#7a5a2a">R3</text>
+
+<!-- D1: a20 -> left - rail -->
+<polyline points="85,330 50,330" fill="none" stroke="#222" stroke-width="3"/>
+<circle cx="85" cy="330" r="3.5" fill="#222"/><circle cx="50" cy="330" r="3.5" fill="#222"/>
+<text x="66" y="324" font-size="9" font-weight="bold">D1</text>
+<!-- D2: e10 -> f11 -->
+<polyline points="125,190 155,204" fill="none" stroke="#8e44ad" stroke-width="3"/>
+<circle cx="125" cy="190" r="3.5" fill="#8e44ad"/><circle cx="155" cy="204" r="3.5" fill="#8e44ad"/>
+<text x="128" y="182" font-size="9" font-weight="bold" fill="#8e44ad">D2</text>
+
+<!-- HC-SR04 wires from the left -->
+<polyline points="8,120 85,120" fill="none" stroke="#e67e22" stroke-width="3"/>
+<circle cx="85" cy="120" r="3.5" fill="#e67e22"/>
+<polyline points="8,386 50,386" fill="none" stroke="#c9a400" stroke-width="3"/>
+<circle cx="50" cy="386" r="3.5" fill="#c9a400"/>
+<polyline points="8,400 62,400" fill="none" stroke="#8b4513" stroke-width="3"/>
+<circle cx="62" cy="400" r="3.5" fill="#8b4513"/>
+<polyline points="8,442 138,442 138,218 155,218" fill="none" stroke="#e33" stroke-width="3"/>
+<circle cx="155" cy="218" r="3.5" fill="#e33"/>
+<text x="142" y="340" font-size="9" fill="#e33">Trig runs up</text>
+<text x="142" y="352" font-size="9" fill="#e33">the gap</text>
+
+<!-- instructions -->
+<g font-size="13" fill="#222">
+<text x="280" y="70" font-weight="bold">Unplug the charger and USB first.</text>
+
+<text x="280" y="104" font-weight="bold">Check first</text>
+<text x="292" y="124">• The 3 resistors are still at: R1 c5–c10, R2 b10–b15, R3 c15–c20.</text>
+<text x="292" y="142">• Holes <tspan font-weight="bold">f11</tspan> and <tspan font-weight="bold">f12</tspan> (just left of the ESP32's left pins) are EMPTY.</text>
+<text x="306" y="160">If the ESP32 pins are IN column f, stop and tell me.</text>
+
+<text x="280" y="196" font-weight="bold">Two short wires (MALE–MALE)</text>
+<text x="292" y="216"><tspan font-weight="bold">D1</tspan>  a20 → left <tspan font-weight="bold">− rail</tspan> (outer, blue line), row 20</text>
+<text x="292" y="234"><tspan font-weight="bold">D2</tspan>  e10 → <tspan font-weight="bold">f11</tspan> (jumps the gap; connects the divider to P16)</text>
+
+<text x="280" y="270" font-weight="bold">The sensor's 4 wires (FEMALE on the sensor, MALE in the board)</text>
+<text x="292" y="290"><tspan fill="#e67e22" font-weight="bold">Echo</tspan> → <tspan font-weight="bold">a5</tspan></text>
+<text x="292" y="308"><tspan fill="#c9a400" font-weight="bold">Gnd</tspan>  → left <tspan font-weight="bold">− rail</tspan> (outer, blue), row 24</text>
+<text x="292" y="326"><tspan fill="#8b4513" font-weight="bold">Vcc</tspan>  → left <tspan font-weight="bold">+ rail</tspan> (inner, red), row 25</text>
+<text x="292" y="344"><tspan fill="#e33" font-weight="bold">Trig</tspan> → <tspan font-weight="bold">f12</tspan>: lay it up along the empty gap from row 28</text>
+<text x="306" y="362">so it doesn't cross the resistors.</text>
+<text x="292" y="386" font-size="12" fill="#555">Your colours from before: Vcc brown, Trig red, Echo orange, Gnd yellow.</text>
+<text x="292" y="402" font-size="12" fill="#555">Check the tiny labels on the sensor's pins to be sure.</text>
+
+<text x="280" y="440" font-weight="bold">Test</text>
+<text x="292" y="460">1. Plug in the charger (wall) AND the ESP32's USB (laptop).</text>
+<text x="292" y="478">2. Arduino IDE: upload <tspan font-weight="bold">gate2_ultrasonic</tspan> (no Wi-Fi needed).</text>
+<text x="292" y="496">3. Serial Monitor 115200: hold your hand over the sensor:</text>
+<text x="306" y="514">the cm number should change as you move it.</text>
+<text x="292" y="540" fill="#c0392b" font-weight="bold">"no echo" all the time? Send a photo of the left board.</text>
+</g>
+</svg>

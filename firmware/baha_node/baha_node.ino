@@ -6,12 +6,12 @@
  *  Every POLL_INTERVAL_MS  reads GET /api/actuators?zone=ZONE_ID and
  *                          switches the relays / swings the servo
  *
- *  secrets.h (git-ignored, same as baha_sensor_node) holds Wi-Fi,
- *  server, sensor ID and device token. Never commit or share it.
- *
+ *  secrets.h (git-ignored) holds Wi-Fi, sensor ID and device token.
+ *  Never commit or share it. The server is SERVER_URL below (HTTPS).
+ *d:\Coding\Projects\baha-ai\firmware\gate7_relay\gate7_relay.ino
  *  WIRING (breadboard: LEFT rails 5V from charger, RIGHT rails ESP32 3V3)
  *    HC-SR04  Vcc LEFT+  Gnd LEFT-  Trig P17  Echo e5 -> divider -> P16 (e10)
- *    DHT22    + RIGHT+   - RIGHT-   out P4
+ *    DHT22    + 3V3      - GND      out P32
  *    Rain plate  one pin RIGHT+, other pin P33
  *    Relay    VCC LEFT+  GND LEFT-  IN1 P26 pump  IN2 P27 siren
  *             IN3 P14 floodgate  IN4 P13 spare
@@ -21,13 +21,16 @@
 
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <WiFiClientSecure.h>
 #include <ArduinoJson.h>
 #include <DHT.h>
 #include <ESP32Servo.h>
 #include "driver/rtc_io.h"
 #include "secrets.h"
+#include "root_ca.h"
 
 /* ---------- EDIT THIS BLOCK ---------- */
+const char* SERVER_URL = "https://baha-ai.tech";       // the VPS (HTTPS via Caddy)
 const float MOUNT_HEIGHT_M = 0.62;                     // probe face -> tank bottom, measure it
 const unsigned long POST_INTERVAL_MS = 15UL * 1000UL;  // set 5UL*60UL*1000UL before the demo
 const unsigned long POLL_INTERVAL_MS = 5UL * 1000UL;
@@ -39,7 +42,7 @@ const int GATE_OPEN_DEG   = 90;
 
 #define PIN_TRIG     17
 #define PIN_ECHO     16
-#define PIN_DHT       4
+#define PIN_DHT      32   // was 4; moved for the two-breadboard layout
 #define PIN_RAIN     33
 #define PIN_SERVO    25
 #define RELAY_PUMP   26
@@ -55,6 +58,7 @@ const float SENSOR_MAX_M = 4.50;
 
 DHT dht(PIN_DHT, DHT22);
 Servo gate;
+WiFiClientSecure tls;   // verifies baha-ai.tech against ROOT_CA
 int gateDeg = GATE_CLOSED_DEG;
 unsigned long lastPost = 0, lastPoll = 0;
 bool firstRun = true;
@@ -116,6 +120,7 @@ void setup() {
 
   gate.attach(PIN_SERVO);
   gate.write(GATE_CLOSED_DEG);
+  tls.setCACert(ROOT_CA);
 
   Serial.println("\n=== BahaAI node: sensors + actuators ===");
   connectWifi();
@@ -189,8 +194,7 @@ void postSensors() {
   body += "}";
 
   HTTPClient http;
-  http.begin("http://" + String(SECRET_SERVER_HOST) + ":" + String(SECRET_SERVER_PORT)
-             + "/api/sensors/" + String(SECRET_SENSOR_ID) + "/readings");
+  http.begin(tls, String(SERVER_URL) + "/api/sensors/" + String(SECRET_SENSOR_ID) + "/readings");
   http.setTimeout(10000);
   http.addHeader("Content-Type", "application/json");
   http.addHeader("Accept", "application/json");
@@ -198,7 +202,7 @@ void postSensors() {
   int code = http.POST(body);
   Serial.printf("POST -> HTTP %d\n", code);
   if (code == 422) Serial.println(http.getString());
-  if (code < 0)    Serial.println("  Server unreachable — check IP and firewall");
+  if (code < 0)    Serial.println("  Server unreachable — check internet on this Wi-Fi and that baha-ai.tech is up");
   http.end();
 }
 
@@ -206,8 +210,7 @@ void postSensors() {
 
 void pollActuators() {
   HTTPClient http;
-  http.begin("http://" + String(SECRET_SERVER_HOST) + ":" + String(SECRET_SERVER_PORT)
-             + "/api/actuators?zone=" + String(ZONE_ID));
+  http.begin(tls, String(SERVER_URL) + "/api/actuators?zone=" + String(ZONE_ID));
   http.setTimeout(10000);
   http.addHeader("Accept", "application/json");
   int code = http.GET();

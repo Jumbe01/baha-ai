@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" font-family="Arial, sans-serif">
+<rect width="1000" height="620" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Rebuild Step 1: join the two breadboards and place the ESP32 across them</text>
+
+<!-- A: before -->
+<text x="160" y="62" font-size="13" font-weight="bold" text-anchor="middle">A. Peel off the two MIDDLE rails</text>
+<g>
+<rect x="40" y="80" width="110" height="420" fill="#f4f4f0" stroke="#bbb"/>
+<rect x="170" y="80" width="110" height="420" fill="#f4f4f0" stroke="#bbb"/>
+<line x1="48" y1="85" x2="48" y2="495" stroke="#3a7bd5" stroke-width="2"/><line x1="60" y1="85" x2="60" y2="495" stroke="#e33" stroke-width="2"/>
+<line x1="260" y1="85" x2="260" y2="495" stroke="#e33" stroke-width="2"/><line x1="272" y1="85" x2="272" y2="495" stroke="#3a7bd5" stroke-width="2"/>
+<!-- inner rails to remove -->
+<rect x="128" y="80" width="22" height="420" fill="#ffd6d6" stroke="#d00" stroke-dasharray="5 3"/>
+<rect x="170" y="80" width="22" height="420" fill="#ffd6d6" stroke="#d00" stroke-dasharray="5 3"/>
+<line x1="136" y1="85" x2="136" y2="495" stroke="#e33"/><line x1="144" y1="85" x2="144" y2="495" stroke="#3a7bd5"/>
+<line x1="177" y1="85" x2="177" y2="495" stroke="#3a7bd5"/><line x1="185" y1="85" x2="185" y2="495" stroke="#e33"/>
+<text x="160" y="525" font-size="12" fill="#d00" text-anchor="middle" font-weight="bold">✂ remove these two (keep them)</text>
+<text x="95" y="545" font-size="11" text-anchor="middle">old board</text><text x="225" y="545" font-size="11" text-anchor="middle">new board</text>
+</g>
+
+<!-- B: after -->
+<text x="520" y="62" font-size="13" font-weight="bold" text-anchor="middle">B. Push together, ESP32 across the joint</text>
+<rect x="420" y="80" width="100" height="420" fill="#f4f4f0" stroke="#bbb"/>
+<rect x="520" y="80" width="100" height="420" fill="#f4f4f0" stroke="#bbb"/>
+<line x1="428" y1="85" x2="428" y2="495" stroke="#3a7bd5" stroke-width="2"/><line x1="440" y1="85" x2="440" y2="495" stroke="#e33" stroke-width="2"/>
+<line x1="600" y1="85" x2="600" y2="495" stroke="#e33" stroke-width="2"/><line x1="612" y1="85" x2="612" y2="495" stroke="#3a7bd5" stroke-width="2"/>
+<line x1="520" y1="80" x2="520" y2="500" stroke="#999" stroke-dasharray="5 4"/>
+<rect x="505" y="84" width="30" height="20" fill="#bbb" stroke="#666"/>
+<rect x="475" y="100" width="90" height="220" rx="4" fill="#222"/>
+<g fill="#d4af37">
+<circle cx="485" cy="112" r="3"/><circle cx="485" cy="134" r="3"/><circle cx="485" cy="156" r="3"/><circle cx="485" cy="178" r="3"/><circle cx="485" cy="200" r="3"/><circle cx="485" cy="222" r="3"/><circle cx="485" cy="244" r="3"/><circle cx="485" cy="266" r="3"/><circle cx="485" cy="288" r="3"/><circle cx="485" cy="310" r="3"/>
+<circle cx="555" cy="112" r="3"/><circle cx="555" cy="134" r="3"/><circle cx="555" cy="156" r="3"/><circle cx="555" cy="178" r="3"/><circle cx="555" cy="200" r="3"/><circle cx="555" cy="222" r="3"/><circle cx="555" cy="244" r="3"/><circle cx="555" cy="266" r="3"/><circle cx="555" cy="288" r="3"/><circle cx="555" cy="310" r="3"/>
+</g>
+<text x="520" y="215" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">ESP32</text>
+<text x="520" y="231" font-size="9" fill="#fff" text-anchor="middle">chip side up</text>
+<text x="575" y="96" font-size="10">← USB at the TOP</text>
+<text x="520" y="345" font-size="10" text-anchor="middle">rows 1–3 from the top edge</text>
+<g fill="none" stroke="#2a9d3a" stroke-width="3"><circle cx="465" cy="200" r="14"/><circle cx="575" cy="200" r="14"/></g>
+<text x="520" y="525" font-size="11" text-anchor="middle">free holes on BOTH sides of every pin</text>
+<text x="470" y="545" font-size="11" text-anchor="middle">left side</text><text x="570" y="545" font-size="11" text-anchor="middle">right side</text>
+
+<!-- instructions -->
+<g font-size="13" fill="#222">
+<text x="660" y="100" font-weight="bold">0. Before anything</text>
+<text x="672" y="120">Take 2–3 photos of the CURRENT wiring</text>
+<text x="672" y="138">(your backup if something goes wrong).</text>
+<text x="672" y="156">Unplug the charger and the USB.</text>
+
+<text x="660" y="192" font-weight="bold">1. Pull everything off the old breadboard</text>
+<text x="672" y="212">Wires, resistors, capacitor, ESP32.</text>
+<text x="672" y="230">Put the 3 resistors and the capacitor</text>
+<text x="672" y="248">aside. Don't cut anything.</text>
+
+<text x="660" y="284" font-weight="bold">2. Remove the middle rails</text>
+<text x="672" y="304">The rails on the sides that will touch.</text>
+<text x="672" y="322">They usually slide or peel off. Keep them.</text>
+<text x="672" y="340">If yours won't come off: STOP, send a photo.</text>
+
+<text x="660" y="376" font-weight="bold">3. Join the boards</text>
+<text x="672" y="396">Slide the edges together (they may click).</text>
+<text x="672" y="414">No click? Wrap electrical tape around the</text>
+<text x="672" y="432">bottom, under both boards, to hold them.</text>
+
+<text x="660" y="468" font-weight="bold">4. Place the ESP32 (don't press hard yet)</text>
+<text x="672" y="488">USB toward the top edge, one pin row in each</text>
+<text x="672" y="506">board. Check there are free holes beside the</text>
+<text x="672" y="524">pins on BOTH sides, then press it in evenly.</text>
+
+<text x="660" y="566" font-weight="bold" fill="#c0392b">Send me a photo from directly above.</text>
+<text x="660" y="584" fill="#c0392b">I'll read the hole letters/numbers from it.</text>
+</g>
+</svg>

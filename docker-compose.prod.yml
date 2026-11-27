@@ -1,0 +1,29 @@
+# Production overlay for the VPS:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+# Only Caddy (80/443) is public. The app and Mailpit are reachable from the
+# VPS itself only; view Mailpit through an SSH tunnel (-L 8025:localhost:8025).
+services:
+  app:
+    ports: !reset []
+
+  mailpit:
+    ports: !override
+      - "127.0.0.1:8025:8025"
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

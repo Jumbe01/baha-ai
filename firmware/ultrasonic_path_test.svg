@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 660" font-family="Arial, sans-serif">
+<rect width="1000" height="660" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Ultrasonic tests: does it fire, and does the answer reach the ESP32?</text>
+
+<!-- STEP 1 listen -->
+<text x="40" y="66" font-size="14" font-weight="bold">1. Listen (charger + USB ON, gate2_ultrasonic running)</text>
+<circle cx="90" cy="120" r="28" fill="#222"/><circle cx="90" cy="120" r="16" fill="#444"/>
+<text x="90" y="166" font-size="11" text-anchor="middle">probe head</text>
+<path d="M140,100 q14,20 0,40 M152,92 q22,28 0,56" fill="none" stroke="#3a7bd5" stroke-width="3"/>
+<ellipse cx="200" cy="120" rx="16" ry="24" fill="#f2c9a8" stroke="#b5835a"/>
+<text x="230" y="112" font-size="12">tick tick… → <tspan font-weight="bold" fill="#2a9d3a">fires OK, go to 2</tspan></text>
+<text x="230" y="132" font-size="12">silent → <tspan font-weight="bold" fill="#c0392b">check the probe plug + test 3</tspan></text>
+
+<line x1="20" y1="190" x2="980" y2="190" stroke="#ddd"/>
+
+<!-- path diagram -->
+<text x="40" y="220" font-size="14" font-weight="bold">2 &amp; 3. Resistance tests (everything UNPLUGGED)</text>
+<!-- sensor -->
+<rect x="40" y="250" width="150" height="190" rx="8" fill="#2d6fd1"/>
+<g fill="#d4af37" stroke="#8a6d00"><circle cx="170" cy="290" r="7"/><circle cx="170" cy="330" r="7"/><circle cx="170" cy="370" r="7"/><circle cx="170" cy="410" r="7"/></g>
+<g font-size="12" fill="#fff" font-weight="bold" text-anchor="end"><text x="155" y="294">Gnd</text><text x="155" y="334">Echo</text><text x="155" y="374">Trig</text><text x="155" y="414">Vcc</text></g>
+<text x="115" y="460" font-size="11" text-anchor="middle">sensor (back)</text>
+
+<!-- echo path: blob -> green -> a5 -> R1 -> row10 -> D2 -> P16 -->
+<polyline points="177,330 300,330" fill="none" stroke="#27ae60" stroke-width="4"/>
+<text x="210" y="322" font-size="11" fill="#27ae60" font-weight="bold">green → a5</text>
+<rect x="300" y="318" width="60" height="24" rx="4" fill="#c8a165" stroke="#7a5a2a"/>
+<text x="330" y="335" font-size="11" text-anchor="middle" font-weight="bold">R1 1k</text>
+<polyline points="360,330 470,330" fill="none" stroke="#8e44ad" stroke-width="4"/>
+<text x="380" y="322" font-size="11" fill="#8e44ad" font-weight="bold">row 10 → D2</text>
+<!-- R2+R3 to GND -->
+<polyline points="420,330 420,380" fill="none" stroke="#555" stroke-width="3"/>
+<rect x="400" y="380" width="40" height="70" rx="4" fill="#c8a165" stroke="#7a5a2a"/>
+<text x="420" y="412" font-size="10" text-anchor="middle" font-weight="bold">R2+R3</text><text x="420" y="426" font-size="10" text-anchor="middle">2k</text>
+<polyline points="420,450 420,490 520,490" fill="none" stroke="#3a7bd5" stroke-width="3"/>
+<text x="525" y="494" font-size="12" font-weight="bold" fill="#3a7bd5">left − rail</text>
+
+<!-- trig path: blob -> blue -> f11 -> P17 -->
+<polyline points="177,370 300,370 300,560 560,560" fill="none" stroke="#2457c5" stroke-width="4"/>
+<text x="310" y="552" font-size="11" fill="#2457c5" font-weight="bold">blue → f11</text>
+
+<!-- ESP32 -->
+<rect x="560" y="260" width="120" height="340" rx="6" fill="#222"/>
+<text x="620" y="440" font-size="13" fill="#fff" text-anchor="middle" font-weight="bold">ESP32</text>
+<g fill="#d4af37"><circle cx="570" cy="330" r="6"/><circle cx="570" cy="560" r="6"/></g>
+<polyline points="470,330 564,330" fill="none" stroke="#8e44ad" stroke-width="4"/>
+<g font-size="11" fill="#fff"><text x="582" y="334" font-weight="bold">P16 (8th pin)</text><text x="582" y="564" font-weight="bold">P17 (9th pin)</text></g>
+
+<!-- test markers -->
+<g font-size="12" font-weight="bold">
+<circle cx="170" cy="330" r="13" fill="none" stroke="#e33" stroke-width="3"/>
+<circle cx="570" cy="330" r="13" fill="none" stroke="#e33" stroke-width="3"/>
+<text x="700" y="300" fill="#e33">TEST 2a  Ω 2000</text>
+<text x="700" y="318" font-weight="normal">Echo blob ↔ P16 pin  →  about 1.0</text>
+
+<circle cx="430" cy="490" r="13" fill="none" stroke="#c77c00" stroke-width="3"/>
+<text x="700" y="372" fill="#c77c00">TEST 2b  Ω 2000</text>
+<text x="700" y="390" font-weight="normal">P16 pin ↔ left − rail  →  about 1.5 – 2.0</text>
+
+<circle cx="170" cy="370" r="13" fill="none" stroke="#2a9d3a" stroke-width="3"/>
+<circle cx="570" cy="560" r="13" fill="none" stroke="#2a9d3a" stroke-width="3"/>
+<text x="700" y="444" fill="#2a9d3a">TEST 3  Ω 200</text>
+<text x="700" y="462" font-weight="normal">Trig blob ↔ P17 pin  →  near 0</text>
+</g>
+<g font-size="12" fill="#222">
+<text x="700" y="510" font-weight="bold">If a test reads OL</text>
+<text x="712" y="528">2a: R1 legs, the e10→f10 wire (D2), or a5</text>
+<text x="712" y="546">2b: R2/R3 legs or the a20 wire (D1)</text>
+<text x="712" y="564">3: the blue wire at f11</text>
+</g>
+
+<text x="40" y="630" font-size="12" fill="#555">Count ESP32 pins on the LEFT side from the USB end: 1 = CLK … 8 = P16, 9 = P17. Touch the gold solder blob on top.</text>
+</svg>

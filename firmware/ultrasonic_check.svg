@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" font-family="Arial, sans-serif">
+<rect width="1000" height="640" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Ultrasonic "no echo": what to check, and where</text>
+
+<!-- ceiling / wall target -->
+<rect x="40" y="50" width="360" height="14" fill="#bbb"/>
+<text x="220" y="80" font-size="11" text-anchor="middle" fill="#555">ceiling or wall, 50 cm – 2 m away</text>
+<line x1="120" y1="95" x2="120" y2="215" stroke="#3a7bd5" stroke-width="2" stroke-dasharray="6 5"/>
+<polygon points="120,92 114,104 126,104" fill="#3a7bd5"/>
+<text x="130" y="160" font-size="11" fill="#3a7bd5">① closer than ~25 cm = always "no echo"</text>
+
+<!-- probe head -->
+<circle cx="120" cy="245" r="30" fill="#222"/>
+<circle cx="120" cy="245" r="18" fill="#444"/>
+<text x="120" y="295" font-size="11" text-anchor="middle" font-weight="bold">probe head</text>
+<text x="120" y="309" font-size="10" text-anchor="middle" fill="#555">③ listen: faint ticking?</text>
+<!-- probe cable to board connector -->
+<polyline points="150,245 230,245 230,360 270,360" fill="none" stroke="#111" stroke-width="5"/>
+
+<!-- AJ-SR04M board (back side view) -->
+<rect x="270" y="320" width="230" height="250" rx="8" fill="#2d6fd1"/>
+<rect x="262" y="345" width="22" height="34" fill="#eee" stroke="#555"/>
+<text x="292" y="342" font-size="10" fill="#fff">② probe plug: pushed in?</text>
+<text x="385" y="560" font-size="11" fill="#dfe8ff" text-anchor="middle">sensor board (back side)</text>
+<!-- pins / solder blobs -->
+<g fill="#d4af37" stroke="#8a6d00"><circle cx="470" cy="400" r="7"/><circle cx="470" cy="430" r="7"/><circle cx="470" cy="460" r="7"/><circle cx="470" cy="490" r="7"/></g>
+<g font-size="12" fill="#fff" font-weight="bold" text-anchor="end">
+<text x="455" y="404">Gnd</text><text x="455" y="434">Echo</text><text x="455" y="464">Trig</text><text x="455" y="494">Vcc</text>
+</g>
+<text x="400" y="525" font-size="10" fill="#fff" text-anchor="middle">← solder blobs: touch the probe here</text>
+
+<!-- cable to breadboard (5 joints abstracted) -->
+<g stroke-width="4" fill="none">
+<polyline points="477,400 620,400" stroke="#2457c5"/>
+<polyline points="477,430 620,430" stroke="#8e44ad"/>
+<polyline points="477,460 620,460" stroke="#27ae60"/>
+<polyline points="477,490 620,490" stroke="#e6c200"/>
+</g>
+<rect x="540" y="385" width="40" height="120" rx="4" fill="#333" opacity="0.85"/>
+<text x="560" y="450" font-size="10" fill="#fff" text-anchor="middle">5 taped</text>
+<text x="560" y="463" font-size="10" fill="#fff" text-anchor="middle">joints</text>
+<g font-size="12" font-weight="bold">
+<text x="628" y="404" fill="#2457c5">violet (Gnd)</text>
+<text x="628" y="434" fill="#8e44ad">green (Echo)</text>
+<text x="628" y="464" fill="#27ae60">blue (Trig)</text>
+<text x="628" y="494" fill="#b89a00">yellow (Vcc)</text>
+</g>
+<g font-size="12">
+<text x="740" y="404">→ left − rail, row 24 (OUTER)</text>
+<text x="740" y="434">→ a5</text>
+<text x="740" y="464">→ f11</text>
+<text x="740" y="494">→ left + rail, row 25 (INNER)</text>
+</g>
+
+<!-- checks -->
+<g font-size="13" fill="#222">
+<text x="560" y="70" font-weight="bold">④ Power at the sensor (charger ON, V⎓20)</text>
+<text x="572" y="90">Probes on the <tspan font-weight="bold">Vcc</tspan> and <tspan font-weight="bold">Gnd</tspan> solder blobs.</text>
+<text x="572" y="108">≈ 5 V → OK.   0 V → yellow/blue ends or a joint.</text>
+
+<text x="560" y="146" font-weight="bold">⑤ Wire checks (everything OFF, Ω 200)</text>
+<text x="572" y="166"><tspan font-weight="bold">Trig</tspan> blob ↔ <tspan fill="#27ae60" font-weight="bold">green</tspan> end → near 0</text>
+<text x="572" y="184"><tspan font-weight="bold">Echo</tspan> blob ↔ <tspan fill="#8e44ad" font-weight="bold">purple</tspan> end → near 0</text>
+<text x="572" y="202">OL → that joint is loose. Squeeze it, re-test.</text>
+
+<text x="560" y="240" font-weight="bold" fill="#c0392b">Never just swap green/purple to "try":</text>
+<text x="560" y="258" fill="#c0392b">Echo (5V) in f11 goes straight into the ESP32.</text>
+
+<text x="560" y="296" font-weight="bold">Order: ① → ② → ③ → ④ → ⑤</text>
+</g>
+<text x="40" y="610" font-size="12" fill="#555">Final colours come from the 5-joint trace: yellow = Vcc, blue = Trig, green = Echo, violet = Gnd (measured).</text>
+</svg>

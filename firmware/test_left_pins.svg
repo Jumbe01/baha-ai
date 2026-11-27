@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" font-family="Arial, sans-serif">
+<rect width="1000" height="640" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Test: are the ESP32's LEFT pins touching the breadboard? (zoomed, left board rows 4–22)</text>
+
+<!-- board half f-j + gap + a-e -->
+<rect x="40" y="60" width="330" height="520" fill="#f4f4f0" stroke="#bbb"/>
+<rect x="150" y="66" width="30" height="508" fill="#e3e3dc"/>
+<text x="165" y="590" font-size="10" text-anchor="middle" fill="#666">middle gap</text>
+<g font-size="12" font-weight="bold" fill="#555" text-anchor="middle">
+<text x="65" y="54">a</text><text x="85" y="54">b</text><text x="105" y="54">c</text><text x="125" y="54">d</text><text x="145" y="54">e</text>
+<text x="195" y="54">f</text><text x="215" y="54">g</text><text x="235" y="54">h</text><text x="255" y="54">i</text><text x="275" y="54">j</text>
+</g>
+<!-- holes -->
+<g fill="#888">
+<circle cx="65" cy="96" r="2.5"/><circle cx="85" cy="96" r="2.5"/><circle cx="105" cy="96" r="2.5"/><circle cx="125" cy="96" r="2.5"/><circle cx="145" cy="96" r="2.5"/><circle cx="195" cy="96" r="2.5"/>
+</g>
+<!-- row labels -->
+<g font-size="11" fill="#555" text-anchor="end">
+<text x="36" y="100">4</text><text x="36" y="226">10</text><text x="36" y="247">11</text><text x="36" y="268">12</text><text x="36" y="373">16</text><text x="36" y="499">22</text>
+</g>
+
+<!-- ESP32 left part: pins in column g, rows 4..22 -> y = 96 + (r-4)*21 -->
+<rect x="205" y="80" width="165" height="440" rx="6" fill="#222"/>
+<g fill="#d4af37">
+<circle cx="215" cy="96" r="5"/><circle cx="215" cy="117" r="5"/><circle cx="215" cy="138" r="5"/><circle cx="215" cy="159" r="5"/><circle cx="215" cy="180" r="5"/><circle cx="215" cy="201" r="5"/><circle cx="215" cy="222" r="5"/><circle cx="215" cy="243" r="5"/><circle cx="215" cy="264" r="5"/><circle cx="215" cy="285" r="5"/><circle cx="215" cy="306" r="5"/><circle cx="215" cy="327" r="5"/><circle cx="215" cy="348" r="5"/><circle cx="215" cy="369" r="5"/><circle cx="215" cy="390" r="5"/><circle cx="215" cy="411" r="5"/><circle cx="215" cy="432" r="5"/><circle cx="215" cy="453" r="5"/><circle cx="215" cy="474" r="5"/>
+</g>
+<g font-size="10" fill="#fff">
+<text x="226" y="100">1  CLK</text><text x="226" y="247" font-weight="bold" fill="#ffd166">8  P16</text><text x="226" y="268">9  P17</text><text x="226" y="373" font-weight="bold" fill="#9be7a0">13  GND</text>
+</g>
+<!-- silver cover -->
+<rect x="275" y="330" width="85" height="120" rx="3" fill="#c8c8c8" stroke="#888"/>
+<text x="317" y="385" font-size="11" text-anchor="middle" font-weight="bold">SILVER</text>
+<text x="317" y="400" font-size="11" text-anchor="middle" font-weight="bold">COVER</text>
+<text x="317" y="415" font-size="9" text-anchor="middle">(= GND)</text>
+
+<!-- existing D2 -->
+<line x1="145" y1="222" x2="195" y2="243" stroke="#8e44ad" stroke-width="4"/>
+<circle cx="145" cy="222" r="5" fill="#8e44ad"/><circle cx="195" cy="243" r="5" fill="#8e44ad"/>
+<text x="100" y="214" font-size="11" font-weight="bold" fill="#8e44ad">D2 (e10 → f11)</text>
+
+<!-- TEST 1: spare jumper in f16 + silver cover -->
+<rect x="189" y="361" width="12" height="16" fill="#2a9d3a"/>
+<text x="60" y="355" font-size="12" font-weight="bold" fill="#2a9d3a">spare jumper in f16</text>
+<line x1="195" y1="361" x2="195" y2="560" stroke="#2a9d3a" stroke-width="3"/>
+<circle cx="195" cy="563" r="6" fill="#e33"/><text x="206" y="567" font-size="11" fill="#e33" font-weight="bold">probe 1 on its pin</text>
+<circle cx="340" cy="345" r="6" fill="#111"/>
+<line x1="340" y1="345" x2="400" y2="300" stroke="#111" stroke-width="2"/>
+<text x="404" y="296" font-size="11" font-weight="bold">probe 2 on the silver cover</text>
+
+<!-- instructions -->
+<g font-size="13" fill="#222">
+<text x="470" y="110" font-weight="bold">Multimeter on Ω 200, everything unplugged.</text>
+
+<text x="470" y="150" font-weight="bold" fill="#2a9d3a">Test: left GND pin → silver cover</text>
+<text x="482" y="172">1. Push a spare male–male jumper into <tspan font-weight="bold">f16</tspan>.</text>
+<text x="496" y="190">(row 16, column f: the hole just LEFT of</text>
+<text x="496" y="208">the ESP32's 13th pin from the top)</text>
+<text x="482" y="230">2. Red probe on the jumper's loose metal pin.</text>
+<text x="482" y="252">3. Black probe on the SILVER COVER.</text>
+
+<text x="470" y="292" font-weight="bold">What it means</text>
+<text x="482" y="314"><tspan font-weight="bold" fill="#2a9d3a">Near 0</tspan> → left pins ARE in the board. The P16 test</text>
+<text x="496" y="332">failed only because the probe missed the pin.</text>
+<text x="496" y="350">Touch the 8th pin's gold solder blob firmly.</text>
+<text x="482" y="376"><tspan font-weight="bold" fill="#c0392b">OL</tspan> → left pins are NOT touching column f–j.</text>
+<text x="496" y="394">They may be in the middle gap, or not pushed</text>
+<text x="496" y="412">in. Send a photo of the left edge (below).</text>
+
+<text x="470" y="452" font-weight="bold">Photo I need if it's OL</text>
+<text x="482" y="474">• Left edge of the ESP32, from above and slightly left.</text>
+<text x="482" y="496">• Letters f g h i j at the top must be visible.</text>
+<text x="482" y="518">• Row numbers 10–16 must be visible.</text>
+
+<text x="470" y="560" font-size="12" fill="#555">Count pins from the USB end: 1 = CLK (row 4) … 8 = P16 (row 11),</text>
+<text x="470" y="578" font-size="12" fill="#555">13 = GND (row 16).</text>
+</g>
+</svg>

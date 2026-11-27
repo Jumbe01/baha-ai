@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 820" font-family="Arial, sans-serif">
+<rect width="1400" height="820" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Clean box layout: top view of the wooden base (not to scale; no wire crosses another)</text>
+
+<!-- wooden base -->
+<rect x="40" y="70" width="740" height="700" rx="6" fill="#e3c597" stroke="#a07a4a" stroke-width="3"/>
+<text x="350" y="62" font-size="11" font-weight="bold" text-anchor="middle">▲ USB cable to ESP32 (top wall hole)</text>
+<text x="648" y="800" font-size="11" font-weight="bold" text-anchor="middle">▼ 5V charger cable in (bottom wall hole)</text>
+
+<!-- two breadboards joined -->
+<rect x="170" y="110" width="170" height="620" fill="#f4f4f0" stroke="#bbb"/>
+<rect x="340" y="110" width="170" height="620" fill="#f4f4f0" stroke="#bbb"/>
+<line x1="340" y1="110" x2="340" y2="730" stroke="#999" stroke-dasharray="5 4"/>
+<text x="255" y="745" font-size="10" text-anchor="middle" fill="#555">board A</text>
+<text x="425" y="745" font-size="10" text-anchor="middle" fill="#555">board B</text>
+<text x="340" y="760" font-size="9" text-anchor="middle" fill="#555">middle rails peeled off, boards snapped together</text>
+<!-- rails -->
+<line x1="182" y1="115" x2="182" y2="725" stroke="#3a7bd5" stroke-width="2"/>
+<line x1="196" y1="115" x2="196" y2="725" stroke="#e33" stroke-width="2"/>
+<line x1="482" y1="115" x2="482" y2="725" stroke="#e33" stroke-width="2"/>
+<line x1="496" y1="115" x2="496" y2="725" stroke="#3a7bd5" stroke-width="2"/>
+<g font-size="10" font-weight="bold" text-anchor="middle">
+<text x="182" y="124" fill="#3a7bd5">−</text><text x="196" y="124" fill="#e33">+</text>
+<text x="482" y="124" fill="#e33">+</text><text x="496" y="124" fill="#3a7bd5">−</text>
+</g>
+
+<!-- ESP32 straddling the joint -->
+<rect x="325" y="100" width="30" height="22" fill="#bbb" stroke="#666"/>
+<line x1="340" y1="100" x2="340" y2="70" stroke="#555" stroke-width="4"/>
+<rect x="295" y="120" width="90" height="245" rx="4" fill="#222"/>
+<g fill="#d4af37">
+<circle cx="305" cy="130" r="2.5"/><circle cx="305" cy="142.5" r="2.5"/><circle cx="305" cy="155" r="2.5"/><circle cx="305" cy="167.5" r="2.5"/><circle cx="305" cy="180" r="2.5"/><circle cx="305" cy="192.5" r="2.5"/><circle cx="305" cy="205" r="2.5"/><circle cx="305" cy="217.5" r="2.5"/><circle cx="305" cy="230" r="2.5"/><circle cx="305" cy="242.5" r="2.5"/><circle cx="305" cy="255" r="2.5"/><circle cx="305" cy="267.5" r="2.5"/><circle cx="305" cy="280" r="2.5"/><circle cx="305" cy="292.5" r="2.5"/><circle cx="305" cy="305" r="2.5"/><circle cx="305" cy="317.5" r="2.5"/><circle cx="305" cy="330" r="2.5"/><circle cx="305" cy="342.5" r="2.5"/><circle cx="305" cy="355" r="2.5"/>
+<circle cx="375" cy="130" r="2.5"/><circle cx="375" cy="142.5" r="2.5"/><circle cx="375" cy="155" r="2.5"/><circle cx="375" cy="167.5" r="2.5"/><circle cx="375" cy="180" r="2.5"/><circle cx="375" cy="192.5" r="2.5"/><circle cx="375" cy="205" r="2.5"/><circle cx="375" cy="217.5" r="2.5"/><circle cx="375" cy="230" r="2.5"/><circle cx="375" cy="242.5" r="2.5"/><circle cx="375" cy="255" r="2.5"/><circle cx="375" cy="267.5" r="2.5"/><circle cx="375" cy="280" r="2.5"/><circle cx="375" cy="292.5" r="2.5"/><circle cx="375" cy="305" r="2.5"/><circle cx="375" cy="317.5" r="2.5"/><circle cx="375" cy="330" r="2.5"/><circle cx="375" cy="342.5" r="2.5"/><circle cx="375" cy="355" r="2.5"/>
+</g>
+<g font-size="8.5" fill="#fff">
+<text x="312" y="220.5">P16</text><text x="312" y="233">P17</text>
+<g text-anchor="end">
+<text x="368" y="133">5V (empty)</text><text x="368" y="183">P13</text><text x="368" y="195.5">GND</text>
+<text x="368" y="220.5">P14</text><text x="368" y="233">P27</text><text x="368" y="245.5">P26</text>
+<text x="368" y="258">P25</text><text x="368" y="270.5">P33</text><text x="368" y="283">P32</text>
+<text x="368" y="358">3V3</text>
+</g>
+<text x="340" y="320" text-anchor="middle" font-size="12" font-weight="bold">ESP32</text>
+<text x="340" y="334" text-anchor="middle">USB at top</text>
+</g>
+<text x="340" y="380" font-size="9" text-anchor="middle" fill="#555">antenna end: keep wires off it</text>
+
+<!-- LEFT: ultrasonic only -->
+<g font-size="9" fill="#333">
+<text x="46" y="452" font-weight="bold" font-size="10">HC-SR04 cable</text>
+<text x="46" y="467">Vcc</text><text x="46" y="482">Gnd</text><text x="46" y="497">Echo</text><text x="46" y="512">Trig</text>
+</g>
+<polyline points="40,470 196,470" fill="none" stroke="#e33" stroke-width="2.5"/>
+<polyline points="40,485 182,485" fill="none" stroke="#222" stroke-width="2.5"/>
+<polyline points="40,500 225,500 225,420" fill="none" stroke="#8e44ad" stroke-width="2.5"/>
+<polyline points="40,515 265,515 265,230 305,230" fill="none" stroke="#e6c200" stroke-width="2.5"/>
+<!-- divider -->
+<rect x="205" y="300" width="40" height="120" rx="3" fill="#fff" stroke="#8e44ad"/>
+<g fill="#c8a165" stroke="#7a5a2a"><rect x="219" y="312" width="12" height="26"/><rect x="219" y="346" width="12" height="26"/><rect x="219" y="380" width="12" height="26"/></g>
+<text x="250" y="365" font-size="9" fill="#8e44ad">divider</text>
+<polyline points="225,300 225,217.5 305,217.5" fill="none" stroke="#8e44ad" stroke-width="2.5"/>
+<polyline points="205,410 182,410" fill="none" stroke="#222" stroke-width="2.5"/>
+
+<!-- RIGHT: ESP32 GND to rail -->
+<polyline points="375,192.5 496,192.5" fill="none" stroke="#222" stroke-width="2.5"/>
+
+<!-- relay module on standoffs -->
+<rect x="580" y="140" width="150" height="210" rx="6" fill="#2d6fd1"/>
+<g fill="#9ab"><circle cx="590" cy="150" r="4"/><circle cx="720" cy="150" r="4"/><circle cx="590" cy="340" r="4"/><circle cx="720" cy="340" r="4"/></g>
+<g font-size="8.5" fill="#fff">
+<text x="588" y="163">VCC</text><text x="588" y="178">IN4</text><text x="588" y="193">IN3</text><text x="588" y="208">IN2</text><text x="588" y="223">IN1</text><text x="588" y="238">GND</text>
+<text x="655" y="285" text-anchor="middle" font-size="11" font-weight="bold">RELAY</text>
+<text x="655" y="299" text-anchor="middle">screwed on 4 standoffs</text>
+<text x="722" y="178" text-anchor="end">K4</text><text x="722" y="218" text-anchor="end">K3</text><text x="722" y="258" text-anchor="end">K2</text><text x="722" y="318" text-anchor="end">K1</text>
+</g>
+<g fill="#ddd" stroke="#555"><circle cx="735" cy="175" r="4"/><circle cx="735" cy="215" r="4"/><circle cx="735" cy="255" r="4"/><circle cx="735" cy="315" r="4"/></g>
+<!-- relay control wires: straight, short, never crossing -->
+<polyline points="482,160 580,160" fill="none" stroke="#e33" stroke-width="2.5"/>
+<polyline points="375,180 515,180 515,175 580,175" fill="none" stroke="#16a085" stroke-width="2.5"/>
+<polyline points="375,217.5 530,217.5 530,190 580,190" fill="none" stroke="#1abc9c" stroke-width="2.5"/>
+<polyline points="375,230 545,230 545,205 580,205" fill="none" stroke="#16a085" stroke-width="2.5"/>
+<polyline points="375,242.5 560,242.5 560,220 580,220" fill="none" stroke="#1abc9c" stroke-width="2.5"/>
+<polyline points="580,235 572,235 572,370 496,370" fill="none" stroke="#222" stroke-width="2.5"/>
+<!-- spare rail strip for pump + siren power -->
+<rect x="745" y="140" width="30" height="210" fill="#f4f4f0" stroke="#bbb"/>
+<line x1="752" y1="140" x2="752" y2="350" stroke="#3a7bd5" stroke-width="2"/>
+<line x1="768" y1="140" x2="768" y2="350" stroke="#e33" stroke-width="2"/>
+<polyline points="482,125 768,125 768,140" fill="none" stroke="#e33" stroke-width="2.5"/>
+<polyline points="496,133 752,133 752,140" fill="none" stroke="#222" stroke-width="2.5"/>
+<g stroke="#777" stroke-width="4"><line x1="739" y1="255" x2="790" y2="255"/><line x1="739" y1="315" x2="790" y2="315"/></g>
+<g font-size="10" font-weight="bold"><text x="795" y="259">siren (K2) out</text><text x="795" y="319">pump (K1) out</text></g>
+<text x="795" y="150" font-size="9">spare rail strip:</text>
+<text x="795" y="162" font-size="9">5V / GND for pump</text>
+<text x="795" y="174" font-size="9">and siren</text>
+
+<!-- RIGHT: servo, rain, DHT cables (nested so nothing crosses) -->
+<polyline points="780,480 470,480 470,255 375,255" fill="none" stroke="#d35400" stroke-width="2.5"/>
+<polyline points="780,495 455,495 455,267.5 375,267.5" fill="none" stroke="#2980b9" stroke-width="2.5"/>
+<polyline points="780,510 440,510 440,280 375,280" fill="none" stroke="#27ae60" stroke-width="2.5"/>
+<polyline points="780,525 425,525 425,352 375,352" fill="none" stroke="#f39c12" stroke-width="2.5"/>
+<polyline points="780,540 410,540 410,358 375,358" fill="none" stroke="#f39c12" stroke-width="2.5"/>
+<polyline points="780,570 482,570" fill="none" stroke="#e33" stroke-width="2.5"/>
+<polyline points="780,585 496,585" fill="none" stroke="#222" stroke-width="2.5"/>
+<polyline points="780,600 496,600" fill="none" stroke="#222" stroke-width="2.5"/>
+<g font-size="10">
+<text x="788" y="484" fill="#d35400">servo signal (orange)</text>
+<text x="788" y="499" fill="#2980b9">rain plate pin 1</text>
+<text x="788" y="514" fill="#27ae60">DHT22 out</text>
+<text x="788" y="529" fill="#c77c00">rain plate pin 2 → 3V3</text>
+<text x="788" y="544" fill="#c77c00">DHT22 + → 3V3</text>
+<text x="788" y="574" fill="#e33">servo red (5V)</text>
+<text x="788" y="589">servo brown (GND)</text>
+<text x="788" y="604">DHT22 −</text>
+</g>
+
+<!-- bottom: rail bridges + charger -->
+<polyline points="182,700 496,700" fill="none" stroke="#222" stroke-width="2.5"/>
+<polyline points="196,712 482,712" fill="none" stroke="#e33" stroke-width="2.5"/>
+<text x="340" y="694" font-size="9" text-anchor="middle">bridge both rails across the bottom</text>
+<polyline points="640,770 640,680 482,680" fill="none" stroke="#e33" stroke-width="3"/>
+<polyline points="655,770 655,665 496,665" fill="none" stroke="#222" stroke-width="3"/>
+
+<!-- instructions -->
+<g font-size="13" fill="#222">
+<text x="940" y="420" font-weight="bold">The idea</text>
+<text x="952" y="440">• LEFT of the ESP32: ultrasonic only (5V side).</text>
+<text x="952" y="458">• RIGHT: relay, servo, rain, DHT22 (3V3 side).</text>
+<text x="952" y="476">• Each cable enters on its own side, so</text>
+<text x="966" y="494">nothing crosses the ESP32.</text>
+<text x="952" y="512">• Wires lie flat, run straight, turn at 90°.</text>
+<text x="952" y="530">• Wires nearer the top go further out.</text>
+
+<text x="940" y="566" font-weight="bold">Changes from your current wiring</text>
+<text x="952" y="586">• DHT22 out moves from P4 to P32 (I change</text>
+<text x="966" y="604">one line in the code when you rewire).</text>
+<text x="952" y="622">• ESP32 GND now goes to the right − rail.</text>
+<text x="952" y="640">• Pump/siren power comes from a spare rail.</text>
+
+<text x="940" y="676" font-weight="bold">Colours</text>
+<line x1="952" y1="692" x2="976" y2="692" stroke="#e33" stroke-width="3"/><text x="982" y="696">5V</text>
+<line x1="1020" y1="692" x2="1044" y2="692" stroke="#222" stroke-width="3"/><text x="1050" y="696">GND</text>
+<line x1="1100" y1="692" x2="1124" y2="692" stroke="#f39c12" stroke-width="3"/><text x="1130" y="696">3V3</text>
+<line x1="1180" y1="692" x2="1204" y2="692" stroke="#16a085" stroke-width="3"/><text x="1210" y="696">relay IN</text>
+<text x="940" y="726" font-size="11" fill="#555">Exact holes depend on where your ESP32 sits on the joined</text>
+<text x="940" y="742" font-size="11" fill="#555">boards. Send a photo after placing it and I'll give rows.</text>
+</g>
+</svg>

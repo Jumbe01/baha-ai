@@ -1,0 +1,13 @@
+{
+	# Let's Encrypt only: the ESP32 firmware trusts the ISRG roots, not ZeroSSL's.
+	cert_issuer acme
+}
+
+www.baha-ai.tech {
+	redir https://baha-ai.tech{uri} permanent
+}
+
+baha-ai.tech {
+	encode gzip
+	reverse_proxy app:8000
+}

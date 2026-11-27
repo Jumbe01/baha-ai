@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 720" font-family="Arial, sans-serif">
+<rect width="1040" height="720" fill="#fff"/>
+<text x="20" y="26" font-size="16" font-weight="bold">Landing map v2: ESP32 in rows 3–21 (rows 1–45 shown, not to scale)</text>
+
+<!-- boards -->
+<rect x="40" y="50" width="190" height="600" fill="#f4f4f0" stroke="#bbb"/>
+<rect x="230" y="50" width="170" height="600" fill="#f4f4f0" stroke="#bbb"/>
+<line x1="230" y1="50" x2="230" y2="650" stroke="#999" stroke-dasharray="5 4"/>
+<rect x="130" y="56" width="16" height="588" fill="#e8e8e2"/>
+<rect x="290" y="56" width="16" height="588" fill="#e8e8e2"/>
+<line x1="52" y1="56" x2="52" y2="644" stroke="#3a7bd5" stroke-width="2"/>
+<line x1="64" y1="56" x2="64" y2="644" stroke="#e33" stroke-width="2"/>
+<line x1="375" y1="56" x2="375" y2="644" stroke="#3a7bd5" stroke-width="2"/>
+<line x1="387" y1="56" x2="387" y2="644" stroke="#e33" stroke-width="2"/>
+<g font-size="10" font-weight="bold" text-anchor="middle">
+<text x="52" y="46" fill="#3a7bd5">−</text><text x="64" y="46" fill="#e33">+</text>
+<text x="375" y="46" fill="#3a7bd5">−</text><text x="387" y="46" fill="#e33">+</text>
+</g>
+<g font-size="8" fill="#555" text-anchor="middle">
+<text x="85" y="46">a</text><text x="95" y="46">b</text><text x="105" y="46">c</text><text x="115" y="46">d</text><text x="125" y="46">e</text>
+<text x="155" y="46">f</text><text x="165" y="46">g</text><text x="175" y="46">h</text><text x="185" y="46">i</text><text x="195" y="46">j</text>
+<text x="245" y="46">a</text><text x="255" y="46">b</text><text x="265" y="46">c</text><text x="275" y="46">d</text><text x="285" y="46">e</text>
+<text x="310" y="46">f</text><text x="320" y="46">g</text><text x="330" y="46">h</text><text x="340" y="46">i</text><text x="350" y="46">j</text>
+</g>
+<g font-size="8" fill="#555" text-anchor="end">
+<text x="36" y="109">3</text><text x="36" y="133">5</text><text x="36" y="169">8</text><text x="36" y="193">10</text><text x="36" y="253">15</text><text x="36" y="313">20</text><text x="36" y="325">21</text><text x="36" y="373">25</text><text x="36" y="433">30</text><text x="36" y="493">35</text><text x="36" y="553">40</text><text x="36" y="613">45</text>
+</g>
+
+<!-- existing: charger, capacitor, divider -->
+<polyline points="10,82 64,82" fill="none" stroke="#e33" stroke-width="2.5"/>
+<polyline points="10,90 52,90" fill="none" stroke="#2a9d3a" stroke-width="2.5"/>
+<rect x="46" y="452" width="24" height="14" rx="3" fill="#222"/><rect x="46" y="452" width="6" height="14" fill="#bbb"/>
+<g fill="#c8a165" stroke="#7a5a2a"><rect x="102" y="136" width="6" height="48"/><rect x="92" y="196" width="6" height="48"/><rect x="102" y="256" width="6" height="48"/></g>
+<text x="70" y="160" font-size="8" fill="#7a5a2a">R1</text><text x="70" y="222" font-size="8" fill="#7a5a2a">R2</text><text x="70" y="282" font-size="8" fill="#7a5a2a">R3</text>
+
+<!-- ESP32 rows 3-21 -->
+<rect x="160" y="100" width="112" height="226" rx="4" fill="#222"/>
+<rect x="200" y="88" width="30" height="16" fill="#bbb" stroke="#666"/>
+<g font-size="8" fill="#fff">
+<text x="174" y="193">P16</text><text x="174" y="205">P17</text><text x="174" y="253">GND</text>
+<g text-anchor="end">
+<text x="262" y="109">5V ✗</text><text x="262" y="157">P13</text><text x="262" y="169">GND</text><text x="262" y="181">P12 ✗</text>
+<text x="262" y="193">P14</text><text x="262" y="205">P27</text><text x="262" y="217">P26</text><text x="262" y="229">P25</text><text x="262" y="241">P33</text><text x="262" y="253">P32</text><text x="262" y="325">3V3</text>
+</g>
+<text x="216" y="290" text-anchor="middle" font-size="11" font-weight="bold">ESP32</text>
+</g>
+
+<!-- A (moved), B, C -->
+<polyline points="285,166 375,166" fill="none" stroke="#111" stroke-width="3.5"/>
+<text x="318" y="161" font-size="9" font-weight="bold">A (now e8)</text>
+<polyline points="64,598 387,598" fill="none" stroke="#e33" stroke-width="2.5" opacity="0.6"/>
+<polyline points="52,634 375,634" fill="none" stroke="#222" stroke-width="2.5" opacity="0.6"/>
+<text x="220" y="594" font-size="8" fill="#555">B (row 57, below)</text><text x="220" y="630" font-size="8" fill="#555">C (row 60, below)</text>
+
+<!-- D1, D2, E1 -->
+<polyline points="85,310 52,310" fill="none" stroke="#111" stroke-width="3.5"/>
+<text x="62" y="305" font-size="9" font-weight="bold">D1</text>
+<polyline points="125,190 155,190" fill="none" stroke="#8e44ad" stroke-width="3.5"/>
+<text x="124" y="184" font-size="9" font-weight="bold" fill="#8e44ad">D2</text>
+<polyline points="285,322 310,322" fill="none" stroke="#f39c12" stroke-width="3.5"/>
+<text x="288" y="316" font-size="9" font-weight="bold" fill="#c77c00">E1</text>
+
+<!-- LEFT landing (HC-SR04) -->
+<g stroke-width="2" fill="none">
+<polyline points="10,130 85,130" stroke="#e67e22"/>
+<polyline points="10,358 52,358" stroke="#c9a400"/>
+<polyline points="10,370 64,370" stroke="#8b4513"/>
+<polyline points="10,406 138,406 138,202 155,202" stroke="#e33"/>
+</g>
+<g fill="#fff" stroke-width="2"><circle cx="85" cy="130" r="4" stroke="#e67e22"/><circle cx="52" cy="358" r="4" stroke="#c9a400"/><circle cx="64" cy="370" r="4" stroke="#8b4513"/><circle cx="155" cy="202" r="4" stroke="#e33"/></g>
+<g font-size="9" font-weight="bold">
+<text x="12" y="126" fill="#e67e22">Echo → a5</text>
+<text x="12" y="354" fill="#a68800">Gnd → − r24</text>
+<text x="12" y="382" fill="#8b4513">Vcc → + r25</text>
+<text x="12" y="402" fill="#e33">Trig → f11</text>
+</g>
+
+<!-- RIGHT landing -->
+<g stroke-width="2" fill="none">
+<polyline points="387,130 440,130" stroke="#e33"/>
+<polyline points="375,142 440,142" stroke="#222"/>
+<polyline points="285,154 440,154" stroke="#16a085"/>
+<polyline points="285,190 440,190" stroke="#16a085"/>
+<polyline points="285,202 440,202" stroke="#16a085"/>
+<polyline points="285,214 440,214" stroke="#16a085"/>
+<polyline points="285,226 440,226" stroke="#d35400"/>
+<polyline points="285,238 440,238" stroke="#2980b9"/>
+<polyline points="285,250 440,250" stroke="#27ae60"/>
+<polyline points="340,319 440,319" stroke="#f39c12"/>
+<polyline points="350,326 440,326" stroke="#f39c12"/>
+<polyline points="387,430 440,430" stroke="#e33"/>
+<polyline points="375,442 440,442" stroke="#222"/>
+<polyline points="375,454 440,454" stroke="#222"/>
+<polyline points="387,550 440,550" stroke="#e33"/>
+<polyline points="375,562 440,562" stroke="#222"/>
+<polyline points="375,574 440,574" stroke="#222"/>
+</g>
+<g font-size="9.5">
+<text x="445" y="133">relay VCC → + r5</text>
+<text x="445" y="145">relay GND → − r6</text>
+<text x="445" y="157" fill="#16a085" font-weight="bold">relay IN4 → e7</text>
+<text x="445" y="193" fill="#16a085" font-weight="bold">relay IN3 → e10</text>
+<text x="445" y="205" fill="#16a085" font-weight="bold">relay IN2 → e11</text>
+<text x="445" y="217" fill="#16a085" font-weight="bold">relay IN1 → e12</text>
+<text x="445" y="229" fill="#d35400" font-weight="bold">servo orange → e13</text>
+<text x="445" y="241" fill="#2980b9" font-weight="bold">rain pin 1 → e14</text>
+<text x="445" y="253" fill="#27ae60" font-weight="bold">DHT22 out → e15</text>
+<text x="445" y="318" fill="#c77c00" font-weight="bold">rain pin 2 → i21</text>
+<text x="445" y="331" fill="#c77c00" font-weight="bold">DHT22 + → j21</text>
+<text x="445" y="433">servo red → + r30</text>
+<text x="445" y="445">servo brown → − r31</text>
+<text x="445" y="457">DHT22 − → − r32</text>
+<text x="445" y="553">relay K2 COM ← + r40</text>
+<text x="445" y="565">pump black → − r41</text>
+<text x="445" y="577">siren black → − r42</text>
+</g>
+
+<!-- instructions -->
+<g font-size="12.5" fill="#222">
+<text x="610" y="70" font-weight="bold">Board wires (MALE–MALE): check each one</text>
+<text x="622" y="90"><tspan font-weight="bold">A</tspan>   e8 → right − rail (inner, blue)  <tspan fill="#c0392b">MOVED from e9</tspan></text>
+<text x="622" y="108"><tspan font-weight="bold">B</tspan>   left + ↔ right +, row 57</text>
+<text x="622" y="126"><tspan font-weight="bold">C</tspan>   left − ↔ right −, row 60</text>
+<text x="622" y="144"><tspan font-weight="bold">D1</tspan>  a20 → left − rail (outer, blue)</text>
+<text x="622" y="162"><tspan font-weight="bold">D2</tspan>  e10 → f10  (straight across the gap)</text>
+<text x="622" y="180"><tspan font-weight="bold">E1</tspan>  e21 → f21  <tspan fill="#c0392b">MOVED from e22</tspan></text>
+
+<text x="610" y="214" font-weight="bold">Checks (Ω 200, unplugged)</text>
+<text x="622" y="232">• silver cover ↔ right − rail → near 0 (wire A)</text>
+<text x="622" y="250">• silver cover ↔ left − rail → near 0 (B/C bridges)</text>
+<text x="622" y="268">• d10 ↔ P16 pin (left, 8th) → near 0 (D2)</text>
+<text x="622" y="286">• g21 ↔ ESP32 3V3 pin (right, last) → near 0 (E1)</text>
+
+<text x="610" y="320" font-weight="bold">Later, in the box: module wires</text>
+<text x="622" y="338">Each label = which hole that wire lands in.</text>
+<text x="622" y="356">"+ r5" = + rail, row 5.  "− r6" = − rail, row 6.</text>
+<text x="622" y="374">Right board: − rail INNER (blue), + OUTER (red).</text>
+<text x="622" y="392">Left board:  − rail OUTER (blue), + INNER (red).</text>
+
+<text x="610" y="426" font-weight="bold">Wire types</text>
+<text x="622" y="444">Sensor / relay / DHT / rain pins → board: FEMALE–MALE</text>
+<text x="622" y="462">Servo plug → board: MALE–MALE</text>
+<text x="622" y="480">Board → relay screw terminal: MALE–MALE</text>
+
+<text x="610" y="514" font-weight="bold">Relay screw terminals (unchanged)</text>
+<text x="622" y="532">K2 COM ← + r40,  short wire K2 COM → K1 COM</text>
+<text x="622" y="550">K2 NO → siren red,  K1 NO → pump red</text>
+
+<text x="610" y="586" font-weight="bold" fill="#c0392b">✗ = leave EMPTY: 5V (row 3) and P12 (row 9).</text>
+<text x="610" y="606" fill="#c0392b">P12 must never be connected; it can stop the ESP32 from booting.</text>
+<text x="610" y="636" font-weight="bold">The DHT22 is on P32 (row 15). The code is already updated.</text>
+</g>
+</svg>

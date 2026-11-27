@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" font-family="Arial, sans-serif">
+<rect width="1000" height="600" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Pump (K1) and siren (K2): relay screw terminals + right rails</text>
+
+<!-- right rails of the breadboard, rows 36-46 -->
+<rect x="40" y="60" width="90" height="480" fill="#f4f4f0" stroke="#bbb"/>
+<line x1="70" y1="66" x2="70" y2="534" stroke="#3a7bd5" stroke-width="3"/>
+<line x1="100" y1="66" x2="100" y2="534" stroke="#e33" stroke-width="3"/>
+<g font-size="13" font-weight="bold" text-anchor="middle"><text x="70" y="56" fill="#3a7bd5">−</text><text x="100" y="56" fill="#e33">+</text></g>
+<text x="85" y="560" font-size="11" text-anchor="middle" fill="#555">right board rails</text>
+<text x="85" y="574" font-size="10" text-anchor="middle" fill="#555">(− inner, + outer)</text>
+<!-- rows: y = 60 + (r-35)*40 ; r40=260, r41=300, r42=340 -->
+<g font-size="12" font-weight="bold" fill="#555" text-anchor="end">
+<text x="36" y="264">40</text><text x="36" y="304">41</text><text x="36" y="344">42</text>
+</g>
+
+<!-- relay module, terminals on its LEFT side facing the board for clarity -->
+<rect x="420" y="60" width="200" height="480" rx="8" fill="#2d6fd1"/>
+<text x="520" y="300" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">RELAY</text>
+<text x="520" y="318" font-size="10" fill="#dfe8ff" text-anchor="middle">(blue boxes)</text>
+<!-- 12 screws: K4 (y 90..150), K3 (190..250), K2 (290..350), K1 (390..450) wait order top->bottom K4,K3,K2,K1; NO, COM, NC -->
+<g fill="#ddd" stroke="#555" stroke-width="1.5">
+<circle cx="410" cy="90" r="10"/><circle cx="410" cy="120" r="10"/><circle cx="410" cy="150" r="10"/>
+<circle cx="410" cy="200" r="10"/><circle cx="410" cy="230" r="10"/><circle cx="410" cy="260" r="10"/>
+<circle cx="410" cy="310" r="10"/><circle cx="410" cy="340" r="10"/><circle cx="410" cy="370" r="10"/>
+<circle cx="410" cy="420" r="10"/><circle cx="410" cy="450" r="10"/><circle cx="410" cy="480" r="10"/>
+</g>
+<g font-size="11" fill="#fff">
+<text x="428" y="94">NO</text><text x="428" y="124">COM</text><text x="428" y="154">NC</text>
+<text x="428" y="204">NO</text><text x="428" y="234">COM</text><text x="428" y="264">NC</text>
+<text x="428" y="314" font-weight="bold">NO</text><text x="428" y="344" font-weight="bold">COM</text><text x="428" y="374">NC</text>
+<text x="428" y="424" font-weight="bold">NO</text><text x="428" y="454" font-weight="bold">COM</text><text x="428" y="484">NC</text>
+</g>
+<g font-size="13" fill="#fff" font-weight="bold">
+<text x="585" y="124">K4</text><text x="585" y="234">K3</text><text x="585" y="344">K2</text><text x="585" y="454">K1</text>
+</g>
+<text x="350" y="120" font-size="10" fill="#888" text-anchor="end">K4, K3: empty</text>
+
+<!-- wire 1: + r40 -> K2 COM -->
+<polyline points="100,260 250,260 250,340 400,340" fill="none" stroke="#e33" stroke-width="4"/>
+<circle cx="100" cy="260" r="5" fill="#e33"/>
+<text x="140" y="252" font-size="11" font-weight="bold" fill="#e33">① + r40 → K2 COM</text>
+<!-- wire 2: K2 COM -> K1 COM -->
+<polyline points="400,340 380,340 380,450 400,450" fill="none" stroke="#e33" stroke-width="4"/>
+<text x="300" y="400" font-size="11" font-weight="bold" fill="#e33">② link</text>
+<text x="288" y="414" font-size="10" fill="#e33">K2 COM → K1 COM</text>
+
+<!-- siren on K2 NO -->
+<rect x="730" y="290" width="50" height="40" rx="20" fill="#222"/>
+<text x="755" y="282" font-size="12" text-anchor="middle" font-weight="bold">SIREN</text>
+<polyline points="400,310 360,310 360,180 700,180 700,300 730,300" fill="none" stroke="#c0392b" stroke-width="4"/>
+<text x="560" y="174" font-size="11" font-weight="bold" fill="#c0392b">③ siren red → K2 NO</text>
+<polyline points="755,330 755,560 160,560 160,340 70,340" fill="none" stroke="#111" stroke-width="4"/>
+<circle cx="70" cy="340" r="5" fill="#111"/>
+<text x="170" y="334" font-size="11" font-weight="bold">⑤ siren black → − r42</text>
+
+<!-- pump on K1 NO -->
+<rect x="820" y="400" width="60" height="44" rx="6" fill="#555"/>
+<text x="850" y="392" font-size="12" text-anchor="middle" font-weight="bold">PUMP</text>
+<text x="850" y="468" font-size="10" text-anchor="middle" fill="#2980b9">(in a cup of water)</text>
+<polyline points="400,420 340,420 340,520 800,520 800,412 820,412" fill="none" stroke="#c0392b" stroke-width="4"/>
+<text x="560" y="514" font-size="11" font-weight="bold" fill="#c0392b">④ pump red → K1 NO</text>
+<polyline points="850,444 850,580 140,580 140,300 70,300" fill="none" stroke="#111" stroke-width="4"/>
+<circle cx="70" cy="300" r="5" fill="#111"/>
+<text x="150" y="294" font-size="11" font-weight="bold">⑥ pump black → − r41</text>
+
+<!-- notes -->
+<g font-size="12.5" fill="#222">
+<text x="640" y="70" font-weight="bold">Unplug the charger and USB first.</text>
+<text x="640" y="94">Screws, top → bottom: K4, K3, K2, K1.</text>
+<text x="640" y="112">Each group: NO (top), COM (middle), NC (bottom).</text>
+<text x="640" y="140" font-weight="bold">Wire types</text>
+<text x="652" y="158">① and ②: MALE–MALE (the pin clamps</text>
+<text x="652" y="176">under the screw)</text>
+<text x="652" y="200">Pump/siren wires: their own wires.</text>
+<text x="652" y="218">Bare end into a screw: twist the strands.</text>
+<text x="652" y="236">Bare end into the rail: tape it to a male</text>
+<text x="652" y="254">jumper pin, or use a jumper as an extension.</text>
+</g>
+<g font-size="12.5" fill="#222">
+<text x="640" y="560" font-weight="bold">Test: gate7_relay → pump runs on IN1,</text>
+<text x="640" y="578" font-weight="bold">siren beeps on IN2 (charger + USB on).</text>
+</g>
+</svg>

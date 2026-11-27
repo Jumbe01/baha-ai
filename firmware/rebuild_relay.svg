@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" font-family="Arial, sans-serif">
+<rect width="1000" height="560" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Relay wiring: right board, rows 3–13 (zoomed)</text>
+
+<!-- right board a-e, gap, f-j, rails -->
+<rect x="40" y="50" width="330" height="440" fill="#f4f4f0" stroke="#bbb"/>
+<rect x="180" y="56" width="26" height="428" fill="#e8e8e2"/>
+<line x1="320" y1="56" x2="320" y2="484" stroke="#3a7bd5" stroke-width="3"/>
+<line x1="345" y1="56" x2="345" y2="484" stroke="#e33" stroke-width="3"/>
+<g font-size="13" font-weight="bold" text-anchor="middle">
+<text x="320" y="46" fill="#3a7bd5">−</text><text x="345" y="46" fill="#e33">+</text>
+</g>
+<g font-size="11" fill="#555" text-anchor="middle">
+<text x="70" y="46">a</text><text x="95" y="46">b</text><text x="120" y="46">c</text><text x="145" y="46">d</text><text x="170" y="46">e</text>
+<text x="215" y="46">f</text><text x="235" y="46">g</text><text x="255" y="46">h</text><text x="275" y="46">i</text><text x="295" y="46">j</text>
+</g>
+<!-- rows: y = 40 + r*36 for r=3..13 -->
+<g font-size="12" fill="#555" text-anchor="end" font-weight="bold">
+<text x="34" y="152">3</text><text x="34" y="188">4</text><text x="34" y="224">5</text><text x="34" y="260">6</text><text x="34" y="296">7</text><text x="34" y="332">8</text><text x="34" y="368">9</text><text x="34" y="404">10</text><text x="34" y="440">11</text><text x="34" y="476">12</text>
+</g>
+<!-- free e holes -->
+<g fill="#999"><circle cx="170" cy="148" r="3"/><circle cx="170" cy="184" r="3"/><circle cx="170" cy="220" r="3"/><circle cx="170" cy="256" r="3"/><circle cx="170" cy="364" r="3"/></g>
+
+<!-- ESP32 edge with pins in column d -->
+<rect x="40" y="128" width="115" height="362" fill="#222"/>
+<g fill="#d4af37">
+<circle cx="145" cy="148" r="5"/><circle cx="145" cy="184" r="5"/><circle cx="145" cy="220" r="5"/><circle cx="145" cy="256" r="5"/><circle cx="145" cy="292" r="5"/><circle cx="145" cy="328" r="5"/><circle cx="145" cy="364" r="5"/><circle cx="145" cy="400" r="5"/><circle cx="145" cy="436" r="5"/><circle cx="145" cy="472" r="5"/>
+</g>
+<g font-size="11" fill="#fff" text-anchor="end">
+<text x="132" y="152">5V ✗</text><text x="132" y="188">CMD</text><text x="132" y="224">SD3</text><text x="132" y="260">SD2</text>
+<text x="132" y="296" fill="#ffd166" font-weight="bold">P13</text><text x="132" y="332">GND</text><text x="132" y="368">P12 ✗</text>
+<text x="132" y="404" fill="#ffd166" font-weight="bold">P14</text><text x="132" y="440" fill="#ffd166" font-weight="bold">P27</text><text x="132" y="476" fill="#ffd166" font-weight="bold">P26</text>
+</g>
+<text x="60" y="118" font-size="11" fill="#555">ESP32 (right edge)</text>
+
+<!-- existing wire A row 8 -->
+<polyline points="170,328 320,328" fill="none" stroke="#555" stroke-width="3" stroke-dasharray="6 3"/>
+<circle cx="170" cy="328" r="5" fill="#555"/><circle cx="320" cy="328" r="5" fill="#555"/>
+<text x="230" y="322" font-size="10" fill="#555">wire A (already in)</text>
+
+<!-- relay module -->
+<rect x="560" y="180" width="200" height="330" rx="8" fill="#2d6fd1"/>
+<text x="680" y="350" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">RELAY</text>
+<text x="680" y="368" font-size="10" fill="#fff" text-anchor="middle">(screwed to the wood)</text>
+<!-- header pins top->bottom: GND IN1 IN2 IN3 IN4 VCC -->
+<g fill="#bbb" stroke="#555"><rect x="552" y="214" width="14" height="14"/><rect x="552" y="248" width="14" height="14"/><rect x="552" y="282" width="14" height="14"/><rect x="552" y="316" width="14" height="14"/><rect x="552" y="350" width="14" height="14"/><rect x="552" y="384" width="14" height="14"/></g>
+<g font-size="11" fill="#fff" font-weight="bold">
+<text x="572" y="225">GND</text><text x="572" y="259">IN1</text><text x="572" y="293">IN2</text><text x="572" y="327">IN3</text><text x="572" y="361">IN4</text><text x="572" y="395">VCC</text>
+</g>
+
+<!-- wires: board hole -> relay pin -->
+<!-- VCC brown: + rail row 5 -> VCC -->
+<polyline points="345,220 470,220 470,391 552,391" fill="none" stroke="#8b4513" stroke-width="4"/>
+<!-- GND blue: - rail row 6 -> GND -->
+<polyline points="320,256 455,256 455,221 552,221" fill="none" stroke="#2457c5" stroke-width="4"/>
+<!-- IN4 red: e7 -> IN4 -->
+<polyline points="170,292 485,292 485,357 552,357" fill="none" stroke="#e33" stroke-width="4"/>
+<!-- IN3 orange: e10 -> IN3 -->
+<polyline points="170,400 500,400 500,323 552,323" fill="none" stroke="#e67e22" stroke-width="4"/>
+<!-- IN2 yellow: e11 -> IN2 -->
+<polyline points="170,436 515,436 515,289 552,289" fill="none" stroke="#e6c200" stroke-width="4"/>
+<!-- IN1 green: e12 -> IN1 -->
+<polyline points="170,472 530,472 530,255 552,255" fill="none" stroke="#27ae60" stroke-width="4"/>
+
+<g>
+<circle cx="345" cy="220" r="6" fill="#8b4513"/><circle cx="320" cy="256" r="6" fill="#2457c5"/>
+<circle cx="170" cy="292" r="6" fill="#e33"/><circle cx="170" cy="400" r="6" fill="#e67e22"/><circle cx="170" cy="436" r="6" fill="#e6c200"/><circle cx="170" cy="472" r="6" fill="#27ae60"/>
+</g>
+
+<!-- labels -->
+<g font-size="11" font-weight="bold">
+<text x="380" y="214" fill="#8b4513">brown: + r5</text>
+<text x="380" y="250" fill="#2457c5">blue: − r6</text>
+<text x="190" y="286" fill="#e33">red: e7</text>
+<text x="190" y="394" fill="#e67e22">orange: e10</text>
+<text x="190" y="430" fill="#b89a00">yellow: e11</text>
+<text x="190" y="466" fill="#27ae60">green: e12</text>
+</g>
+
+<!-- notes -->
+<g font-size="12.5" fill="#222">
+<text x="560" y="70" font-weight="bold">Ribbon: FEMALE end on the relay pins.</text>
+<text x="560" y="88">Board end female too? Push a MALE–MALE</text>
+<text x="560" y="106">jumper into each, then into the hole.</text>
+<text x="560" y="140" font-weight="bold" fill="#c0392b">Rows 8 (wire A) and 9 (P12): no relay wires.</text>
+<text x="560" y="158" fill="#c0392b">Wires cross on the way to the relay; that's fine.</text>
+<text x="560" y="535" font-weight="bold">Test: charger + USB on, upload gate7_relay → relays click IN1, IN2, IN3, IN4.</text>
+</g>
+</svg>
