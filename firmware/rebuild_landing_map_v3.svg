@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 800" font-family="Arial, sans-serif">
+<rect width="1100" height="800" fill="#fff"/>
+<text x="20" y="28" font-size="17" font-weight="bold">Landing map v3: NEW ESP32 (30-pin), pins in rows 19–33</text>
+<text x="20" y="48" font-size="12" fill="#555">Left pins sit in LEFT board column j (free: f g h i). Right pins sit in RIGHT board column f (free: g h i j). USB at the top.</text>
+
+<!-- ESP32 schematic -->
+<rect x="420" y="70" width="260" height="400" rx="10" fill="#222"/>
+<rect x="525" y="56" width="50" height="24" rx="4" fill="#bbb" stroke="#666"/>
+<text x="550" y="98" font-size="11" fill="#fff" text-anchor="middle">USB-C (top)</text>
+<g font-size="12" fill="#fff">
+<!-- rows 19..33 -> y = 120 + (r-19)*23 -->
+<text x="432" y="124">3V3</text><text x="432" y="147">GND</text><text x="432" y="170" fill="#888">D15</text><text x="432" y="193" fill="#888">D2</text><text x="432" y="216" fill="#888">D4</text>
+<text x="432" y="239" fill="#ffd166" font-weight="bold">D16</text><text x="432" y="262" fill="#ffd166" font-weight="bold">D17</text>
+<text x="432" y="285" fill="#888">D5</text><text x="432" y="308" fill="#888">D18</text><text x="432" y="331" fill="#888">D19</text><text x="432" y="354" fill="#888">D21</text><text x="432" y="377" fill="#888">RX0</text><text x="432" y="400" fill="#888">TX0</text><text x="432" y="423" fill="#888">D22</text><text x="432" y="446" fill="#888">D23</text>
+<g text-anchor="end">
+<text x="668" y="124" fill="#ff6b6b" font-weight="bold">VIN ✗</text><text x="668" y="147">GND</text>
+<text x="668" y="170" fill="#ffd166" font-weight="bold">D13</text><text x="668" y="193" fill="#ff6b6b" font-weight="bold">D12 ✗</text>
+<text x="668" y="216" fill="#ffd166" font-weight="bold">D14</text><text x="668" y="239" fill="#ffd166" font-weight="bold">D27</text><text x="668" y="262" fill="#ffd166" font-weight="bold">D26</text><text x="668" y="285" fill="#ffd166" font-weight="bold">D25</text><text x="668" y="308" fill="#ffd166" font-weight="bold">D33</text><text x="668" y="331" fill="#ffd166" font-weight="bold">D32</text>
+<text x="668" y="354" fill="#888">D35</text><text x="668" y="377" fill="#888">D34</text><text x="668" y="400" fill="#888">VN</text><text x="668" y="423" fill="#888">VP</text><text x="668" y="446" fill="#888">EN</text>
+</g>
+</g>
+<g font-size="11" fill="#555" text-anchor="end">
+<text x="412" y="124">row 19</text><text x="412" y="147">20</text><text x="412" y="239">24</text><text x="412" y="262">25</text><text x="412" y="446">33</text>
+</g>
+<text x="550" y="490" font-size="11" text-anchor="middle" fill="#c0392b" font-weight="bold">✗ = leave EMPTY (VIN, D12)</text>
+
+<!-- LEFT table -->
+<g font-size="13">
+<text x="20" y="96" font-weight="bold">LEFT side (left board)</text>
+<text x="20" y="118">Board wires (MALE–MALE):</text>
+<text x="32" y="138"><tspan font-weight="bold">D2</tspan>  e10 → <tspan font-weight="bold">f24</tspan>  (divider → D16)</text>
+<text x="32" y="156" fill="#555">D1  a20 → left − rail  (keep)</text>
+<text x="32" y="174" fill="#555">Divider R1 c5–c10, R2 b10–b15, R3 c15–c20 (keep)</text>
+<text x="20" y="204">Ultrasonic (FEMALE–MALE):</text>
+<text x="32" y="224"><tspan font-weight="bold">Echo</tspan> (green) → a5  (keep)</text>
+<text x="32" y="242"><tspan font-weight="bold">Trig</tspan> (blue) → <tspan font-weight="bold">f25</tspan></text>
+<text x="32" y="260"><tspan font-weight="bold">Vcc</tspan> (yellow) → left + rail r25 (keep)</text>
+<text x="32" y="278"><tspan font-weight="bold">Gnd</tspan> (violet) → left − rail r24 (keep)</text>
+<text x="20" y="308">3V3 bridge (MALE–MALE):</text>
+<text x="32" y="328"><tspan font-weight="bold">E1</tspan>  left <tspan font-weight="bold">f19</tspan> → right <tspan font-weight="bold">g36</tspan></text>
+<text x="32" y="346" fill="#555">route it down the left board and under</text>
+<text x="32" y="364" fill="#555">the ESP32's bottom end (not over it)</text>
+<text x="20" y="394">Power from the adapter (left rails):</text>
+<text x="32" y="414">wire to K2 COM → left + rail r4</text>
+<text x="32" y="432">pump black → left − rail r4</text>
+<text x="32" y="450">470 µF cap → left rails r6 (stripe −)</text>
+</g>
+
+<!-- RIGHT table -->
+<g font-size="13">
+<text x="720" y="96" font-weight="bold">RIGHT side (right board)</text>
+<text x="720" y="118">Board wire (MALE–MALE):</text>
+<text x="732" y="138"><tspan font-weight="bold">A</tspan>  j20 → right − rail r20  (ESP32 GND)</text>
+<text x="720" y="168">Relay ribbon (FEMALE–MALE):</text>
+<text x="732" y="188">red IN4 → <tspan font-weight="bold">j21</tspan></text>
+<text x="732" y="206">orange IN3 → <tspan font-weight="bold">j23</tspan></text>
+<text x="732" y="224">yellow IN2 → <tspan font-weight="bold">j24</tspan></text>
+<text x="732" y="242">green IN1 → <tspan font-weight="bold">j25</tspan></text>
+<text x="732" y="260" fill="#555">VCC → + rail r5,  GND → − rail r6 (keep)</text>
+<text x="720" y="290">Servo (MALE–MALE):</text>
+<text x="732" y="310">orange → <tspan font-weight="bold">j26</tspan>   red → + r30   brown → − r31</text>
+<text x="720" y="340">Rain plate (FEMALE–MALE):</text>
+<text x="732" y="360">pin 1 → <tspan font-weight="bold">j27</tspan>   pin 2 → <tspan font-weight="bold">i36</tspan> (3V3 via E1)</text>
+<text x="720" y="390">DHT22 (FEMALE–MALE):</text>
+<text x="732" y="410">out → <tspan font-weight="bold">j28</tspan>   + → <tspan font-weight="bold">j36</tspan> (3V3)   − → − r32</text>
+<text x="720" y="440" fill="#555">Siren black → − r42 (keep)</text>
+</g>
+
+<!-- remove list -->
+<rect x="20" y="520" width="1060" height="250" rx="8" fill="#fff6f4" stroke="#e0b4aa"/>
+<g font-size="13" fill="#222">
+<text x="36" y="548" font-weight="bold" fill="#c0392b">First, REMOVE the old-ESP32 wires (they're now in the wrong rows):</text>
+<text x="48" y="572">• old A (e8 → − rail)   • old D2 (e10 → f10)   • old E1 (e21 → f21)   • the e3 wire (if still there)</text>
+<text x="48" y="594">• every module wire that was in e7, e10, e11, e12, e13, e14, e15, f11, i21, j21</text>
+<text x="36" y="628" font-weight="bold">Rails reminder</text>
+<text x="48" y="648">Left board: − OUTER (blue), + INNER (red).   Right board: − INNER (blue), + OUTER (red).</text>
+<text x="36" y="682" font-weight="bold">Code: no change needed</text>
+<text x="48" y="702">Same GPIOs as before (Trig 17, Echo 16, DHT 32, rain 33, servo 25, relays 26/27/14/13). Board: ESP32 Dev Module.</text>
+<text x="36" y="736" font-weight="bold" fill="#c0392b">Power the ESP32 only through its own USB-C. VIN stays empty; never connect it to the rails.</text>
+</g>
+</svg>

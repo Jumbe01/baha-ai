@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 600" font-family="Arial, sans-serif">
+<rect width="1040" height="600" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Step 5: relay signal wires. RIGHT board rows 19–26 (everything UNPLUGGED to wire)</text>
+
+<!-- right board f-j + rails; y = 80 + (r-19)*50 -->
+<rect x="40" y="56" width="430" height="440" fill="#f4f4f0" stroke="#bbb"/>
+<g font-size="14" font-weight="bold" fill="#555" text-anchor="middle">
+<text x="150" y="50">f</text><text x="210" y="50">g</text><text x="270" y="50">h</text><text x="330" y="50">i</text><text x="390" y="50">j</text>
+<text x="425" y="50" fill="#3a7bd5">−</text><text x="452" y="50" fill="#e33">+</text>
+</g>
+<line x1="425" y1="62" x2="425" y2="490" stroke="#3a7bd5" stroke-width="3"/>
+<line x1="452" y1="62" x2="452" y2="490" stroke="#e33" stroke-width="3"/>
+<g font-size="13" fill="#555" text-anchor="end" font-weight="bold">
+<text x="34" y="85">19</text><text x="34" y="135">20</text><text x="34" y="185">21</text><text x="34" y="235">22</text><text x="34" y="285">23</text><text x="34" y="335">24</text><text x="34" y="385">25</text><text x="34" y="435">26</text>
+</g>
+<!-- ESP32 right edge pins in f -->
+<rect x="40" y="62" width="125" height="434" fill="#222"/>
+<g fill="#d4af37"><circle cx="150" cy="80" r="7"/><circle cx="150" cy="130" r="7"/><circle cx="150" cy="180" r="8"/><circle cx="150" cy="230" r="7"/><circle cx="150" cy="280" r="8"/><circle cx="150" cy="330" r="8"/><circle cx="150" cy="380" r="8"/><circle cx="150" cy="430" r="7"/></g>
+<g font-size="12" fill="#fff" text-anchor="end" font-weight="bold">
+<text x="136" y="84" fill="#ff6b6b">VIN ✗</text><text x="136" y="134">GND</text><text x="136" y="184" fill="#ffd166">D13</text><text x="136" y="234" fill="#ff6b6b">D12 ✗</text><text x="136" y="284" fill="#ffd166">D14</text><text x="136" y="334" fill="#ffd166">D27</text><text x="136" y="384" fill="#ffd166">D26</text><text x="136" y="434">D25</text>
+</g>
+<!-- wire A existing -->
+<polyline points="390,130 425,130" fill="none" stroke="#111" stroke-width="5"/>
+<circle cx="390" cy="130" r="6" fill="#111"/>
+<text x="300" y="122" font-size="11" fill="#555">wire A (in)</text>
+
+<!-- relay module -->
+<rect x="690" y="120" width="210" height="330" rx="10" fill="#2d6fd1"/>
+<text x="795" y="300" font-size="15" fill="#fff" text-anchor="middle" font-weight="bold">RELAY</text>
+<g fill="#bbb" stroke="#444"><rect x="680" y="160" width="16" height="16"/><rect x="680" y="200" width="16" height="16"/><rect x="680" y="240" width="16" height="16"/><rect x="680" y="280" width="16" height="16"/><rect x="680" y="320" width="16" height="16"/><rect x="680" y="360" width="16" height="16"/></g>
+<g font-size="12" fill="#fff" font-weight="bold"><text x="704" y="173">GND</text><text x="704" y="213">IN1</text><text x="704" y="253">IN2</text><text x="704" y="293">IN3</text><text x="704" y="333">IN4</text><text x="704" y="373">VCC</text></g>
+
+<!-- signal wires -->
+<polyline points="390,180 560,180 560,328 680,328" fill="none" stroke="#e33" stroke-width="5"/>
+<polyline points="390,280 580,280 580,288 680,288" fill="none" stroke="#e67e22" stroke-width="5"/>
+<polyline points="390,330 600,330 600,248 680,248" fill="none" stroke="#e6c200" stroke-width="5"/>
+<polyline points="390,380 620,380 620,208 680,208" fill="none" stroke="#27ae60" stroke-width="5"/>
+<g><circle cx="390" cy="180" r="7" fill="#e33"/><circle cx="390" cy="280" r="7" fill="#e67e22"/><circle cx="390" cy="330" r="7" fill="#e6c200"/><circle cx="390" cy="380" r="7" fill="#27ae60"/></g>
+<g font-size="12" font-weight="bold">
+<text x="230" y="174" fill="#e33">red IN4 → j21</text>
+<text x="230" y="274" fill="#e67e22">orange IN3 → j23</text>
+<text x="230" y="324" fill="#b89a00">yellow IN2 → j24</text>
+<text x="230" y="374" fill="#27ae60">green IN1 → j25</text>
+</g>
+<!-- power (kept) -->
+<text x="690" y="478" font-size="12" fill="#555">VCC / GND: keep where they are now</text>
+<text x="690" y="494" font-size="12" fill="#555">(VCC → right + rail, GND → right − rail)</text>
+
+<g font-size="13" fill="#222">
+<text x="40" y="530" font-weight="bold">Wire type: FEMALE on the relay pins, MALE into the j holes (add male–male adapters if your ribbon is female at both ends).</text>
+<text x="40" y="552"><tspan font-weight="bold" fill="#c0392b">Leave j19 (VIN) and j22 (D12) EMPTY.</tspan>  Wires cross on the way to the relay: that's fine.</text>
+<text x="40" y="576"><tspan font-weight="bold">Test:</tspan> adapter + ESP32 USB on, upload <tspan font-weight="bold">gate7_relay</tspan> → relays click IN1 → IN2 → IN3 → IN4 with their LEDs.</text>
+</g>
+</svg>

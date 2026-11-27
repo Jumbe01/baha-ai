@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 700" font-family="Arial, sans-serif">
+<rect width="1040" height="700" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Step 3 (redo): move the divider below the burnt area. LEFT board, everything UNPLUGGED</text>
+
+<!-- left board; rows y = 60 + (r-1)*15 for r=1..40 -->
+<rect x="40" y="50" width="470" height="620" fill="#f4f4f0" stroke="#bbb"/>
+<!-- burnt zone rows 5-15 -->
+<rect x="44" y="114" width="120" height="166" fill="#3a2a20" opacity="0.25"/>
+<text x="104" y="200" font-size="12" font-weight="bold" fill="#7a1a1a" text-anchor="middle">BURNT</text>
+<text x="104" y="216" font-size="11" fill="#7a1a1a" text-anchor="middle">rows 5–15</text>
+<text x="104" y="232" font-size="11" fill="#7a1a1a" text-anchor="middle">don't use</text>
+<line x1="58" y1="56" x2="58" y2="664" stroke="#3a7bd5" stroke-width="3"/>
+<line x1="80" y1="56" x2="80" y2="664" stroke="#e33" stroke-width="3"/>
+<rect x="285" y="56" width="35" height="608" fill="#e3e3dc"/>
+<g font-size="13" font-weight="bold" text-anchor="middle">
+<text x="58" y="46" fill="#3a7bd5">−</text><text x="80" y="46" fill="#e33">+</text>
+<text x="125" y="46" fill="#555">a</text><text x="160" y="46" fill="#555">b</text><text x="195" y="46" fill="#555">c</text><text x="230" y="46" fill="#555">d</text><text x="265" y="46" fill="#555">e</text>
+<text x="340" y="46" fill="#555">f</text><text x="375" y="46" fill="#555">g</text><text x="410" y="46" fill="#555">h</text><text x="445" y="46" fill="#555">i</text><text x="480" y="46" fill="#555">j</text>
+</g>
+<g font-size="11" fill="#555" text-anchor="end" font-weight="bold">
+<text x="34" y="124">5</text><text x="34" y="199">10</text><text x="34" y="274">15</text><text x="34" y="334">19</text><text x="34" y="349">20</text><text x="34" y="409">24</text><text x="34" y="424">25</text><text x="34" y="484">29</text><text x="34" y="559">34</text><text x="34" y="649">40</text>
+</g>
+
+<!-- ESP32 left pins in j rows 19-33 -->
+<rect x="470" y="318" width="40" height="300" fill="#222"/>
+<g fill="#d4af37"><circle cx="480" cy="330" r="4"/><circle cx="480" cy="345" r="4"/><circle cx="480" cy="405" r="6"/><circle cx="480" cy="420" r="6"/></g>
+<g font-size="9" fill="#fff"><text x="487" y="333">3V3</text><text x="487" y="348">GND</text><text x="487" y="408" fill="#ffd166">D16</text><text x="487" y="423" fill="#ffd166">D17</text></g>
+
+<!-- NEW divider: R1 c19-c24, R2 b24-b29, R3 c29-c34 -->
+<g fill="#c8a165" stroke="#7a5a2a">
+<rect x="191" y="334" width="8" height="68"/>
+<rect x="156" y="409" width="8" height="68"/>
+<rect x="191" y="484" width="8" height="68"/>
+</g>
+<g fill="#555"><circle cx="195" cy="330" r="4"/><circle cx="195" cy="405" r="4"/><circle cx="160" cy="405" r="4"/><circle cx="160" cy="480" r="4"/><circle cx="195" cy="480" r="4"/><circle cx="195" cy="555" r="4"/></g>
+<g font-size="11" font-weight="bold" fill="#7a5a2a"><text x="203" y="372">R1 c19–c24</text><text x="98" y="446">R2 b24–b29</text><text x="203" y="522">R3 c29–c34</text></g>
+
+<!-- Echo a19 -->
+<polyline points="8,330 125,330" fill="none" stroke="#27ae60" stroke-width="4"/>
+<circle cx="125" cy="330" r="6" fill="#27ae60"/>
+<text x="10" y="322" font-size="11" font-weight="bold" fill="#27ae60">Echo (green) → a19</text>
+<!-- D2 e24 -> f24 -->
+<polyline points="265,405 340,405" fill="none" stroke="#8e44ad" stroke-width="6"/>
+<circle cx="265" cy="405" r="6" fill="#8e44ad"/><circle cx="340" cy="405" r="6" fill="#8e44ad"/>
+<text x="270" y="396" font-size="12" font-weight="bold" fill="#8e44ad">D2</text>
+<!-- Trig f25 (later) -->
+<polyline points="8,600 300,600 300,420 340,420" fill="none" stroke="#2457c5" stroke-width="3" stroke-dasharray="6 4"/>
+<text x="10" y="594" font-size="11" fill="#2457c5">Trig (blue) → f25 (next step)</text>
+<!-- D1 a34 -> - rail -->
+<polyline points="125,555 58,555" fill="none" stroke="#111" stroke-width="5"/>
+<circle cx="125" cy="555" r="6" fill="#111"/><circle cx="58" cy="555" r="6" fill="#111"/>
+<text x="70" y="548" font-size="11" font-weight="bold">D1</text>
+
+<!-- instructions -->
+<g font-size="13" fill="#222">
+<text x="540" y="80" font-weight="bold">1. Clear the burnt area</text>
+<text x="552" y="100">Pull out the 3 resistors, the Echo wire (a5),</text>
+<text x="552" y="118">old D1 (a20), D2, and anything in rails rows 1–16.</text>
+<text x="552" y="136">Move the capacitor to the left rails, row 40.</text>
+
+<text x="540" y="172" font-weight="bold">2. Re-place the resistors lower</text>
+<text x="552" y="192">R1 (1k): <tspan font-weight="bold">c19 – c24</tspan></text>
+<text x="552" y="210">R2 (1k): <tspan font-weight="bold">b24 – b29</tspan></text>
+<text x="552" y="228">R3 (1k): <tspan font-weight="bold">c29 – c34</tspan></text>
+
+<text x="540" y="264" font-weight="bold">3. Wires (MALE–MALE)</text>
+<text x="552" y="284"><tspan font-weight="bold" fill="#8e44ad">D2</tspan>  <tspan font-weight="bold">e24 → f24</tspan> (straight across the gap)</text>
+<text x="552" y="302"><tspan font-weight="bold">D1</tspan>  <tspan font-weight="bold">a34 → left − rail</tspan> row 34 (outer, blue)</text>
+<text x="552" y="320"><tspan font-weight="bold" fill="#27ae60">Echo</tspan> (green, FEMALE–MALE) → <tspan font-weight="bold">a19</tspan></text>
+
+<text x="540" y="358" font-weight="bold" fill="#e33">4. Test (Ω 200 / Ω 2000)</text>
+<text x="552" y="378">Ω 200: jumper in <tspan font-weight="bold">d24</tspan> ↔ <tspan font-weight="bold">D16 pin</tspan> → near 0 (D2)</text>
+<text x="552" y="396">Ω 2000: jumper in <tspan font-weight="bold">d24</tspan> ↔ <tspan font-weight="bold">left − rail</tspan> row 40 → ≈ 2.0 (R2+R3+D1)</text>
+<text x="552" y="414">Ω 2000: jumper in <tspan font-weight="bold">d19</tspan> ↔ jumper in <tspan font-weight="bold">d24</tspan> → ≈ 1.0 (R1)</text>
+<text x="552" y="432">Ω 200: left − rail row 20 ↔ row 60 → near 0 (rail OK)</text>
+<text x="552" y="450">Ω 200: left + rail row 20 ↔ row 60 → near 0 (rail OK)</text>
+
+<text x="540" y="494" font-weight="bold">Later moves (because rows 1–16 are burnt)</text>
+<text x="552" y="514">Pump/K2 COM power → left + / − rails, <tspan font-weight="bold">row 45</tspan></text>
+<text x="552" y="532">(close to the adapter terminal, rows 51–54)</text>
+<text x="552" y="550">Capacitor → left rails, <tspan font-weight="bold">row 40</tspan> (stripe in −)</text>
+</g>
+</svg>

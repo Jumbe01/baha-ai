@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" font-family="Arial, sans-serif">
+<rect width="1000" height="560" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Step 6: servo (floodgate). RIGHT board rows 24–32 (everything UNPLUGGED to wire)</text>
+
+<!-- right board f-j + rails; y = 80 + (r-24)*48 -->
+<rect x="40" y="56" width="430" height="440" fill="#f4f4f0" stroke="#bbb"/>
+<g font-size="14" font-weight="bold" fill="#555" text-anchor="middle">
+<text x="150" y="50">f</text><text x="210" y="50">g</text><text x="270" y="50">h</text><text x="330" y="50">i</text><text x="390" y="50">j</text>
+<text x="425" y="50" fill="#3a7bd5">−</text><text x="452" y="50" fill="#e33">+</text>
+</g>
+<line x1="425" y1="62" x2="425" y2="490" stroke="#3a7bd5" stroke-width="3"/>
+<line x1="452" y1="62" x2="452" y2="490" stroke="#e33" stroke-width="3"/>
+<g font-size="13" fill="#555" text-anchor="end" font-weight="bold">
+<text x="34" y="85">24</text><text x="34" y="133">25</text><text x="34" y="181">26</text><text x="34" y="229">27</text><text x="34" y="277">28</text><text x="34" y="373">30</text><text x="34" y="421">31</text>
+</g>
+<!-- ESP32 edge rows 24-28 -->
+<rect x="40" y="62" width="125" height="250" fill="#222"/>
+<g fill="#d4af37"><circle cx="150" cy="80" r="7"/><circle cx="150" cy="128" r="7"/><circle cx="150" cy="176" r="9"/><circle cx="150" cy="224" r="7"/><circle cx="150" cy="272" r="7"/></g>
+<g font-size="12" fill="#fff" text-anchor="end" font-weight="bold">
+<text x="136" y="84">D27</text><text x="136" y="132">D26</text><text x="136" y="180" fill="#ffd166">D25</text><text x="136" y="228">D33</text><text x="136" y="276">D32</text>
+</g>
+<!-- existing relay wires faded -->
+<g opacity="0.35" stroke-width="4"><polyline points="390,80 470,80" stroke="#e6c200"/><polyline points="390,128 470,128" stroke="#27ae60"/></g>
+<text x="300" y="74" font-size="10" fill="#888">relay IN2 (in)</text><text x="300" y="122" font-size="10" fill="#888">relay IN1 (in)</text>
+
+<!-- servo -->
+<rect x="760" y="200" width="150" height="80" rx="8" fill="#1f4fa8"/>
+<rect x="815" y="182" width="36" height="22" rx="11" fill="#fff" stroke="#999"/>
+<text x="835" y="248" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">SERVO</text>
+<rect x="640" y="220" width="24" height="48" fill="#222"/>
+<g stroke-width="3"><line x1="664" y1="230" x2="760" y2="230" stroke="#e67e22"/><line x1="664" y1="244" x2="760" y2="244" stroke="#e33"/><line x1="664" y1="258" x2="760" y2="258" stroke="#8b4513"/></g>
+<text x="652" y="212" font-size="11" text-anchor="middle">plug (female)</text>
+
+<!-- jumpers -->
+<polyline points="640,230 560,230 560,176 390,176" fill="none" stroke="#e67e22" stroke-width="5"/>
+<polyline points="640,244 580,244 580,368 452,368" fill="none" stroke="#e33" stroke-width="5"/>
+<polyline points="640,258 600,258 600,416 425,416" fill="none" stroke="#8b4513" stroke-width="5"/>
+<circle cx="390" cy="176" r="7" fill="#e67e22"/><circle cx="452" cy="368" r="7" fill="#e33"/><circle cx="425" cy="416" r="7" fill="#8b4513"/>
+<g font-size="13" font-weight="bold">
+<text x="230" y="170" fill="#e67e22">orange → j26</text>
+<text x="470" y="362" fill="#e33">red → + rail r30</text>
+<text x="440" y="440" fill="#8b4513">brown → − rail r31</text>
+</g>
+
+<g font-size="13" fill="#222">
+<text x="40" y="520"><tspan font-weight="bold">Wire type:</tspan> MALE–MALE ×3 (one end into the servo plug, the other into the board).</text>
+<text x="40" y="542"><tspan font-weight="bold">Test:</tspan> adapter + ESP32 USB on, upload <tspan font-weight="bold">gate8_servo</tspan> → the arm swings slowly between two positions.</text>
+</g>
+<text x="640" y="320" font-size="12" fill="#555">Right board rails: − INNER (blue), + OUTER (red)</text>
+</svg>

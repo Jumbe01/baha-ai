@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" font-family="Arial, sans-serif">
+<rect width="1000" height="560" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Wire A test: right board, rows 18–22 (zoomed). Everything UNPLUGGED, meter Ω 200</text>
+
+<!-- right board f-j + rails; rows y = 120 + (r-18)*60 -->
+<rect x="40" y="70" width="560" height="360" fill="#f4f4f0" stroke="#bbb"/>
+<g font-size="14" font-weight="bold" fill="#555" text-anchor="middle">
+<text x="160" y="62">f</text><text x="240" y="62">g</text><text x="320" y="62">h</text><text x="400" y="62">i</text><text x="480" y="62">j</text>
+<text x="540" y="62" fill="#3a7bd5">−</text><text x="575" y="62" fill="#e33">+</text>
+</g>
+<line x1="540" y1="76" x2="540" y2="424" stroke="#3a7bd5" stroke-width="3"/>
+<line x1="575" y1="76" x2="575" y2="424" stroke="#e33" stroke-width="3"/>
+<g font-size="14" font-weight="bold" fill="#555" text-anchor="end">
+<text x="34" y="125">18</text><text x="34" y="185">19</text><text x="34" y="245">20</text><text x="34" y="305">21</text><text x="34" y="365">22</text>
+</g>
+<!-- holes -->
+<g fill="#999">
+<circle cx="240" cy="120" r="4"/><circle cx="320" cy="120" r="4"/><circle cx="400" cy="120" r="4"/><circle cx="480" cy="120" r="4"/>
+<circle cx="240" cy="180" r="4"/><circle cx="320" cy="180" r="4"/><circle cx="400" cy="180" r="4"/><circle cx="480" cy="180" r="4"/>
+<circle cx="320" cy="240" r="4"/><circle cx="400" cy="240" r="4"/>
+<circle cx="240" cy="300" r="4"/><circle cx="320" cy="300" r="4"/><circle cx="400" cy="300" r="4"/><circle cx="480" cy="300" r="4"/>
+<circle cx="240" cy="360" r="4"/><circle cx="320" cy="360" r="4"/><circle cx="400" cy="360" r="4"/><circle cx="480" cy="360" r="4"/>
+</g>
+
+<!-- ESP32 right edge with pins in column f -->
+<rect x="40" y="150" width="140" height="280" fill="#222"/>
+<g fill="#d4af37"><circle cx="160" cy="180" r="9"/><circle cx="160" cy="240" r="9"/><circle cx="160" cy="300" r="9"/><circle cx="160" cy="360" r="9"/></g>
+<g font-size="13" fill="#fff" text-anchor="end" font-weight="bold">
+<text x="146" y="185">VIN</text><text x="146" y="245" fill="#9be7a0">GND</text><text x="146" y="305">D13</text><text x="146" y="365">D12</text>
+</g>
+<text x="60" y="140" font-size="11" fill="#555">ESP32 (right pins in f)</text>
+
+<!-- wire A j20 -> - rail row 20 -->
+<polyline points="480,240 540,240" fill="none" stroke="#111" stroke-width="6"/>
+<circle cx="480" cy="240" r="8" fill="#111"/><circle cx="540" cy="240" r="8" fill="#111"/>
+<text x="470" y="226" font-size="13" font-weight="bold">wire A</text>
+
+<!-- TEST 1 markers: GND pin + g20 -->
+<rect x="232" y="224" width="16" height="32" fill="#2a9d3a"/>
+<text x="210" y="276" font-size="11" fill="#2a9d3a" font-weight="bold">spare jumper g20</text>
+<circle cx="160" cy="240" r="18" fill="none" stroke="#e33" stroke-width="4"/>
+<circle cx="240" cy="240" r="22" fill="none" stroke="#e33" stroke-width="4"/>
+<!-- TEST 2 marker: spare jumper in - rail (row 22) -->
+<rect x="532" y="344" width="16" height="32" fill="#8e44ad"/>
+<circle cx="540" cy="360" r="22" fill="none" stroke="#1f6fd1" stroke-width="4"/>
+<circle cx="240" cy="240" r="28" fill="none" stroke="#1f6fd1" stroke-width="3" stroke-dasharray="5 4"/>
+<text x="470" y="404" font-size="11" fill="#8e44ad" font-weight="bold">spare jumper in − rail</text>
+
+<!-- instructions -->
+<g font-size="13" fill="#222">
+<text x="630" y="100" font-weight="bold" fill="#e33">TEST 1 (red circles)</text>
+<text x="642" y="120">GND pin's solder blob ↔ jumper in g20</text>
+<text x="642" y="140"><tspan font-weight="bold">near 0</tspan> → the pin is in row 20 ✓</text>
+<text x="642" y="160"><tspan font-weight="bold">OL</tspan> → try g19 and g21: which one</text>
+<text x="656" y="178">reads near 0? Tell me.</text>
+
+<text x="630" y="222" font-weight="bold" fill="#1f6fd1">TEST 2 (blue circles)</text>
+<text x="642" y="242">jumper in g20 ↔ jumper in the − rail</text>
+<text x="642" y="262"><tspan font-weight="bold">near 0</tspan> → wire A works ✓</text>
+<text x="642" y="282"><tspan font-weight="bold">OL</tspan> → wire A: is one end in <tspan font-weight="bold">j20</tspan></text>
+<text x="656" y="300">and the other in the INNER (blue) rail,</text>
+<text x="656" y="318">both pushed fully in?</text>
+
+<text x="630" y="362" font-weight="bold">Tips</text>
+<text x="642" y="382">• Probe the pin's metal / solder, not the</text>
+<text x="656" y="400">black plastic around it.</text>
+<text x="642" y="420">• Spare jumper = any unused male–male wire.</text>
+</g>
+<text x="40" y="470" font-size="12" fill="#555">GND is the 2nd pin from the top on the RIGHT side (under VIN). Holes g, h, i, j in the same row are all one strip with it.</text>
+</svg>

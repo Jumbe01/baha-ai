@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" font-family="Arial, sans-serif">
+<rect width="1000" height="560" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Do the LEFT board's middle holes still work? (everything UNPLUGGED, Ω 200)</text>
+
+<!-- left board rows 34-42 area; y = 90 + (r-34)*40 -->
+<rect x="40" y="60" width="470" height="420" fill="#f4f4f0" stroke="#bbb"/>
+<line x1="58" y1="66" x2="58" y2="474" stroke="#3a7bd5" stroke-width="3"/>
+<line x1="80" y1="66" x2="80" y2="474" stroke="#e33" stroke-width="3"/>
+<rect x="285" y="66" width="35" height="408" fill="#e3e3dc"/>
+<g font-size="14" font-weight="bold" text-anchor="middle" fill="#555">
+<text x="125" y="56">a</text><text x="160" y="56">b</text><text x="195" y="56">c</text><text x="230" y="56">d</text><text x="265" y="56">e</text>
+<text x="340" y="56">f</text><text x="375" y="56">g</text><text x="410" y="56">h</text><text x="445" y="56">i</text><text x="480" y="56">j</text>
+</g>
+<g font-size="13" fill="#555" text-anchor="end" font-weight="bold"><text x="34" y="214">37</text><text x="34" y="374">41</text></g>
+<g fill="#999">
+<circle cx="125" cy="210" r="4"/><circle cx="160" cy="210" r="4"/><circle cx="195" cy="210" r="4"/><circle cx="230" cy="210" r="4"/><circle cx="265" cy="210" r="4"/>
+<circle cx="340" cy="370" r="4"/><circle cx="375" cy="370" r="4"/><circle cx="410" cy="370" r="4"/><circle cx="445" cy="370" r="4"/><circle cx="480" cy="370" r="4"/>
+</g>
+
+<!-- TEST A: b37 + d37 -->
+<rect x="154" y="196" width="12" height="28" fill="#2a9d3a"/><rect x="224" y="196" width="12" height="28" fill="#2a9d3a"/>
+<ellipse cx="195" cy="210" rx="62" ry="26" fill="none" stroke="#e33" stroke-width="3"/>
+<text x="200" y="256" font-size="14" font-weight="bold" fill="#e33" text-anchor="middle">A: b37 ↔ d37</text>
+<!-- TEST B: g41 + i41 -->
+<rect x="369" y="356" width="12" height="28" fill="#2a9d3a"/><rect x="439" y="356" width="12" height="28" fill="#2a9d3a"/>
+<ellipse cx="410" cy="370" rx="62" ry="26" fill="none" stroke="#1f6fd1" stroke-width="3"/>
+<text x="410" y="416" font-size="14" font-weight="bold" fill="#1f6fd1" text-anchor="middle">B: g41 ↔ i41</text>
+
+<!-- probes -->
+<text x="60" y="110" font-size="12" fill="#555">Push 2 spare jumpers in, probe their loose metal pins.</text>
+
+<!-- instructions -->
+<g font-size="13" fill="#222">
+<text x="540" y="90" font-weight="bold">0. Check the meter first</text>
+<text x="552" y="110">Ω 200, touch the two probe tips together</text>
+<text x="552" y="128">→ should show about 0.2–1.0.</text>
+
+<text x="540" y="168" font-weight="bold" fill="#e33">A. a–e side (red)</text>
+<text x="552" y="188">spare jumpers in <tspan font-weight="bold">b37</tspan> and <tspan font-weight="bold">d37</tspan> → near 0?</text>
+
+<text x="540" y="226" font-weight="bold" fill="#1f6fd1">B. f–j side (blue)</text>
+<text x="552" y="246">spare jumpers in <tspan font-weight="bold">g41</tspan> and <tspan font-weight="bold">i41</tspan> → near 0?</text>
+
+<text x="540" y="290" font-weight="bold">What it means</text>
+<text x="552" y="310"><tspan font-weight="bold">A OL, B near 0</tspan> → the a–e side of this board is</text>
+<text x="566" y="328">dead (spark). We move the divider to good holes.</text>
+<text x="552" y="350"><tspan font-weight="bold">Both OL</tspan> → the whole left board is damaged:</text>
+<text x="566" y="368">swap it, or I re-plan everything on the right board.</text>
+<text x="552" y="390"><tspan font-weight="bold">Both near 0</tspan> → board OK; then the resistors</text>
+<text x="566" y="408">aren't seated. Send a close-up photo of rows 18–35.</text>
+</g>
+<text x="40" y="520" font-size="12" fill="#555">Rows 37 and 41 are below everything else, so nothing else can affect these two tests.</text>
+</svg>

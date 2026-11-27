@@ -78,9 +78,14 @@ void moveGate(int target) {
 
 void connectWifi() {
   if (WiFi.status() == WL_CONNECTED) return;
-  WiFi.mode(WIFI_STA);
-  WiFi.setTxPower(WIFI_POWER_8_5dBm);   // smaller start-up spike, fewer brownouts
-  WiFi.begin(SECRET_WIFI_SSID, SECRET_WIFI_PASSWORD);
+  static bool begun = false;              // begin once; the ESP32 keeps retrying by itself
+  if (!begun) {
+    WiFi.mode(WIFI_STA);
+    WiFi.setTxPower(WIFI_POWER_8_5dBm);   // smaller start-up spike, fewer brownouts
+    WiFi.setAutoReconnect(true);
+    WiFi.begin(SECRET_WIFI_SSID, SECRET_WIFI_PASSWORD);
+    begun = true;
+  }
   Serial.print("Wi-Fi connecting");
   unsigned long started = millis();
   while (WiFi.status() != WL_CONNECTED && millis() - started < 20000UL) {

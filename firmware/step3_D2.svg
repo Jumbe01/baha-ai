@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" font-family="Arial, sans-serif">
+<rect width="1000" height="620" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Step 3: wire D2 (divider → D16), LEFT board rows 4–26. Everything UNPLUGGED</text>
+
+<!-- left board; rows y = 60 + (r-4)*22 -->
+<rect x="40" y="50" width="480" height="520" fill="#f4f4f0" stroke="#bbb"/>
+<line x1="58" y1="56" x2="58" y2="564" stroke="#3a7bd5" stroke-width="3"/>
+<line x1="80" y1="56" x2="80" y2="564" stroke="#e33" stroke-width="3"/>
+<rect x="270" y="56" width="40" height="508" fill="#e3e3dc"/>
+<g font-size="13" font-weight="bold" text-anchor="middle">
+<text x="58" y="46" fill="#3a7bd5">−</text><text x="80" y="46" fill="#e33">+</text>
+<text x="120" y="46" fill="#555">a</text><text x="155" y="46" fill="#555">b</text><text x="190" y="46" fill="#555">c</text><text x="225" y="46" fill="#555">d</text><text x="258" y="46" fill="#555">e</text>
+<text x="325" y="46" fill="#555">f</text><text x="360" y="46" fill="#555">g</text><text x="395" y="46" fill="#555">h</text><text x="430" y="46" fill="#555">i</text><text x="465" y="46" fill="#555">j</text>
+<text x="290" y="46" fill="#888" font-size="10">gap</text>
+</g>
+<g font-size="12" fill="#555" text-anchor="end" font-weight="bold">
+<text x="34" y="86">5</text><text x="34" y="196">10</text><text x="34" y="306">15</text><text x="34" y="394">19</text><text x="34" y="416">20</text><text x="34" y="504">24</text><text x="34" y="526">25</text>
+</g>
+
+<!-- divider -->
+<g fill="#c8a165" stroke="#7a5a2a"><rect x="186" y="92" width="8" height="96"/><rect x="151" y="202" width="8" height="96"/><rect x="186" y="312" width="8" height="96"/></g>
+<g fill="#555"><circle cx="190" cy="82" r="4"/><circle cx="190" cy="192" r="4"/><circle cx="155" cy="192" r="4"/><circle cx="155" cy="302" r="4"/><circle cx="190" cy="302" r="4"/><circle cx="190" cy="412" r="4"/></g>
+<g font-size="11" fill="#7a5a2a" font-weight="bold"><text x="198" y="140">R1</text><text x="125" y="250">R2</text><text x="198" y="360">R3</text></g>
+
+<!-- D1 a20 -> - rail -->
+<polyline points="120,412 58,412" fill="none" stroke="#555" stroke-width="4"/>
+<circle cx="120" cy="412" r="5" fill="#555"/>
+<text x="70" y="404" font-size="11" fill="#555" font-weight="bold">D1 (keep)</text>
+
+<!-- ESP32 left pins in column j, rows 19-26 visible -->
+<rect x="455" y="378" width="65" height="192" fill="#222"/>
+<g fill="#d4af37"><circle cx="465" cy="390" r="5"/><circle cx="465" cy="412" r="5"/><circle cx="465" cy="434" r="5"/><circle cx="465" cy="456" r="5"/><circle cx="465" cy="478" r="5"/><circle cx="465" cy="500" r="7"/><circle cx="465" cy="522" r="5"/><circle cx="465" cy="544" r="5"/></g>
+<g font-size="10" fill="#fff"><text x="474" y="394">3V3</text><text x="474" y="416">GND</text><text x="474" y="438">D15</text><text x="474" y="460">D2</text><text x="474" y="482">D4</text><text x="474" y="504" fill="#ffd166" font-weight="bold">D16</text><text x="474" y="526">D17</text><text x="474" y="548">D5</text></g>
+
+<!-- D2: e10 -> f24 -->
+<polyline points="258,192 290,220 290,480 325,500" fill="none" stroke="#8e44ad" stroke-width="6"/>
+<circle cx="258" cy="192" r="8" fill="#8e44ad"/><circle cx="325" cy="500" r="8" fill="#8e44ad"/>
+<text x="230" y="182" font-size="13" font-weight="bold" fill="#8e44ad">e10</text>
+<text x="300" y="526" font-size="13" font-weight="bold" fill="#8e44ad">f24</text>
+<text x="296" y="350" font-size="12" font-weight="bold" fill="#8e44ad" transform="rotate(90 296 350)">D2 lies flat in the gap</text>
+
+<!-- test markers -->
+<rect x="219" y="180" width="12" height="24" fill="#2a9d3a"/>
+<circle cx="225" cy="192" r="16" fill="none" stroke="#e33" stroke-width="3"/>
+<circle cx="465" cy="500" r="16" fill="none" stroke="#e33" stroke-width="3"/>
+<rect x="219" y="400" width="12" height="24" fill="#2a9d3a"/>
+<circle cx="225" cy="412" r="16" fill="none" stroke="#1f6fd1" stroke-width="3"/>
+<rect x="52" y="458" width="12" height="24" fill="#2a9d3a"/>
+<circle cx="58" cy="470" r="16" fill="none" stroke="#1f6fd1" stroke-width="3"/>
+
+<!-- instructions -->
+<g font-size="13" fill="#222">
+<text x="550" y="80" font-weight="bold">Add: D2 (MALE–MALE)</text>
+<text x="562" y="100"><tspan font-weight="bold" fill="#8e44ad">e10</tspan> → <tspan font-weight="bold" fill="#8e44ad">f24</tspan></text>
+<text x="562" y="118">e10 = row of R1's bottom leg + R2's top leg</text>
+<text x="562" y="136">f24 = row of the ESP32's D16 (6th left pin)</text>
+<text x="562" y="154">Lay it flat down the gap.</text>
+
+<text x="550" y="196" font-weight="bold" fill="#e33">TEST 1 (red circles), Ω 200</text>
+<text x="562" y="216">spare jumper in <tspan font-weight="bold">d10</tspan> ↔ <tspan font-weight="bold">D16 pin</tspan> solder</text>
+<text x="562" y="234">(6th from top, LEFT side) → near 0</text>
+
+<text x="550" y="274" font-weight="bold" fill="#1f6fd1">TEST 2 (blue circles), Ω 200</text>
+<text x="562" y="294">spare jumper in <tspan font-weight="bold">d20</tspan> ↔ jumper in <tspan font-weight="bold">left − rail</tspan></text>
+<text x="562" y="312">(outer, blue line) → near 0  = D1 OK</text>
+<text x="562" y="330">OL → put D1 back: a20 → left − rail</text>
+
+<text x="550" y="372" font-weight="bold">Left pins, top → bottom</text>
+<text x="562" y="392">3V3 (r19), GND (r20), D15, D2, D4,</text>
+<text x="562" y="410"><tspan font-weight="bold">D16 (r24)</tspan>, D17 (r25), D5 …</text>
+<text x="550" y="452" fill="#555" font-size="12">Green squares = spare jumpers pushed in just for testing;</text>
+<text x="550" y="468" fill="#555" font-size="12">pull them out afterwards.</text>
+</g>
+</svg>

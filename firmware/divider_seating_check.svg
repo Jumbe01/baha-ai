@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" font-family="Arial, sans-serif">
+<rect width="1000" height="640" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">The board is fine, so check the divider parts are really IN the right holes</text>
+
+<!-- zoom rows 18-35 a-e + f; y = 70 + (r-18)*30 -->
+<rect x="40" y="50" width="420" height="560" fill="#f4f4f0" stroke="#bbb"/>
+<line x1="58" y1="56" x2="58" y2="604" stroke="#3a7bd5" stroke-width="3"/>
+<rect x="355" y="56" width="35" height="548" fill="#e3e3dc"/>
+<g font-size="14" font-weight="bold" text-anchor="middle" fill="#555">
+<text x="58" y="46" fill="#3a7bd5">−</text>
+<text x="120" y="46">a</text><text x="170" y="46">b</text><text x="220" y="46">c</text><text x="270" y="46">d</text><text x="320" y="46">e</text><text x="420" y="46">f</text>
+</g>
+<g font-size="13" fill="#555" text-anchor="end" font-weight="bold">
+<text x="34" y="104">19</text><text x="34" y="254">24</text><text x="34" y="404">29</text><text x="34" y="554">34</text>
+</g>
+<!-- holes grid light -->
+<g fill="#bbb">
+<circle cx="120" cy="100" r="3"/><circle cx="170" cy="100" r="3"/><circle cx="270" cy="100" r="3"/><circle cx="320" cy="100" r="3"/>
+<circle cx="120" cy="250" r="3"/><circle cx="220" cy="250" r="3"/><circle cx="270" cy="250" r="3"/>
+<circle cx="120" cy="400" r="3"/><circle cx="270" cy="400" r="3"/><circle cx="320" cy="400" r="3"/>
+<circle cx="170" cy="550" r="3"/><circle cx="270" cy="550" r="3"/><circle cx="320" cy="550" r="3"/>
+</g>
+
+<!-- R1 c19-c24 -->
+<line x1="220" y1="100" x2="220" y2="250" stroke="#888" stroke-width="2"/>
+<rect x="212" y="145" width="16" height="60" rx="5" fill="#4a90d9" stroke="#2d5f9a"/>
+<circle cx="220" cy="100" r="7" fill="#e33"/><circle cx="220" cy="250" r="7" fill="#e33"/>
+<text x="234" y="180" font-size="13" font-weight="bold">R1</text>
+<!-- R2 b24-b29 -->
+<line x1="170" y1="250" x2="170" y2="400" stroke="#888" stroke-width="2"/>
+<rect x="162" y="295" width="16" height="60" rx="5" fill="#4a90d9" stroke="#2d5f9a"/>
+<circle cx="170" cy="250" r="7" fill="#e33"/><circle cx="170" cy="400" r="7" fill="#e33"/>
+<text x="134" y="330" font-size="13" font-weight="bold">R2</text>
+<!-- R3 c29-c34 -->
+<line x1="220" y1="400" x2="220" y2="550" stroke="#888" stroke-width="2"/>
+<rect x="212" y="445" width="16" height="60" rx="5" fill="#4a90d9" stroke="#2d5f9a"/>
+<circle cx="220" cy="400" r="7" fill="#e33"/><circle cx="220" cy="550" r="7" fill="#e33"/>
+<text x="234" y="480" font-size="13" font-weight="bold">R3</text>
+<!-- Echo a19, D2 e24->f24, D1 a34-> - -->
+<circle cx="120" cy="100" r="7" fill="#27ae60"/><text x="80" y="90" font-size="12" fill="#27ae60" font-weight="bold">Echo a19</text>
+<polyline points="320,250 420,250" fill="none" stroke="#8e44ad" stroke-width="6"/>
+<circle cx="320" cy="250" r="7" fill="#8e44ad"/><circle cx="420" cy="250" r="7" fill="#8e44ad"/>
+<text x="330" y="240" font-size="12" fill="#8e44ad" font-weight="bold">D2 e24→f24</text>
+<polyline points="120,550 58,550" fill="none" stroke="#111" stroke-width="6"/>
+<circle cx="120" cy="550" r="7" fill="#111"/><circle cx="58" cy="550" r="7" fill="#111"/>
+<text x="70" y="540" font-size="12" font-weight="bold">D1 a34→−</text>
+<text x="250" y="590" font-size="11" fill="#e33">red dots = resistor legs (6 holes)</text>
+
+<!-- instructions -->
+<g font-size="13" fill="#222">
+<text x="490" y="80" font-weight="bold">1. Test each resistor OUT of the board</text>
+<text x="502" y="100">Pull one out. Meter on <tspan font-weight="bold">Ω 2000</tspan>. Probes on its 2 legs.</text>
+<text x="502" y="118"><tspan font-weight="bold">≈ 1.0</tspan> → good 1 kΩ.   OL → that resistor is broken.</text>
+
+<text x="490" y="156" font-weight="bold">2. Re-insert with a good grip</text>
+<text x="502" y="176">• Bend both legs straight down, about 1 cm long.</text>
+<text x="502" y="194">• Push each leg in until it stops (~5 mm deep).</text>
+<text x="502" y="212">• Tug lightly: it must not lift out.</text>
+<text x="502" y="230">• Count the holes twice: same letter, right rows.</text>
+
+<text x="490" y="268" font-weight="bold">3. Check the legs land EXACTLY here</text>
+<text x="502" y="288">R1: c19 and c24</text>
+<text x="502" y="306">R2: b24 and b29</text>
+<text x="502" y="324">R3: c29 and c34</text>
+<text x="502" y="342">(row 24 has R1 bottom + R2 top + D2;</text>
+<text x="502" y="360"> row 29 has R2 bottom + R3 top)</text>
+
+<text x="490" y="398" font-weight="bold" fill="#e33">4. Re-test (unplugged)</text>
+<text x="502" y="418">Ω 2000: jumper d19 ↔ jumper d24 → ≈ 1.0</text>
+<text x="502" y="436">Ω 2000: jumper d24 ↔ left − rail → ≈ 2.0</text>
+<text x="502" y="454">Ω 200: jumper d24 ↔ D16 pin → near 0</text>
+
+<text x="490" y="494" font-weight="bold">Still OL?</text>
+<text x="502" y="514">Send a close-up photo of rows 18–35,</text>
+<text x="502" y="532">straight from above, letters readable.</text>
+</g>
+</svg>

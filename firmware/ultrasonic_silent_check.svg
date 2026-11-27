@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" font-family="Arial, sans-serif">
+<rect width="1000" height="600" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Ultrasonic silent (no ticking): power first, then Trig</text>
+
+<!-- sensor board back -->
+<rect x="40" y="70" width="230" height="220" rx="8" fill="#2d6fd1"/>
+<text x="155" y="306" font-size="12" text-anchor="middle">sensor board (back side)</text>
+<g fill="#d4af37" stroke="#8a6d00"><circle cx="240" cy="110" r="8"/><circle cx="240" cy="150" r="8"/><circle cx="240" cy="190" r="8"/><circle cx="240" cy="230" r="8"/></g>
+<g font-size="13" fill="#fff" font-weight="bold" text-anchor="end"><text x="224" y="115">Gnd</text><text x="224" y="155">Echo</text><text x="224" y="195">Trig</text><text x="224" y="235">Vcc</text></g>
+<!-- probe plug -->
+<rect x="32" y="120" width="26" height="40" fill="#eee" stroke="#555"/>
+<polyline points="32,140 0,140" stroke="#111" stroke-width="6"/>
+<text x="64" y="112" font-size="11" fill="#fff">probe plug</text>
+<circle cx="45" cy="140" r="24" fill="none" stroke="#ffb000" stroke-width="3"/>
+
+<!-- TEST 1 power markers -->
+<circle cx="240" cy="110" r="16" fill="none" stroke="#e33" stroke-width="3"/>
+<circle cx="240" cy="230" r="16" fill="none" stroke="#e33" stroke-width="3"/>
+<!-- TEST 2 trig markers -->
+<circle cx="240" cy="190" r="22" fill="none" stroke="#2a9d3a" stroke-width="3" stroke-dasharray="5 3"/>
+
+<!-- ESP32 left pin D17 -->
+<rect x="330" y="110" width="150" height="180" rx="6" fill="#222"/>
+<g fill="#d4af37"><circle cx="345" cy="150" r="6"/><circle cx="345" cy="180" r="8"/></g>
+<g font-size="11" fill="#fff"><text x="358" y="154">D16 (6th)</text><text x="358" y="184" fill="#ffd166" font-weight="bold">D17 (7th)</text></g>
+<circle cx="345" cy="180" r="18" fill="none" stroke="#2a9d3a" stroke-width="3" stroke-dasharray="5 3"/>
+<text x="405" y="280" font-size="11" fill="#fff" text-anchor="middle">ESP32 left side</text>
+
+<!-- instructions -->
+<g font-size="13" fill="#222">
+<text x="520" y="80" font-weight="bold" fill="#e33">1. Power AT the sensor (red circles)</text>
+<text x="532" y="100">Adapter in the wall + ESP32 USB in. Meter <tspan font-weight="bold">V⎓20</tspan>.</text>
+<text x="532" y="118">Probes on the <tspan font-weight="bold">Vcc</tspan> and <tspan font-weight="bold">Gnd</tspan> solder blobs.</text>
+<text x="532" y="138"><tspan font-weight="bold">≈ 5 V</tspan> → power OK, go to 2.</text>
+<text x="532" y="156"><tspan font-weight="bold">0 V</tspan> → check: yellow in LEFT + rail r25 (inner),</text>
+<text x="546" y="174">violet in LEFT − rail r24 (outer), and that the</text>
+<text x="546" y="192">LEFT rails themselves show 5 V at row 25.</text>
+
+<text x="520" y="232" font-weight="bold" fill="#2a9d3a">2. Trig wire (green dashed), UNPLUGGED</text>
+<text x="532" y="252">Meter <tspan font-weight="bold">Ω 200</tspan>: sensor <tspan font-weight="bold">Trig</tspan> blob ↔ ESP32 <tspan font-weight="bold">D17</tspan> pin</text>
+<text x="532" y="270">(7th pin from the top, LEFT side) → near 0?</text>
+<text x="532" y="288">OL → blue wire not in <tspan font-weight="bold">f25</tspan>, or a taped joint loose.</text>
+
+<text x="520" y="328" font-weight="bold" fill="#c77c00">3. Probe plug (orange circle)</text>
+<text x="532" y="348">Is the black probe-head cable's plug pushed</text>
+<text x="532" y="366">fully into the blue board?</text>
+
+<text x="520" y="406" font-weight="bold">4. Program running?</text>
+<text x="532" y="426">The Serial Monitor shows "no echo" lines,</text>
+<text x="532" y="444">so gate2_ultrasonic IS running ✓.</text>
+</g>
+<text x="40" y="350" font-size="12" fill="#555">The garbage characters at the top of your log are normal start-up noise.</text>
+<text x="40" y="370" font-size="12" fill="#555">Silent + "no echo" means the sensor isn't firing: no power, or no Trig pulse arriving.</text>
+</svg>
