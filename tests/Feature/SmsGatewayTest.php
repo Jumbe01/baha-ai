@@ -57,6 +57,18 @@ class SmsGatewayTest extends TestCase
         $this->assertTrue($gateway->isLive());
     }
 
+    public function test_allowlist_only_texts_listed_numbers(): void
+    {
+        Http::fake(['api.semaphore.co/*' => Http::response([['message_id' => 1]])]);
+        $gateway = new SemaphoreSmsGateway(apiKey: 'test-key', allowlist: ['+63 917 000 0001']);
+
+        $this->assertSame('simulated', $gateway->send('09170000002', 'hi')->status);
+        Http::assertNothingSent();
+
+        $this->assertSame('sent', $gateway->send('09170000001', 'hi')->status);
+        Http::assertSent(fn ($request) => $request['number'] === '639170000001');
+    }
+
     public function test_semaphore_is_not_used_without_a_key(): void
     {
         config([

@@ -64,6 +64,9 @@ return [
     'sms' => [
         'gateway' => env('SMS_GATEWAY', 'log'),
 
+        // Comma-separated numbers; when set, only these receive real SMS.
+        'allowlist' => array_values(array_filter(array_map('trim', explode(',', (string) env('SMS_ALLOWLIST', ''))))),
+
         'semaphore' => [
             'key' => env('SEMAPHORE_API_KEY'),
             'sender_name' => env('SEMAPHORE_SENDER_NAME'),

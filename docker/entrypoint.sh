@@ -52,6 +52,12 @@ set_env MAIL_PORT         "${MAIL_PORT:-1025}"
 set_env MAIL_FROM_ADDRESS "${MAIL_FROM_ADDRESS:-alerts@bahaai.test}"
 set_env MAIL_FROM_NAME    "\"${MAIL_FROM_NAME:-BahaAI}\""
 
+# SMS (Semaphore). SMS_ALLOWLIST limits real texts to the listed numbers.
+set_env SMS_GATEWAY           "${SMS_GATEWAY:-log}"
+set_env SEMAPHORE_API_KEY     "${SEMAPHORE_API_KEY:-}"
+set_env SEMAPHORE_SENDER_NAME "${SEMAPHORE_SENDER_NAME:-}"
+set_env SMS_ALLOWLIST         "${SMS_ALLOWLIST:-}"
+
 # ------------------------------------------------------------
 # 3. Generate an application key if one is not set yet. (This is
 #    also the first artisan call, which rebuilds the package

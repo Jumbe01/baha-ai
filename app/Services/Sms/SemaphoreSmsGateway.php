@@ -14,14 +14,25 @@ use Throwable;
  */
 class SemaphoreSmsGateway implements SmsGateway
 {
+    /**
+     * @param  list<string>  $allowlist  When non-empty, ONLY these numbers are
+     *                                   texted (any format); everyone else is
+     *                                   logged as simulated. Protects credits.
+     */
     public function __construct(
         private string $apiKey,
         private ?string $senderName = null,
         private string $endpoint = 'https://api.semaphore.co/api/v4/messages',
+        private array $allowlist = [],
     ) {}
 
     public function send(string $mobile, string $message): SmsResult
     {
+        if ($this->allowlist !== []
+            && ! in_array($this->normalise($mobile), array_map($this->normalise(...), $this->allowlist), true)) {
+            return SmsResult::simulated();
+        }
+
         try {
             $response = Http::asForm()
                 ->timeout(15)

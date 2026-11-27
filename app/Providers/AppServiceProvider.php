@@ -28,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
                 return new SemaphoreSmsGateway(
                     apiKey: $key,
                     senderName: config('services.sms.semaphore.sender_name'),
+                    allowlist: config('services.sms.allowlist'),
                 );
             }
 

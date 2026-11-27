@@ -57,6 +57,13 @@ services:
       MAIL_PORT: 1025
       MAIL_FROM_ADDRESS: "${MAIL_FROM_ADDRESS:-alerts@bahaai.test}"
       MAIL_FROM_NAME: "${APP_NAME:-BahaAI}"
+
+      # SMS — "log" records only. Set SMS_GATEWAY=semaphore + key for real texts;
+      # SMS_ALLOWLIST (comma-separated) limits them to those numbers.
+      SMS_GATEWAY: "${SMS_GATEWAY:-log}"
+      SEMAPHORE_API_KEY: "${SEMAPHORE_API_KEY:-}"
+      SEMAPHORE_SENDER_NAME: "${SEMAPHORE_SENDER_NAME:-}"
+      SMS_ALLOWLIST: "${SMS_ALLOWLIST:-}"
     depends_on:
       db:
         condition: service_healthy
