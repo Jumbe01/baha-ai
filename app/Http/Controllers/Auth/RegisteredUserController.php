@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
@@ -34,16 +35,21 @@ class RegisteredUserController extends Controller
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'mobile' => 'nullable|string|max:20',
-            'role' => 'nullable|string|in:resident,staff,responder',
             'address' => 'nullable|string|max:255',
-            'barangay' => 'nullable|string|max:255',
+            // Service area: residents of Consolacion only.
+            'barangay' => ['required', Rule::in(config('consolacion.barangays'))],
+        ], [
+            'barangay.required' => 'Select your barangay in Consolacion.',
+            'barangay.in' => 'BahaAI currently serves residents of Consolacion only.',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->input('role', 'resident') ?? 'resident',
+            // Public sign-up always creates a resident. Staff/admin accounts are
+            // created by an admin; a self-chosen role would be privilege escalation.
+            'role' => 'resident',
             'mobile' => $request->mobile,
             'address' => $request->address,
             'barangay' => $request->barangay,

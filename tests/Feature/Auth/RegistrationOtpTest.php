@@ -24,6 +24,7 @@ class RegistrationOtpTest extends TestCase
             'email' => 'test@example.com',
             'password' => 'password123',
             'password_confirmation' => 'password123',
+            'barangay' => 'Tayud',
         ]);
 
         $response->assertRedirect(route('verification.otp'));

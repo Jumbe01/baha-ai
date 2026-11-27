@@ -45,4 +45,6 @@ export type PageProps<
         user: User;
     };
     flash: FlashMessages;
+    /** Consolacion barangays, shared from config/consolacion.php. */
+    barangays: string[];
 };

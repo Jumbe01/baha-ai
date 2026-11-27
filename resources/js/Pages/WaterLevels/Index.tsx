@@ -6,9 +6,9 @@ import StatCard from '@/Components/StatCard';
 import StatusBadge from '@/Components/StatusBadge';
 import { cn } from '@/lib/utils';
 import { riskToStatus, statusStyle } from '@/lib/status';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, usePoll } from '@inertiajs/react';
 import { AlertTriangle, Droplet, Radio, RefreshCw, Siren, Waves } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 interface Sensor {
     id: number;
@@ -27,10 +27,7 @@ export default function WaterLevelsIndex({ sensors }: { sensors: Sensor[] }) {
     const [zone, setZone] = useState('all');
 
     // Live auto-refresh every 15s.
-    useEffect(() => {
-        const id = setInterval(() => router.reload({ only: ['sensors'] }), 15000);
-        return () => clearInterval(id);
-    }, []);
+    usePoll(15000, { only: ['sensors'] });
 
     const zones = useMemo(() => Array.from(new Set(sensors.map((s) => s.flood_zone))).sort(), [sensors]);
     const filtered = zone === 'all' ? sensors : sensors.filter((s) => s.flood_zone === zone);

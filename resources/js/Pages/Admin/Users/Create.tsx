@@ -3,18 +3,13 @@ import IconInput from '@/Components/IconInput';
 import InputError from '@/Components/InputError';
 import PageHeader from '@/Components/PageHeader';
 import SectionCard from '@/Components/SectionCard';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Lock, Mail, Phone, User } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
-const BARANGAYS = [
-    'Cabangahan', 'Canjulao', 'Casili', 'Consolacion Poblacion',
-    'Danglag', 'Garing', 'Jugan', 'Lamac', 'Lanipga',
-    'Nangka', 'Panas', 'Panoypoy', 'Pitogo', 'Sacsac',
-    'Tayud', 'Tilhaong', 'Tolotolo', 'Tugbongan',
-];
 
 export default function Create() {
+    const BARANGAYS = usePage().props.barangays;
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         email: '',

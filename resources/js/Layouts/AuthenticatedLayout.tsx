@@ -1,4 +1,5 @@
 import Logo from '@/Components/Logo';
+import { useNow, useOnline } from '@/hooks/useBrowserState';
 import { cn } from '@/lib/utils';
 import { Link, usePage } from '@inertiajs/react';
 import {
@@ -69,7 +70,7 @@ export default function AuthenticatedLayout({
     const roleLabel = ROLE_LABELS[user.role] ?? user.role;
     const location = user.location ?? 'Set your location';
 
-    const now = new Date();
+    const online = useOnline();
 
     return (
         <div className="min-h-screen bg-slate-50">
@@ -137,9 +138,9 @@ export default function AuthenticatedLayout({
                             <p className="truncate text-sm font-semibold text-white">{user.name}</p>
                             <p className="truncate text-xs text-slate-400">{roleLabel}</p>
                         </div>
-                        <span className="flex items-center gap-1 text-[11px] text-emerald-400">
-                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                            Online
+                        <span className={cn('flex items-center gap-1 text-[11px]', online ? 'text-emerald-400' : 'text-slate-400')}>
+                            <span className={cn('h-1.5 w-1.5 rounded-full', online ? 'bg-emerald-400' : 'bg-slate-400')} />
+                            {online ? 'Online' : 'Offline'}
                         </span>
                     </Link>
 
@@ -191,20 +192,28 @@ export default function AuthenticatedLayout({
                             )}
                         </Link>
                         <div className="hidden items-center gap-3 border-l border-slate-200 pl-4 text-right sm:flex">
-                            <div>
-                                <p className="text-xs font-medium text-slate-900">
-                                    {now.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
-                                </p>
-                                <p className="text-xs text-slate-400">
-                                    {now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
-                                </p>
-                            </div>
+                            <HeaderClock />
                         </div>
                     </div>
                 </header>
 
                 <main className="p-4 sm:p-6 lg:p-8">{children}</main>
             </div>
+        </div>
+    );
+}
+
+/** Own component so the 1 s tick re-renders only the clock, not the whole layout. */
+function HeaderClock() {
+    const now = useNow(1000);
+    return (
+        <div>
+            <p className="text-xs font-medium text-slate-900">
+                {now.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+            </p>
+            <p className="text-xs text-slate-400">
+                {now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
+            </p>
         </div>
     );
 }

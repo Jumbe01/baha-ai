@@ -6,8 +6,8 @@ import StatusBadge from '@/Components/StatusBadge';
 import WaterGauge from '@/Components/WaterGauge';
 import { cn } from '@/lib/utils';
 import { riskToStatus } from '@/lib/status';
-import { Head, Link, router } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import { Head, Link, router, usePoll } from '@inertiajs/react';
+import { useState } from 'react';
 import { ArrowLeft, CloudRain, Droplets, MapPin, Thermometer } from 'lucide-react';
 import {
     Area,
@@ -63,13 +63,7 @@ export default function Show({ sensor, readings, hours }: Props) {
 
     // Live view: re-fetch every 5 s (the node posts every 15 s).
     const [updatedAt, setUpdatedAt] = useState(() => new Date());
-    useEffect(() => {
-        const id = setInterval(
-            () => router.reload({ only: ['sensor', 'readings'], onSuccess: () => setUpdatedAt(new Date()) }),
-            5000,
-        );
-        return () => clearInterval(id);
-    }, []);
+    usePoll(5000, { only: ['sensor', 'readings'], onSuccess: () => setUpdatedAt(new Date()) });
 
     const fmt = (v: number | null, digits: number) => (v === null ? '--' : v.toFixed(digits));
     const latestReading = readings.length > 0 ? readings[readings.length - 1] : null;

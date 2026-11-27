@@ -1,26 +1,20 @@
 import AuthSplitLayout from '@/Layouts/AuthSplitLayout';
 import IconInput from '@/Components/IconInput';
 import InputError from '@/Components/InputError';
-import { cn } from '@/lib/utils';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { ArrowLeft, Lock, Mail, MapPin, Phone, User, UserPlus } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
-const USER_TYPES = [
-    { value: 'resident', label: 'Citizen / Resident' },
-    { value: 'staff', label: 'LGU / Officer' },
-    { value: 'responder', label: 'Responder / Volunteer' },
-];
-
 export default function Register() {
+    const { barangays } = usePage().props;
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
         mobile: '',
         password: '',
         password_confirmation: '',
-        role: 'resident',
         address: '',
+        barangay: '',
         terms: false as boolean,
     });
 
@@ -116,31 +110,25 @@ export default function Register() {
                 </div>
 
                 <div>
-                    <p className="mb-2 text-sm font-semibold text-slate-700">User Type</p>
-                    <div className="grid gap-3 sm:grid-cols-3">
-                        {USER_TYPES.map((t) => (
-                            <label
-                                key={t.value}
-                                className={cn(
-                                    'flex cursor-pointer items-center gap-2.5 rounded-xl border px-4 py-3 text-sm font-medium transition-colors',
-                                    data.role === t.value
-                                        ? 'border-brand-500 bg-brand-50 text-brand-700'
-                                        : 'border-slate-300 text-slate-600 hover:bg-slate-50',
-                                )}
-                            >
-                                <input
-                                    type="radio"
-                                    name="role"
-                                    value={t.value}
-                                    checked={data.role === t.value}
-                                    onChange={(e) => setData('role', e.target.value)}
-                                    className="h-4 w-4 border-slate-300 text-brand-600 focus:ring-brand-500"
-                                />
-                                {t.label}
-                            </label>
+                    <label htmlFor="barangay" className="mb-1.5 block text-sm font-semibold text-slate-700">
+                        Barangay (Consolacion, Cebu)
+                    </label>
+                    <select
+                        id="barangay"
+                        value={data.barangay}
+                        onChange={(e) => setData('barangay', e.target.value)}
+                        required
+                        className="h-12 w-full rounded-xl border-slate-300 text-slate-900 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
+                    >
+                        <option value="">Select your barangay</option>
+                        {barangays.map((b) => (
+                            <option key={b} value={b}>{b}</option>
                         ))}
-                    </div>
-                    <InputError message={errors.role} className="mt-1.5" />
+                    </select>
+                    <p className="mt-1.5 text-xs text-slate-500">
+                        BahaAI serves residents of Consolacion only. Flood alerts are sent for your barangay.
+                    </p>
+                    <InputError message={errors.barangay} className="mt-1.5" />
                 </div>
 
                 <label className="flex items-start gap-2.5 text-sm text-slate-600">

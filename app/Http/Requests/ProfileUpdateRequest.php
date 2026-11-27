@@ -26,7 +26,7 @@ class ProfileUpdateRequest extends FormRequest
             ],
             'mobile' => ['nullable', 'string', 'max:20'],
             'address' => ['nullable', 'string', 'max:500'],
-            'barangay' => ['nullable', 'string', 'max:255'],
+            'barangay' => ['nullable', Rule::in(config('consolacion.barangays'))],
             'latitude' => ['nullable', 'numeric', 'between:-90,90'],
             'longitude' => ['nullable', 'numeric', 'between:-180,180'],
             'notification_preference' => ['nullable', 'array'],

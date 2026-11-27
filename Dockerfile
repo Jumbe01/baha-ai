@@ -7,17 +7,15 @@ FROM node:20-bookworm AS frontend
 
 WORKDIR /app
 
-# Install node dependencies (legacy-peer-deps required due to Vite 8 peer range)
+# Install node dependencies exactly as locked
 COPY package.json package-lock.json ./
-RUN npm install --legacy-peer-deps
+RUN npm ci
 
-# Copy the sources Vite needs and build the production bundle.
-# We call `vite build` directly (not `npm run build`) to skip the `tsc`
-# type-check step, which would require dev-only type packages.
+# Copy the sources, type-check, then build the production bundle.
 COPY vite.config.js tsconfig.json tailwind.config.js postcss.config.js ./
 COPY resources ./resources
 COPY public ./public
-RUN npx vite build
+RUN npx tsc --noEmit -p tsconfig.json && npx vite build
 
 
 # ============================================================

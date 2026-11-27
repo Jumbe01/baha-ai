@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import { riskToStatus, statusStyle } from '@/lib/status';
+import { el } from '@/lib/dom';
 
 interface FloodMapProps {
     center: { lat: number; lng: number };
@@ -11,10 +13,13 @@ interface FloodMapProps {
 const RISK_FILL_COLOR: maplibregl.ExpressionSpecification = [
     'match',
     ['get', 'risk'],
-    'critical', '#ef4444',
-    'warning', '#eab308',
-    'safe', '#22c55e',
-    '#94a3b8',
+    'critical', statusStyle('critical').hex,
+    'high', statusStyle('critical').hex,
+    'warning', statusStyle('warning').hex,
+    'moderate', statusStyle('moderate').hex,
+    'safe', statusStyle('safe').hex,
+    'normal', statusStyle('safe').hex,
+    statusStyle('neutral').hex,
 ];
 
 export default function FloodMap({ center, geojsonUrl, sensorsUrl }: FloodMapProps) {
@@ -96,24 +101,21 @@ export default function FloodMap({ center, geojsonUrl, sensorsUrl }: FloodMapPro
                 const props = feature.properties as Record<string, string>;
                 const coords = (feature.geometry as GeoJSON.Point).coordinates.slice() as [number, number];
 
-                const riskColor =
-                    props.risk === 'critical' ? '#ef4444' : props.risk === 'warning' ? '#eab308' : '#22c55e';
+                const riskColor = statusStyle(riskToStatus(props.risk)).hex;
 
-                const html = `
-                    <div style="font-family: system-ui; min-width: 180px;">
-                        <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">${props.name}</div>
-                        <div style="font-size: 12px; color: #6b7280; margin-bottom: 6px;">${props.flood_zone} · ${props.barangay}</div>
-                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
-                            <span style="background: ${riskColor}; color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">${props.risk}</span>
-                            <span style="font-size: 16px; font-weight: 700;">${Number(props.water_level).toFixed(2)}m</span>
-                        </div>
-                    </div>
-                `;
+                const content = el('div', 'font-family: system-ui; min-width: 180px;', null, [
+                    el('div', 'font-weight: 600; font-size: 14px; margin-bottom: 4px;', props.name),
+                    el('div', 'font-size: 12px; color: #6b7280; margin-bottom: 6px;', `${props.flood_zone} · ${props.barangay}`),
+                    el('div', 'display: flex; align-items: center; gap: 6px; margin-bottom: 4px;', null, [
+                        el('span', `background: ${riskColor}; color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;`, props.risk),
+                        el('span', 'font-size: 16px; font-weight: 700;', `${Number(props.water_level).toFixed(2)}m`),
+                    ]),
+                ]);
 
                 popupRef.current?.remove();
                 popupRef.current = new maplibregl.Popup({ closeButton: true })
                     .setLngLat(coords)
-                    .setHTML(html)
+                    .setDOMContent(content)
                     .addTo(map);
             });
 

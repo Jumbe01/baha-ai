@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -31,11 +32,16 @@ class LocationController extends Controller
      */
     public function update(Request $request): RedirectResponse
     {
+        $b = config('consolacion.bounds');
         $validated = $request->validate([
             'address' => 'nullable|string|max:255',
-            'barangay' => 'nullable|string|max:255',
-            'latitude' => 'nullable|numeric|between:-90,90',
-            'longitude' => 'nullable|numeric|between:-180,180',
+            'barangay' => ['nullable', Rule::in(config('consolacion.barangays'))],
+            'latitude' => "nullable|numeric|between:{$b['lat_min']},{$b['lat_max']}",
+            'longitude' => "nullable|numeric|between:{$b['lng_min']},{$b['lng_max']}",
+        ], [
+            'barangay.in' => 'BahaAI currently serves residents of Consolacion only.',
+            'latitude.between' => 'Your detected location is outside Consolacion.',
+            'longitude.between' => 'Your detected location is outside Consolacion.',
         ]);
 
         $request->user()->update($validated);

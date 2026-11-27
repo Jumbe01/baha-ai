@@ -2,16 +2,10 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import InputError from '@/Components/InputError';
 import PageHeader from '@/Components/PageHeader';
 import SectionCard from '@/Components/SectionCard';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { MapPin } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
-const BARANGAYS = [
-    'Cabangahan', 'Canjulao', 'Casili', 'Consolacion Poblacion',
-    'Danglag', 'Garing', 'Jugan', 'Lamac', 'Lanipga',
-    'Nangka', 'Panas', 'Panoypoy', 'Pitogo', 'Sacsac',
-    'Tayud', 'Tilhaong', 'Tolotolo', 'Tugbongan',
-];
 
 const inputClass =
     'h-11 w-full rounded-xl border border-slate-300 px-3.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30';
@@ -30,6 +24,7 @@ interface FloodZone {
 }
 
 export default function Edit({ floodZone }: { floodZone: FloodZone }) {
+    const BARANGAYS = usePage().props.barangays;
     const { data, setData, put, processing, errors } = useForm({
         name: floodZone.name,
         description: floodZone.description || '',

@@ -8,24 +8,36 @@ import WaterGauge from '@/Components/WaterGauge';
 import { cn } from '@/lib/utils';
 import { riskToStatus, statusStyle } from '@/lib/status';
 import ReportFloodModal from '@/Components/ReportFloodModal';
-import { Head, Link, router, usePage } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import FloodMap from '@/Components/Map/FloodMap';
+import { useNow, useOnline } from '@/hooks/useBrowserState';
+import { Head, Link, router, usePage, usePoll } from '@inertiajs/react';
+import { useState } from 'react';
 import {
     AlertTriangle,
     BrainCircuit,
-    Camera,
+    Flag,
     CloudLightning,
     CloudRain,
     Droplets,
-    Gauge,
     Home,
     Phone,
     Share2,
     Siren,
-    Thermometer,
     Wind,
 } from 'lucide-react';
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+
+const POLL_MS = 15000;
+
+// Same centre the full Flood Map page gets from MapController.
+const MAP_CENTER = { lat: 10.3667, lng: 123.9567 };
+
+// The three tiers the map actually colours.
+const RISK_LEGEND = [
+    ['critical', 'Critical'],
+    ['warning', 'Warning'],
+    ['safe', 'Safe'],
+] as const;
 
 interface Stats {
     activeSensors: number;
@@ -77,13 +89,13 @@ export default function Dashboard({ stats, floodZones, recentReadings }: Props) 
             onFinish: () => setSimulating(false),
         });
 
-    // Live auto-refresh: pull fresh data every 15s without a full page reload.
-    useEffect(() => {
-        const id = setInterval(() => {
-            router.reload({ only: ['stats', 'floodZones', 'recentReadings', 'unreadNotifications'] });
-        }, 15000);
-        return () => clearInterval(id);
-    }, []);
+    // Live auto-refresh every 15s without a full page reload; usePoll throttles
+    // itself while the tab is hidden.
+    const [lastRefresh, setLastRefresh] = useState(() => new Date());
+    usePoll(POLL_MS, {
+        only: ['stats', 'floodZones', 'recentReadings', 'unreadNotifications'],
+        onSuccess: () => setLastRefresh(new Date()),
+    });
 
     const { critical, warning, safe } = stats.riskCounts;
     const stationsAtRisk = warning + critical;
@@ -129,13 +141,7 @@ export default function Dashboard({ stats, floodZones, recentReadings }: Props) 
                                 </button>
                             </>
                         )}
-                        <span className="flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-600">
-                            <span className="relative flex h-2 w-2">
-                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-                            </span>
-                            Live
-                        </span>
+                        <LivePill lastRefresh={lastRefresh} />
                     </div>
                 }
             />
@@ -263,22 +269,24 @@ export default function Dashboard({ stats, floodZones, recentReadings }: Props) 
                     flush
                     bodyClassName="p-5 pt-4"
                 >
-                    <Link href={route('map.index')} className="relative block h-64 overflow-hidden rounded-xl bg-slate-100">
-                        <MiniMap />
-                        <div className="absolute right-3 top-3 space-y-1.5 rounded-lg bg-white/90 p-2.5 text-xs shadow">
-                            {[
-                                ['High Risk', 'bg-red-500'],
-                                ['Moderate Risk', 'bg-orange-500'],
-                                ['Low Risk', 'bg-amber-400'],
-                                ['Safe', 'bg-emerald-500'],
-                            ].map(([label, color]) => (
-                                <div key={label} className="flex items-center gap-2">
-                                    <span className={cn('h-2.5 w-2.5 rounded-full', color)} />
+                    <div className="relative h-64 overflow-hidden rounded-xl bg-slate-100">
+                        {/* FloodMap fetches its GeoJSON once on mount; keying on the zone risk
+                            levels remounts it only when a polled risk actually changes. */}
+                        <FloodMap
+                            key={floodZones.map((z) => `${z.id}:${z.risk.level}`).join(',')}
+                            center={MAP_CENTER}
+                            geojsonUrl="/api/map/geojson"
+                            sensorsUrl="/api/map/sensors"
+                        />
+                        <div className="pointer-events-none absolute bottom-3 left-3 z-10 space-y-1.5 rounded-lg bg-white/90 p-2.5 text-xs shadow">
+                            {RISK_LEGEND.map(([level, label]) => (
+                                <div key={level} className="flex items-center gap-2">
+                                    <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: statusStyle(level).hex }} />
                                     <span className="text-slate-600">{label}</span>
                                 </div>
                             ))}
                         </div>
-                    </Link>
+                    </div>
                 </SectionCard>
             </div>
 
@@ -329,16 +337,15 @@ export default function Dashboard({ stats, floodZones, recentReadings }: Props) 
                             <p className="text-sm text-slate-500">{rainWord}</p>
                         </div>
                     </div>
-                    <div className="mt-4 grid grid-cols-3 gap-3 text-center">
+                    <div className="mt-4 grid grid-cols-2 gap-3 text-center">
                         <WeatherMetric icon={Droplets} label="Humidity" value={stats.avgHumidity != null ? `${stats.avgHumidity}%` : '--'} />
                         <WeatherMetric icon={CloudRain} label="Rain 24h" value={rainfall > 0 ? `${rainfall}mm` : '--'} />
-                        <WeatherMetric icon={Thermometer} label="Feels" value={stats.avgTemperature != null ? `${stats.avgTemperature}°` : '--'} />
                     </div>
                 </SectionCard>
 
                 <SectionCard title="Quick Actions">
                     <div className="grid grid-cols-2 gap-3">
-                        <QuickAction icon={Camera} label="Report Flood" onClick={() => setReportOpen(true)} tone="info" />
+                        <QuickAction icon={Flag} label="Report Flood" onClick={() => setReportOpen(true)} tone="info" />
                         <QuickAction icon={Home} label="Evacuation Centers" href={route('evacuation.index')} tone="safe" />
                         <QuickAction icon={Phone} label="Emergency Hotline" href={route('help.index')} tone="critical" />
                         <QuickAction icon={Share2} label="Share Location" href={route('location.select')} tone="moderate" />
@@ -380,23 +387,31 @@ function QuickAction({ icon: Icon, label, href, onClick, tone }: { icon: typeof 
     return <Link href={href!} className={className}>{content}</Link>;
 }
 
-/** Stylized mini flood-risk map for the dashboard preview. */
-function MiniMap() {
+/**
+ * Shows the time of the last successful poll. Pulses only while refreshes are
+ * landing; "Stale" after two missed intervals, "Offline" when the browser has no network.
+ */
+function LivePill({ lastRefresh }: { lastRefresh: Date }) {
+    const now = useNow(1000);
+    const online = useOnline();
+    const stale = now.getTime() - lastRefresh.getTime() > POLL_MS * 2;
+    const state = !online ? 'offline' : stale ? 'stale' : 'live';
+    const tone = {
+        live: { pill: 'bg-emerald-50 text-emerald-600', dot: 'bg-emerald-500', label: 'Live' },
+        stale: { pill: 'bg-amber-50 text-amber-700', dot: 'bg-amber-500', label: 'Stale' },
+        offline: { pill: 'bg-slate-100 text-slate-600', dot: 'bg-slate-400', label: 'Offline' },
+    }[state];
+
     return (
-        <svg viewBox="0 0 400 260" className="h-full w-full" preserveAspectRatio="xMidYMid slice">
-            <rect width="400" height="260" fill="#e8edf2" />
-            <rect x="0" y="0" width="140" height="90" fill="#dfeadd" />
-            <rect x="280" y="150" width="120" height="110" fill="#dfeadd" />
-            <path d="M-10 60 C90 90 130 30 210 80 S360 160 410 130" stroke="#9cc6e8" strokeWidth="26" fill="none" opacity="0.8" />
-            <g>
-                <circle cx="200" cy="120" r="70" fill="#f59e0b" opacity="0.25" />
-                <circle cx="200" cy="120" r="45" fill="#f97316" opacity="0.3" />
-                <circle cx="200" cy="120" r="24" fill="#ef4444" opacity="0.35" />
-            </g>
-            <g stroke="#ffffff" strokeWidth="4" opacity="0.8">
-                <line x1="0" y1="180" x2="400" y2="200" />
-                <line x1="150" y1="0" x2="210" y2="260" />
-            </g>
-        </svg>
+        <span
+            className={cn('flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold', tone.pill)}
+            title="Time of the last successful data refresh"
+        >
+            <span className="relative flex h-2 w-2">
+                {state === 'live' && <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />}
+                <span className={cn('relative inline-flex h-2 w-2 rounded-full', tone.dot)} />
+            </span>
+            {tone.label} · {lastRefresh.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+        </span>
     );
 }

@@ -25,6 +25,8 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            // Consolacion barangays (config/consolacion.php) for every barangay picker.
+            'barangays' => config('consolacion.barangays'),
             'unreadNotifications' => fn () => $request->user()
                 ? AlertRecipient::where('user_id', $request->user()->id)->whereNull('read_at')->count()
                 : 0,

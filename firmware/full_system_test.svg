@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 640" font-family="Arial, sans-serif">
+<rect width="1060" height="640" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Full system test with baha_node (pump + servo missing: their relays still click)</text>
+
+<!-- step boxes -->
+<g font-size="13" fill="#222">
+<rect x="20" y="44" width="330" height="190" rx="8" fill="#eef5ff" stroke="#9bbbe6"/>
+<text x="34" y="68" font-weight="bold">1. Upload</text>
+<text x="46" y="90">• Adapter in the wall (rails 5 V).</text>
+<text x="46" y="110">• ESP32 USB-C to the laptop.</text>
+<text x="46" y="130">• secrets.h: Wi-Fi name + password of</text>
+<text x="60" y="148">a network WITH internet.</text>
+<text x="46" y="168">• Open baha_node → Upload.</text>
+<text x="46" y="188">• Serial Monitor 115200.</text>
+<text x="46" y="214" fill="#555" font-size="12">Pump/servo unplugged = fine.</text>
+
+<rect x="365" y="44" width="330" height="190" rx="8" fill="#eefaf0" stroke="#9fd2a8"/>
+<text x="379" y="68" font-weight="bold">2. Serial Monitor should show</text>
+<text x="391" y="92" font-family="Courier New, monospace" font-size="12">Connected, IP …</text>
+<text x="391" y="112" font-family="Courier New, monospace" font-size="12">distance 0.xxx m | level …</text>
+<text x="391" y="128" font-family="Courier New, monospace" font-size="12">  | 2x.x C | xx.x % | rain 0 %</text>
+<text x="391" y="148" font-family="Courier New, monospace" font-size="12">POST -&gt; HTTP 201</text>
+<text x="391" y="176">Every 15 s a new line.</text>
+<text x="391" y="196">Wet the rain plate with a finger →</text>
+<text x="405" y="214">rain % jumps above 0.</text>
+
+<rect x="710" y="44" width="330" height="190" rx="8" fill="#fff8ea" stroke="#e5c789"/>
+<text x="724" y="68" font-weight="bold">3. Website</text>
+<text x="736" y="90">baha-ai.tech/water-levels/144</text>
+<text x="736" y="110">→ Live feed: same numbers appear.</text>
+<text x="736" y="138" font-weight="bold">Manual control (Actuation page)</text>
+<text x="736" y="158">Test Tank Siren → ON → beeps ≤ 5 s</text>
+<text x="736" y="178">Test Tank Floodgate → ON → K3 clicks</text>
+<text x="736" y="198">Then set both back to AUTO.</text>
+<text x="736" y="218" fill="#555" font-size="12">(F5 on the Actuation page to refresh)</text>
+</g>
+
+<!-- hand test -->
+<text x="20" y="272" font-size="15" font-weight="bold">4. Automatic flood test with your hand (level = 62 cm − distance)</text>
+<!-- sensor -->
+<rect x="80" y="300" width="90" height="24" rx="4" fill="#1f6fd1"/>
+<circle cx="105" cy="336" r="12" fill="#ccc" stroke="#777"/><circle cx="145" cy="336" r="12" fill="#ccc" stroke="#777"/>
+<text x="125" y="294" font-size="12" text-anchor="middle" font-weight="bold">HC-SR04 facing DOWN</text>
+<!-- distance scale 1 cm = 4 px from y=348 -->
+<line x1="125" y1="348" x2="125" y2="600" stroke="#bbb" stroke-dasharray="4 4"/>
+<g font-size="12">
+<rect x="200" y="420" width="120" height="14" rx="6" fill="#f2c9a8" stroke="#b5835a"/>
+<text x="330" y="432"><tspan font-weight="bold">hand at ~40 cm</tspan> → level ≈ 0.22 m → <tspan font-weight="bold" fill="#c98a00">WARNING</tspan>: siren ON</text>
+<rect x="200" y="380" width="120" height="14" rx="6" fill="#f2c9a8" stroke="#b5835a"/>
+<text x="330" y="392"><tspan font-weight="bold">hand at ~30 cm</tspan> → level ≈ 0.32 m → <tspan font-weight="bold" fill="#c0392b">CRITICAL</tspan>: + pump relay (K1) + floodgate relay (K3)</text>
+<rect x="200" y="560" width="120" height="14" rx="6" fill="#ddd" stroke="#999"/>
+<text x="330" y="572"><tspan font-weight="bold">nothing closer than ~62 cm</tspan> (floor/ceiling far away) → level ≈ 0 → SAFE: all off</text>
+</g>
+<g font-size="12.5" fill="#222">
+<text x="330" y="470">• Hold your hand still for ~20 s: a reading posts every 15 s,</text>
+<text x="344" y="488">and the relays follow within ~5 s after that.</text>
+<text x="330" y="510">• Each WARNING/CRITICAL creates an alert → email in inbox.baha-ai.tech,</text>
+<text x="344" y="528">SMS shows as "simulated" (Semaphore parked).</text>
+<text x="330" y="608" fill="#555">Paste me the Serial Monitor lines from step 2 and tell me what clicked in step 4.</text>
+</g>
+</svg>

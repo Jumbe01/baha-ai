@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { statusStyle } from '@/lib/status';
 
 interface WaterGaugeProps {
     value: number;
@@ -20,12 +21,15 @@ export default function WaterGauge({
     className,
 }: WaterGaugeProps) {
     const pct = Math.min(Math.max((value / max) * 100, 0), 100);
+    const warningHex = statusStyle('warning').hex;
+    const criticalHex = statusStyle('critical').hex;
+    // Below warning the fill stays water-blue (info), not "safe" green.
     const fill =
         critical != null && value >= critical
-            ? 'bg-red-500'
+            ? criticalHex
             : warning != null && value >= warning
-              ? 'bg-amber-500'
-              : 'bg-brand-500';
+              ? warningHex
+              : statusStyle('info').hex;
 
     const ticks = Array.from({ length: 5 }, (_, i) => ((max / 4) * (4 - i)).toFixed(2));
 
@@ -38,14 +42,14 @@ export default function WaterGauge({
             </div>
             <div className="relative h-32 w-12 overflow-hidden rounded-lg border border-slate-200 bg-slate-100">
                 <div
-                    className={cn('absolute inset-x-0 bottom-0 transition-all duration-500', fill)}
-                    style={{ height: `${pct}%` }}
+                    className="absolute inset-x-0 bottom-0 transition-all duration-500"
+                    style={{ height: `${pct}%`, backgroundColor: fill }}
                 />
                 {warning != null && (
-                    <div className="absolute inset-x-0 border-t border-dashed border-amber-500/70" style={{ bottom: `${(warning / max) * 100}%` }} />
+                    <div className="absolute inset-x-0 border-t border-dashed opacity-70" style={{ bottom: `${(warning / max) * 100}%`, borderColor: warningHex }} />
                 )}
                 {critical != null && (
-                    <div className="absolute inset-x-0 border-t border-dashed border-red-500/70" style={{ bottom: `${(critical / max) * 100}%` }} />
+                    <div className="absolute inset-x-0 border-t border-dashed opacity-70" style={{ bottom: `${(critical / max) * 100}%`, borderColor: criticalHex }} />
                 )}
             </div>
         </div>

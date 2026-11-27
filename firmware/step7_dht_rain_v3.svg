@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 680" font-family="Arial, sans-serif">
+<rect width="1060" height="680" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Step 7: 3.3 V bridge E1 + DHT22 + rain plate (everything UNPLUGGED to wire)</text>
+
+<!-- two boards; y = 70 + (r-18)*24 for rows 18..39 -->
+<rect x="40" y="50" width="250" height="560" fill="#f4f4f0" stroke="#bbb"/>
+<rect x="290" y="50" width="420" height="560" fill="#f4f4f0" stroke="#bbb"/>
+<line x1="290" y1="50" x2="290" y2="610" stroke="#999" stroke-dasharray="5 4"/>
+<g font-size="13" font-weight="bold" fill="#555" text-anchor="middle">
+<text x="80" y="44">f</text><text x="115" y="44">g</text><text x="150" y="44">h</text><text x="185" y="44">i</text><text x="220" y="44">j</text>
+<text x="490" y="44">f</text><text x="525" y="44">g</text><text x="560" y="44">h</text><text x="595" y="44">i</text><text x="630" y="44">j</text>
+<text x="665" y="44" fill="#3a7bd5">−</text><text x="690" y="44" fill="#e33">+</text>
+</g>
+<text x="150" y="626" font-size="11" text-anchor="middle" fill="#555">LEFT board (f–j part)</text>
+<text x="560" y="626" font-size="11" text-anchor="middle" fill="#555">RIGHT board (f–j part + rails)</text>
+<line x1="665" y1="56" x2="665" y2="604" stroke="#3a7bd5" stroke-width="3"/>
+<line x1="690" y1="56" x2="690" y2="604" stroke="#e33" stroke-width="3"/>
+<g font-size="12" fill="#555" text-anchor="end" font-weight="bold">
+<text x="34" y="98">19</text><text x="34" y="314">27</text><text x="34" y="338">28</text><text x="34" y="434">32</text><text x="34" y="530">36</text>
+</g>
+
+<!-- ESP32 body across, rows 19-33 -->
+<rect x="210" y="82" width="290" height="372" rx="8" fill="#222"/>
+<g fill="#d4af37"><circle cx="220" cy="94" r="7"/><circle cx="490" cy="310" r="7"/><circle cx="490" cy="334" r="7"/></g>
+<g font-size="11" fill="#fff" font-weight="bold"><text x="232" y="98" fill="#9be7a0">3V3</text><text x="478" y="314" text-anchor="end" fill="#ffd166">D33</text><text x="478" y="338" text-anchor="end" fill="#ffd166">D32</text></g>
+<text x="355" y="270" font-size="14" fill="#fff" text-anchor="middle" font-weight="bold">ESP32</text>
+
+<!-- E1: left f19 -> down left side -> under ESP32 -> right g36 -->
+<polyline points="80,94 60,94 60,560 525,560 525,526" fill="none" stroke="#f39c12" stroke-width="6"/>
+<circle cx="80" cy="94" r="7" fill="#f39c12"/><circle cx="525" cy="526" r="7" fill="#f39c12"/>
+<text x="66" y="300" font-size="13" font-weight="bold" fill="#c77c00" transform="rotate(90 66 300)">E1 (3.3 V): left f19 → right g36</text>
+<text x="300" y="580" font-size="12" fill="#c77c00">run it under the ESP32's bottom end, not over it</text>
+
+<!-- DHT22 -->
+<rect x="860" y="230" width="90" height="110" rx="6" fill="#f5f5f5" stroke="#999"/>
+<text x="905" y="222" font-size="13" text-anchor="middle" font-weight="bold">DHT22</text>
+<g fill="#bbb" stroke="#555"><rect x="868" y="340" width="12" height="14"/><rect x="899" y="340" width="12" height="14"/><rect x="930" y="340" width="12" height="14"/></g>
+<g font-size="12" font-weight="bold" text-anchor="middle"><text x="874" y="372">−</text><text x="905" y="372">out</text><text x="936" y="372">+</text></g>
+<polyline points="905,354 905,390 760,390 760,334 630,334" fill="none" stroke="#27ae60" stroke-width="5"/>
+<polyline points="936,354 936,526 630,526" fill="none" stroke="#f39c12" stroke-width="5"/>
+<polyline points="874,354 874,430 665,430" fill="none" stroke="#111" stroke-width="5"/>
+<circle cx="630" cy="334" r="6" fill="#27ae60"/><circle cx="630" cy="526" r="6" fill="#f39c12"/><circle cx="665" cy="430" r="6" fill="#111"/>
+
+<!-- Rain plate -->
+<rect x="840" y="440" width="120" height="70" rx="4" fill="#d24c3c"/>
+<g stroke="#e8c070" stroke-width="3"><line x1="850" y1="455" x2="950" y2="455"/><line x1="850" y1="470" x2="950" y2="470"/><line x1="850" y1="485" x2="950" y2="485"/><line x1="850" y1="500" x2="950" y2="500"/></g>
+<text x="900" y="432" font-size="13" text-anchor="middle" font-weight="bold">RAIN PLATE</text>
+<polyline points="840,460 790,460 790,310 630,310" fill="none" stroke="#2980b9" stroke-width="5"/>
+<polyline points="840,495 800,495 800,540 595,540 595,526" fill="none" stroke="#e67e22" stroke-width="5"/>
+<circle cx="630" cy="310" r="6" fill="#2980b9"/><circle cx="595" cy="526" r="6" fill="#e67e22"/>
+
+<g font-size="12" font-weight="bold">
+<text x="720" y="304" fill="#2980b9">rain pin 1 → j27</text>
+<text x="720" y="328" fill="#27ae60">DHT out → j28</text>
+<text x="700" y="424">DHT − → − rail r32</text>
+<text x="650" y="520" fill="#c77c00">DHT + → j36</text>
+<text x="604" y="556" fill="#e67e22">rain pin 2 → i36</text>
+</g>
+
+<g font-size="12.5" fill="#222">
+<text x="40" y="650"><tspan font-weight="bold">Wire types:</tspan> E1 = MALE–MALE (long). DHT22 and rain plate = FEMALE–MALE (female on the module pins).</text>
+<text x="40" y="670"><tspan font-weight="bold">Test (Ω 200, unplugged):</tspan> ESP32 3V3 pin ↔ jumper in h36 → near 0.  Then power on, upload <tspan font-weight="bold">gate3_dht22</tspan> → temperature + humidity lines.</text>
+</g>
+</svg>

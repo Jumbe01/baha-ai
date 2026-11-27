@@ -4,16 +4,10 @@ import InfoBanner from '@/Components/InfoBanner';
 import InputError from '@/Components/InputError';
 import PageHeader from '@/Components/PageHeader';
 import SectionCard from '@/Components/SectionCard';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Lock, Mail, Phone, User } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
-const BARANGAYS = [
-    'Cabangahan', 'Canjulao', 'Casili', 'Consolacion Poblacion',
-    'Danglag', 'Garing', 'Jugan', 'Lamac', 'Lanipga',
-    'Nangka', 'Panas', 'Panoypoy', 'Pitogo', 'Sacsac',
-    'Tayud', 'Tilhaong', 'Tolotolo', 'Tugbongan',
-];
 
 interface EditableUser {
     id: number;
@@ -25,6 +19,7 @@ interface EditableUser {
 }
 
 export default function Edit({ user }: { user: EditableUser }) {
+    const BARANGAYS = usePage().props.barangays;
     const { data, setData, put, processing, errors } = useForm({
         name: user.name,
         email: user.email,

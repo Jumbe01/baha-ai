@@ -1,10 +1,13 @@
-export default function MapLegend() {
-    const items = [
-        { color: '#22c55e', label: 'Safe' },
-        { color: '#eab308', label: 'Warning' },
-        { color: '#ef4444', label: 'Critical' },
-    ];
+import { statusStyle } from '@/lib/status';
 
+// The backend only emits safe / warning / critical for zones and sensors.
+const items = [
+    { color: statusStyle('safe').hex, label: 'Safe' },
+    { color: statusStyle('warning').hex, label: 'Warning' },
+    { color: statusStyle('critical').hex, label: 'Critical' },
+];
+
+export default function MapLegend() {
     return (
         <div className="absolute bottom-4 left-4 z-10 rounded-lg border border-gray-200 bg-white/95 p-3 shadow-md backdrop-blur">
             <p className="mb-2 text-xs font-semibold text-gray-700">Risk Level</p>

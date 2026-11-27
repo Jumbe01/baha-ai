@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import { riskToStatus, statusStyle } from '@/lib/status';
+import { el } from '@/lib/dom';
 
 interface FloodedZone {
     id: number;
@@ -77,20 +79,22 @@ export default function EvacuationMap({ center, floodedZones, evacuationCenter }
 
             // Flooded zone markers
             floodedZones.forEach((zone) => {
-                const color = zone.risk === 'critical' ? '#ef4444' : '#eab308';
-                const el = document.createElement('div');
-                el.style.cssText = `width:18px;height:18px;border-radius:50%;background:${color};border:3px solid white;box-shadow:0 0 0 2px ${color};`;
+                // Every zone here is flooded, so an unknown risk still shows as warning.
+                const level = riskToStatus(zone.risk);
+                const color = statusStyle(level === 'neutral' ? 'warning' : level).hex;
+                const markerEl = document.createElement('div');
+                markerEl.style.cssText = `width:18px;height:18px;border-radius:50%;background:${color};border:3px solid white;box-shadow:0 0 0 2px ${color};`;
 
-                new maplibregl.Marker({ element: el })
+                new maplibregl.Marker({ element: markerEl })
                     .setLngLat([zone.center.lng, zone.center.lat])
                     .setPopup(
-                        new maplibregl.Popup().setHTML(`
-                            <div style="font-family: system-ui; min-width: 160px;">
-                                <div style="font-weight:600;font-size:13px;">${zone.name}</div>
-                                <div style="font-size:11px;color:#6b7280;">${zone.barangay}</div>
-                                <div style="margin-top:4px;font-size:13px;font-weight:700;">${zone.water_level}m</div>
-                            </div>
-                        `)
+                        new maplibregl.Popup().setDOMContent(
+                            el('div', 'font-family: system-ui; min-width: 160px;', null, [
+                                el('div', 'font-weight:600;font-size:13px;', zone.name),
+                                el('div', 'font-size:11px;color:#6b7280;', zone.barangay),
+                                el('div', 'margin-top:4px;font-size:13px;font-weight:700;', `${zone.water_level}m`),
+                            ]),
+                        )
                     )
                     .addTo(map);
             });
@@ -98,16 +102,16 @@ export default function EvacuationMap({ center, floodedZones, evacuationCenter }
             // Evacuation center marker (green) — omitted when none is registered
             if (evacuationCenter) {
                 const evacEl = document.createElement('div');
-                evacEl.style.cssText = 'width:22px;height:22px;border-radius:4px;background:#16a34a;border:3px solid white;box-shadow:0 0 0 2px #16a34a;';
+                evacEl.style.cssText = `width:22px;height:22px;border-radius:4px;background:${statusStyle('safe').hex};border:3px solid white;box-shadow:0 0 0 2px ${statusStyle('safe').hex};`;
                 new maplibregl.Marker({ element: evacEl })
                     .setLngLat([evacuationCenter.lng, evacuationCenter.lat])
                     .setPopup(
-                        new maplibregl.Popup().setHTML(`
-                            <div style="font-family: system-ui;">
-                                <div style="font-weight:600;font-size:13px;">🏛️ Evacuation Center</div>
-                                <div style="font-size:11px;color:#6b7280;">${evacuationCenter.name}</div>
-                            </div>
-                        `)
+                        new maplibregl.Popup().setDOMContent(
+                            el('div', 'font-family: system-ui;', null, [
+                                el('div', 'font-weight:600;font-size:13px;', '🏛️ Evacuation Center'),
+                                el('div', 'font-size:11px;color:#6b7280;', evacuationCenter.name),
+                            ]),
+                        )
                     )
                     .addTo(map);
             }

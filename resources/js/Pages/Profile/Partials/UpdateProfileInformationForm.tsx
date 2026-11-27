@@ -7,12 +7,6 @@ import { useForm, usePage } from '@inertiajs/react';
 import { Bell, Mail, MapPin, MessageSquare, Phone, Smartphone, User } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
-const BARANGAYS = [
-    'Cabangahan', 'Canjulao', 'Casili', 'Consolacion Poblacion',
-    'Danglag', 'Garing', 'Jugan', 'Lamac', 'Lanipga',
-    'Nangka', 'Panas', 'Panoypoy', 'Pitogo', 'Sacsac',
-    'Tayud', 'Tilhaong', 'Tolotolo', 'Tugbongan',
-];
 
 const CHANNELS: { key: 'email' | 'sms' | 'push'; label: string; icon: typeof Mail }[] = [
     { key: 'sms', label: 'SMS Alerts', icon: MessageSquare },
@@ -21,6 +15,7 @@ const CHANNELS: { key: 'email' | 'sms' | 'push'; label: string; icon: typeof Mai
 ];
 
 export default function UpdateProfileInformationForm({ status, className }: { status?: string; className?: string }) {
+    const barangays = usePage().props.barangays;
     const user = usePage().props.auth.user as {
         name: string;
         email: string;
@@ -75,7 +70,7 @@ export default function UpdateProfileInformationForm({ status, className }: { st
                         className="h-12 w-full rounded-xl border-slate-300 text-slate-900 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
                     >
                         <option value="">Select barangay</option>
-                        {BARANGAYS.map((b) => (
+                        {barangays.map((b) => (
                             <option key={b} value={b}>{b}</option>
                         ))}
                     </select>

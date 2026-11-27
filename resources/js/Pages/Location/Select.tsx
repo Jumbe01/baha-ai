@@ -1,6 +1,7 @@
 import AuthSplitLayout from '@/Layouts/AuthSplitLayout';
 import InfoBanner from '@/Components/InfoBanner';
-import { Head, Link, router, useForm } from '@inertiajs/react';
+import InputError from '@/Components/InputError';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import { ArrowLeft, Crosshair, MapPin, Search } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 
@@ -14,19 +15,24 @@ interface Props {
 }
 
 export default function SelectLocation({ current }: Props) {
-    const { data, setData, patch, processing } = useForm({
+    const { barangays } = usePage().props;
+    const [geoError, setGeoError] = useState('');
+    const { data, setData, patch, processing, errors } = useForm({
         address: current.address ?? '',
         barangay: current.barangay ?? '',
         latitude: current.latitude,
         longitude: current.longitude,
     });
     const [detecting, setDetecting] = useState(false);
-    const [search, setSearch] = useState('');
 
-    const detected = data.address || 'Barangay San Isidro, City of Example';
+    const detected = data.barangay ? `Barangay ${data.barangay}` : data.address || 'No barangay selected yet';
 
     const useCurrentLocation = () => {
-        if (!navigator.geolocation) return;
+        setGeoError('');
+        if (!navigator.geolocation) {
+            setGeoError('This browser cannot detect your location. Pick your barangay instead.');
+            return;
+        }
         setDetecting(true);
         navigator.geolocation.getCurrentPosition(
             (pos) => {
@@ -37,7 +43,10 @@ export default function SelectLocation({ current }: Props) {
                 }));
                 setDetecting(false);
             },
-            () => setDetecting(false),
+            () => {
+                setDetecting(false);
+                setGeoError('Location access was denied or unavailable. Pick your barangay instead.');
+            },
             { enableHighAccuracy: true, timeout: 10000 },
         );
     };
@@ -76,13 +85,18 @@ export default function SelectLocation({ current }: Props) {
             <form onSubmit={submit} className="mt-6 space-y-4">
                 <div className="relative">
                     <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
-                    <input
-                        type="text"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Search for your location or barangay"
-                        className="h-12 w-full rounded-xl border border-slate-300 pl-12 pr-4 text-slate-900 placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
-                    />
+                    <select
+                        value={data.barangay}
+                        onChange={(e) => setData('barangay', e.target.value)}
+                        aria-label="Your barangay"
+                        className="h-12 w-full rounded-xl border border-slate-300 pl-12 pr-4 text-slate-900 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
+                    >
+                        <option value="">Select your barangay (needed for flood alerts)</option>
+                        {barangays.map((b) => (
+                            <option key={b} value={b}>{b}</option>
+                        ))}
+                    </select>
+                    <InputError message={errors.barangay} className="mt-1.5" />
                 </div>
 
                 <MapPreview />
@@ -110,6 +124,12 @@ export default function SelectLocation({ current }: Props) {
                         {detecting ? 'Detecting…' : 'Use Current Location'}
                     </button>
                 </div>
+
+                {(geoError || errors.latitude || errors.longitude) && (
+                    <p role="alert" className="text-sm text-red-600">
+                        {geoError || errors.latitude || errors.longitude}
+                    </p>
+                )}
 
                 <InfoBanner className="mt-0">
                     Your location helps us provide localized flood alerts and updates that are relevant to your area.

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" font-family="Arial, sans-serif">
+<rect width="1000" height="560" fill="#fff"/>
+<text x="20" y="28" font-size="16" font-weight="bold">Why only 4.2 V? Find where the voltage drops, then test the servo next to the adapter</text>
+
+<!-- left rails rows 44-56 -->
+<rect x="40" y="60" width="150" height="420" fill="#f4f4f0" stroke="#bbb"/>
+<line x1="80" y1="66" x2="80" y2="474" stroke="#3a7bd5" stroke-width="4"/>
+<line x1="125" y1="66" x2="125" y2="474" stroke="#e33" stroke-width="4"/>
+<g font-size="14" font-weight="bold" text-anchor="middle"><text x="80" y="56" fill="#3a7bd5">−</text><text x="125" y="56" fill="#e33">+</text></g>
+<g font-size="12" fill="#555" text-anchor="end" font-weight="bold"><text x="34" y="164">47</text><text x="34" y="204">48</text><text x="34" y="364">52</text><text x="34" y="444">57</text></g>
+<!-- adapter terminal -->
+<rect x="60" y="330" width="90" height="56" rx="5" fill="#1f6fd1"/>
+<circle cx="85" cy="358" r="10" fill="#ccc" stroke="#555"/><circle cx="125" cy="358" r="10" fill="#ccc" stroke="#555"/>
+<polyline points="20,345 60,345" stroke="#111" stroke-width="5"/><polyline points="20,372 60,372" stroke="#c0392b" stroke-width="5"/>
+<text x="105" y="404" font-size="11" text-anchor="middle">adapter terminal</text>
+<circle cx="85" cy="358" r="18" fill="none" stroke="#e33" stroke-width="3"/>
+<circle cx="125" cy="358" r="18" fill="none" stroke="#e33" stroke-width="3"/>
+<text x="200" y="350" font-size="13" font-weight="bold" fill="#e33">① at the screws</text>
+
+<!-- rails reading -->
+<circle cx="80" cy="200" r="14" fill="none" stroke="#1f6fd1" stroke-width="3"/>
+<circle cx="125" cy="200" r="14" fill="none" stroke="#1f6fd1" stroke-width="3"/>
+<text x="200" y="196" font-size="13" font-weight="bold" fill="#1f6fd1">② left rails, row 48</text>
+
+<!-- servo moved here -->
+<rect x="560" y="140" width="150" height="76" rx="8" fill="#1f4fa8"/>
+<text x="635" y="184" font-size="13" fill="#fff" text-anchor="middle" font-weight="bold">SERVO</text>
+<rect x="500" y="150" width="24" height="56" fill="#222"/>
+<polyline points="500,164 380,164 380,160 125,160" fill="none" stroke="#e33" stroke-width="4"/>
+<polyline points="500,192 360,192 360,200 80,200" fill="none" stroke="#8b4513" stroke-width="4"/>
+<polyline points="500,178 450,178 450,110 980,110" fill="none" stroke="#e67e22" stroke-width="4" stroke-dasharray="7 4"/>
+<text x="700" y="102" font-size="11" fill="#e67e22">orange stays in j26 (right board)</text>
+<text x="260" y="154" font-size="12" font-weight="bold" fill="#e33">③ red → left + r47</text>
+<text x="200" y="222" font-size="12" font-weight="bold" fill="#8b4513">brown → left − r48</text>
+
+<g font-size="13" fill="#222">
+<text x="520" y="260" font-weight="bold">Adapter ON, meter V⎓20</text>
+<text x="532" y="282"><tspan font-weight="bold" fill="#e33">①</tspan> probes on the terminal's 2 screws → ? V</text>
+<text x="532" y="302"><tspan font-weight="bold" fill="#1f6fd1">②</tspan> left + / − rails, row 48 → ? V</text>
+<text x="532" y="326">① ≈ 5 V but ② much lower → the terminal's legs</text>
+<text x="546" y="344">aren't gripping the rails: push it down firmly, or</text>
+<text x="546" y="362">use 2 short jumpers from its row to the rails.</text>
+<text x="532" y="386">① already low (≈ 4.2 V) → the adapter sags; try</text>
+<text x="546" y="404">another 5 V adapter or a phone charger.</text>
+
+<text x="520" y="444" font-weight="bold">③ Servo test next to the adapter</text>
+<text x="532" y="464">Move ONLY the servo's red + brown jumpers to the</text>
+<text x="532" y="482">left rails rows 47/48 (shortest path to the supply).</text>
+<text x="532" y="502">Moves now → it was low voltage. Fix ① / ②.</text>
+<text x="532" y="520">Still dead, no hum at all → the servo is damaged.</text>
+</g>
+</svg>

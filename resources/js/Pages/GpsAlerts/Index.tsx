@@ -32,7 +32,7 @@ export default function Index({ center, floodedZones, evacuationCenter }: Props)
 
             <PageHeader
                 title="GPS Alerts & Evacuation"
-                subtitle="Live flood zones and safe evacuation routes near you."
+                subtitle="Live flood zones and the direction to your nearest evacuation center."
                 icon={
                     <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-50">
                         <Navigation className="h-5 w-5 text-brand-600" />
@@ -108,8 +108,9 @@ export default function Index({ center, floodedZones, evacuationCenter }: Props)
             </div>
 
             <InfoBanner>
-                Evacuation routes are generated from real-time flood data. Follow the highlighted path to the nearest
-                evacuation center and heed instructions from local authorities.
+                The highlighted line is directional guidance (a straight-line heading to the nearest evacuation
+                center), not a road route. Road-network routing (e.g. OSRM) is future work. Use known safe roads and
+                heed instructions from local authorities.
             </InfoBanner>
         </AuthenticatedLayout>
     );
