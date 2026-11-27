@@ -7,6 +7,7 @@ import WaterGauge from '@/Components/WaterGauge';
 import { cn } from '@/lib/utils';
 import { riskToStatus } from '@/lib/status';
 import { Head, Link, router } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 import { ArrowLeft, CloudRain, Droplets, MapPin, Thermometer } from 'lucide-react';
 import {
     Area,
@@ -60,6 +61,17 @@ export default function Show({ sensor, readings, hours }: Props) {
         router.get(route('water-levels.show', sensor.id), { hours: h }, { preserveState: true });
     };
 
+    // Live view: re-fetch every 5 s (the node posts every 15 s).
+    const [updatedAt, setUpdatedAt] = useState(() => new Date());
+    useEffect(() => {
+        const id = setInterval(
+            () => router.reload({ only: ['sensor', 'readings'], onSuccess: () => setUpdatedAt(new Date()) }),
+            5000,
+        );
+        return () => clearInterval(id);
+    }, []);
+
+    const fmt = (v: number | null, digits: number) => (v === null ? '--' : v.toFixed(digits));
     const latestReading = readings.length > 0 ? readings[readings.length - 1] : null;
     const tone = riskToStatus(sensor.risk.level);
 
@@ -100,6 +112,27 @@ export default function Show({ sensor, readings, hours }: Props) {
                 <StatCard label="Temperature" value={latestReading?.temperature?.toFixed(1) ?? '--'} unit="°C" icon={Thermometer} tone="moderate" />
                 <StatCard label="Humidity" value={latestReading?.humidity?.toFixed(1) ?? '--'} unit="%" icon={Droplets} tone="info" />
             </div>
+
+            <SectionCard
+                title="Live feed"
+                className="mt-6"
+                action={<span className="text-xs text-slate-500">auto-refresh 5 s · updated {updatedAt.toLocaleTimeString()}</span>}
+            >
+                <div className="max-h-72 overflow-y-auto rounded-lg bg-slate-950 p-3 font-mono text-xs leading-6 text-emerald-300">
+                    {readings.length > 0 ? (
+                        readings
+                            .slice(-50)
+                            .reverse()
+                            .map((r, i) => (
+                                <div key={`${r.time}-${i}`} className="whitespace-pre">
+                                    {new Date(r.time).toLocaleTimeString()}  level {r.water_level.toFixed(3)} m | {fmt(r.temperature, 1)} C | {fmt(r.humidity, 1)} % | rain {fmt(r.rainfall, 0)} %
+                                </div>
+                            ))
+                    ) : (
+                        <div className="text-slate-500">Waiting for readings…</div>
+                    )}
+                </div>
+            </SectionCard>
 
             <SectionCard
                 title="Water Level History"
