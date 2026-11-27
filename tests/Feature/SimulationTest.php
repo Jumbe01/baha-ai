@@ -36,7 +36,7 @@ class SimulationTest extends TestCase
 
         $response->assertRedirect();
         $response->assertSessionHas('success', fn ($msg) => str_contains($msg, 'Simulated 1 reading(s), created 1 alert(s)'));
-        $this->assertDatabaseCount('sensor_readings', 1);
+        $this->assertDatabaseCount('sensor_readings', 13); // 12 backfilled rise readings + the live one
         $this->assertDatabaseHas('alerts', ['source' => 'simulation', 'status' => 'active']);
     }
 
@@ -102,7 +102,7 @@ class SimulationTest extends TestCase
         $this->actingAs($staff)->post(route('simulation.storm'));
         $this->actingAs($staff)->post(route('simulation.calm'));
 
-        $this->assertSame(2, SensorReading::where('is_simulated', true)->count());
+        $this->assertSame(14, SensorReading::where('is_simulated', true)->count()); // storm 13 (with backfill) + reset 1
     }
 
     public function test_calm_reading_stays_safe_in_a_narrow_zone(): void

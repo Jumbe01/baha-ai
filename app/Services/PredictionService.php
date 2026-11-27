@@ -9,6 +9,8 @@ use Illuminate\Support\Collection;
 
 class PredictionService
 {
+    public const MIN_SPAN_MINUTES = 10;
+
     /**
      * Generate a flood prediction for a sensor using linear regression over
      * its recent readings. Estimates the rate of water-level rise, projects
@@ -29,6 +31,13 @@ class PredictionService
         }
 
         $baseTime = $readings->first()->recorded_at->getTimestamp();
+
+        // A slope fitted over seconds is noise, and projecting it an hour
+        // ahead gives absurd levels (a node just powered on, or a burst of
+        // demo clicks). Wait until the readings cover a real stretch of time.
+        if ($readings->last()->recorded_at->getTimestamp() - $baseTime < self::MIN_SPAN_MINUTES * 60) {
+            return null;
+        }
 
         // x = minutes since first reading, y = water level
         $points = $readings->map(fn ($r) => [

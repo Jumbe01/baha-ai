@@ -55,6 +55,19 @@ class PredictionServiceTest extends TestCase
         $this->assertNull($this->service->generate($this->sensor));
     }
 
+    public function test_readings_seconds_apart_are_not_extrapolated(): void
+    {
+        // 1.2 m -> 2.0 m -> 2.2 m within 40 s used to project ~96 m an hour ahead.
+        foreach ([[1.2, 40], [2.0, 20], [2.2, 0]] as [$level, $secondsAgo]) {
+            SensorReading::factory()->for($this->sensor)->create([
+                'water_level' => $level,
+                'recorded_at' => now()->subSeconds($secondsAgo),
+            ]);
+        }
+
+        $this->assertNull($this->service->generate($this->sensor));
+    }
+
     public function test_generates_prediction_with_enough_readings(): void
     {
         $this->seedRisingReadings(0.5, 0.1);

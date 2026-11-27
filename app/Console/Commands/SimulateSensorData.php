@@ -17,6 +17,9 @@ class SimulateSensorData extends Command
     /** A sensor whose device posted this recently is live hardware; its next post would overwrite ours. */
     private const LIVE_WINDOW_SECONDS = 60;
 
+    /** How much rising history a fresh storm backfills, one reading every 5 minutes. */
+    private const RISE_MINUTES = 60;
+
     public function handle(AlertService $alertService): int
     {
         // Offline sensors are included: a simulated device reporting again is
@@ -63,21 +66,24 @@ class SimulateSensorData extends Command
             }
 
             $zone = $sensor->floodZone;
-
-            // Calm stays strictly inside the safe band, however narrow the zone's thresholds are.
-            $waterLevel = $storm
-                ? $this->faker_between($zone->warning_threshold, $zone->critical_threshold + 1.0)
-                : $zone->safe_threshold + ($zone->warning_threshold - $zone->safe_threshold) * $this->faker_between(0.1, 0.8);
-
-            $reading = SensorReading::create([
+            $record = fn (float $level, $at) => SensorReading::create([
                 'sensor_id' => $sensor->id,
-                'water_level' => round(max(0, $waterLevel), 2),
+                'water_level' => round(max(0, $level), 2),
                 'rainfall' => round($storm ? mt_rand(2000, 8000) / 100 : mt_rand(0, 1500) / 100, 2),
                 'temperature' => round(26 + mt_rand(-30, 30) / 10, 2),
                 'humidity' => min(100, max(40, 70 + mt_rand(-15, 25))),
                 'is_simulated' => true,
-                'recorded_at' => now(),
+                'recorded_at' => $at,
             ]);
+
+            if ($storm) {
+                $waterLevel = $this->stormLevel($sensor, $record);
+            } else {
+                // Calm stays strictly inside the safe band, however narrow the zone's thresholds are.
+                $waterLevel = $zone->safe_threshold + ($zone->warning_threshold - $zone->safe_threshold) * $this->faker_between(0.1, 0.8);
+            }
+
+            $reading = $record($waterLevel, now());
             $simulated++;
 
             // Quietly: a demo click must not write an audit-log row per sensor.
@@ -121,6 +127,34 @@ class SimulateSensorData extends Command
             ->where('is_simulated', false)
             ->where('created_at', '>=', now()->subSeconds(self::LIVE_WINDOW_SECONDS))
             ->exists();
+    }
+
+    /**
+     * Storm level for this click. The forecast fits a line to the last two
+     * hours, so a storm must look like a rise over time, not one random
+     * spike: a fresh storm backfills the past hour at a realistic rate, and
+     * a repeat click keeps climbing from where the last storm reading left off.
+     */
+    private function stormLevel(Sensor $sensor, \Closure $record): float
+    {
+        $zone = $sensor->floodZone;
+        $gap = max(0.01, $zone->critical_threshold - $zone->warning_threshold);
+        $ceiling = $zone->critical_threshold + $gap / 2;
+
+        $latest = $sensor->readings()->latest('recorded_at')->first();
+        if ($latest && $latest->recorded_at->gt(now()->subMinutes(self::RISE_MINUTES))
+            && $latest->water_level >= $zone->warning_threshold) {
+            return min($ceiling, $latest->water_level + $gap * $this->faker_between(0.02, 0.06));
+        }
+
+        $level = $this->faker_between($zone->warning_threshold, $ceiling);
+        $perMinute = $gap * $this->faker_between(0.4, 0.8) / 60; // ~0.6–1.2 m/h for a 1.5 m band
+
+        for ($m = self::RISE_MINUTES; $m > 0; $m -= 5) {
+            $record($level - $perMinute * $m + $gap * $this->faker_between(-0.02, 0.02), now()->subMinutes($m));
+        }
+
+        return $level;
     }
 
     private function faker_between(float $min, float $max): float
