@@ -45,8 +45,18 @@ return [
             'port' => env('MAIL_PORT', 2525),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
-            'timeout' => null,
+            'timeout' => 15, // fail fast so 'failover' can move on to the backup
             'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
+        ],
+
+        // Second SMTP provider (e.g. Brevo), used by 'failover' when the main one fails.
+        'backup' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_BACKUP_HOST'),
+            'port' => env('MAIL_BACKUP_PORT', 587),
+            'username' => env('MAIL_BACKUP_USERNAME'),
+            'password' => env('MAIL_BACKUP_PASSWORD'),
+            'timeout' => 15,
         ],
 
         'ses' => [
@@ -81,9 +91,10 @@ return [
 
         'failover' => [
             'transport' => 'failover',
+            // No 'log' at the end: a total failure must still be reported as failed.
             'mailers' => [
                 'smtp',
-                'log',
+                'backup',
             ],
             'retry_after' => 60,
         ],

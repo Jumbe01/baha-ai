@@ -58,6 +58,11 @@ services:
       MAIL_PORT: "${MAIL_PORT:-587}"
       MAIL_USERNAME: "${MAIL_USERNAME:-}"
       MAIL_PASSWORD: "${MAIL_PASSWORD:-}"
+      # Backup provider, tried when the main one fails (needs MAIL_MAILER=failover).
+      MAIL_BACKUP_HOST: "${MAIL_BACKUP_HOST:-}"
+      MAIL_BACKUP_PORT: "${MAIL_BACKUP_PORT:-587}"
+      MAIL_BACKUP_USERNAME: "${MAIL_BACKUP_USERNAME:-}"
+      MAIL_BACKUP_PASSWORD: "${MAIL_BACKUP_PASSWORD:-}"
       MAIL_FROM_ADDRESS: "${MAIL_FROM_ADDRESS:-alerts@bahaai.test}"
       MAIL_FROM_NAME: "${APP_NAME:-BahaAI}"
 
