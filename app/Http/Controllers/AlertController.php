@@ -91,7 +91,7 @@ class AlertController extends Controller
 
         if ($result['email_failed'] > 0) {
             return redirect()->route('alerts.index')
-                ->with('error', $message.sprintf(' %d email(s) failed to send — check that the mail server is running.', $result['email_failed']));
+                ->with('error', $message.sprintf(' %d email(s) failed to send — check the MAIL_* SMTP settings.', $result['email_failed']));
         }
 
         return redirect()->route('alerts.index')->with('success', $message);

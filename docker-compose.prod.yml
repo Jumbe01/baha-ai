@@ -1,24 +1,15 @@
 # Production overlay for the VPS:
 #   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
-# Only Caddy (80/443) is public. Mailpit is served at https://inbox.baha-ai.tech
-# behind a login (INBOX_USER / INBOX_PASSWORD_HASH in .env), or via an SSH tunnel.
+# Only Caddy (80/443) is public. Email goes out via the SMTP provider in .env.
 services:
   app:
     ports: !reset []
-
-  mailpit:
-    ports: !override
-      - "127.0.0.1:8025:8025"
 
   caddy:
     image: caddy:2
     restart: unless-stopped
     depends_on:
       - app
-      - mailpit
-    environment:
-      INBOX_USER: "${INBOX_USER:?set INBOX_USER in .env}"
-      INBOX_PASSWORD_HASH: "${INBOX_PASSWORD_HASH:?set INBOX_PASSWORD_HASH in .env}"
     ports:
       - "80:80"
       - "443:443"

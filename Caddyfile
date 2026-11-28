@@ -11,12 +11,3 @@ baha-ai.tech {
 	encode gzip
 	reverse_proxy app:8000
 }
-
-# Mailpit inbox (alert emails, OTP codes). Login from INBOX_USER and
-# INBOX_PASSWORD_HASH in the VPS .env (bcrypt from `caddy hash-password`).
-inbox.baha-ai.tech {
-	basic_auth {
-		{$INBOX_USER} {$INBOX_PASSWORD_HASH}
-	}
-	reverse_proxy mailpit:8025
-}

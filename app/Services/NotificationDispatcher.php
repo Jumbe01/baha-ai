@@ -159,7 +159,7 @@ class NotificationDispatcher
 
             return 'sent';
         } catch (Throwable $e) {
-            Log::warning('Alert email delivery failed — is the mail server (e.g. Mailpit) running?', [
+            Log::warning('Alert email delivery failed — check the MAIL_* SMTP settings', [
                 'alert_id' => $alert->id,
                 'user_id' => $user->id,
                 'error' => $e->getMessage(),

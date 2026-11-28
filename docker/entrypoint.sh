@@ -46,9 +46,12 @@ set_env OPENWEATHERMAP_API_KEY "${OPENWEATHERMAP_API_KEY:-}"
 
 # `artisan serve` gives the web process the .env file's values, not the
 # container's, so mail must be written here too or alerts go to 127.0.0.1.
-set_env MAIL_MAILER       "${MAIL_MAILER:-smtp}"
-set_env MAIL_HOST         "${MAIL_HOST:-mailpit}"
-set_env MAIL_PORT         "${MAIL_PORT:-1025}"
+set_env MAIL_MAILER       "${MAIL_MAILER:-log}"
+set_env MAIL_SCHEME       "${MAIL_SCHEME:-null}"
+set_env MAIL_HOST         "${MAIL_HOST:-}"
+set_env MAIL_PORT         "${MAIL_PORT:-587}"
+set_env MAIL_USERNAME     "${MAIL_USERNAME:-}"
+set_env MAIL_PASSWORD     "\"${MAIL_PASSWORD:-}\""
 set_env MAIL_FROM_ADDRESS "${MAIL_FROM_ADDRESS:-alerts@bahaai.test}"
 set_env MAIL_FROM_NAME    "\"${MAIL_FROM_NAME:-BahaAI}\""
 
